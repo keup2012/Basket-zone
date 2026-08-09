@@ -1,9 +1,11 @@
+
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basket Zone 🏀</title>
+    <title>Basket Zone</title>
 
     <style>
         * {
@@ -20,20 +22,19 @@
 
         header {
             background: #111;
-            padding: 20px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 3px solid #ff6a00;
         }
 
-        .logo {
-            font-size: 30px;
-            font-weight: bold;
-        }
-
-        .logo span {
-            color: #ff6a00;
+        /* LOGO */
+        .logo img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            display: block;
         }
 
         nav a {
@@ -124,13 +125,33 @@
             color: #aaa;
             border-top: 2px solid #ff6a00;
         }
+
+        /* ADAPTATION POUR TELEPHONE */
+        @media (max-width: 700px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin-left: 8px;
+                margin-right: 8px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <header>
-        <div class="logo">🏀 BASKET <span>ZONE</span></div>
+
+        <div class="logo">
+            <img src="a_clean_graphic_logo_on_a_dark_black_background._o.png" alt="Basket Zone">
+        </div>
 
         <nav>
             <a href="#">Accueil</a>
@@ -138,10 +159,15 @@
             <a href="#joueurs">Joueurs</a>
             <a href="#matchs">Matchs</a>
         </nav>
+
     </header>
 
+
     <section class="hero">
-        <h1>Bienvenue sur <span>Basket Zone</span> 🏀</h1>
+
+        <h1>
+            Bienvenue sur <span>Basket Zone</span> 🏀
+        </h1>
 
         <p>
             Toute l'actualité du basketball au même endroit.
@@ -150,31 +176,39 @@
         <a href="#actualites" class="bouton">
             Découvrir les actualités
         </a>
+
     </section>
 
+
     <section class="section" id="actualites">
+
         <h2>🔥 Actualités</h2>
 
         <div class="cartes">
 
             <div class="carte">
                 <h3>🏀 NBA</h3>
+
                 <p>
                     Retrouvez les dernières informations sur la NBA,
                     les équipes et les grandes stars du basketball.
                 </p>
             </div>
 
+
             <div class="carte">
                 <h3>⭐ Les joueurs</h3>
+
                 <p>
                     Découvrez les performances des meilleurs joueurs
                     de basketball.
                 </p>
             </div>
 
+
             <div class="carte">
                 <h3>🏆 Les matchs</h3>
+
                 <p>
                     Retrouvez les résultats et les informations
                     importantes sur les matchs.
@@ -182,56 +216,89 @@
             </div>
 
         </div>
+
     </section>
 
+
     <section class="section" id="joueurs">
+
         <h2>⭐ Joueurs à suivre</h2>
 
         <div class="cartes">
 
             <div class="carte">
                 <h3>Victor Wembanyama</h3>
-                <p>Une des grandes stars du basketball français et de la NBA.</p>
+
+                <p>
+                    Une des grandes stars du basketball français et de la NBA.
+                </p>
             </div>
+
 
             <div class="carte">
                 <h3>Stephen Curry</h3>
-                <p>Un des plus grands shooteurs de l'histoire de la NBA.</p>
+
+                <p>
+                    Un des plus grands shooteurs de l'histoire de la NBA.
+                </p>
             </div>
+
 
             <div class="carte">
                 <h3>LeBron James</h3>
-                <p>Une légende du basketball et l'un des joueurs les plus connus.</p>
+
+                <p>
+                    Une légende du basketball et l'un des joueurs
+                    les plus connus.
+                </p>
             </div>
 
         </div>
+
     </section>
 
+
     <section class="section" id="matchs">
+
         <h2>📅 Matchs</h2>
 
         <div class="cartes">
 
             <div class="carte">
                 <h3>NBA</h3>
+
                 <p>
-                    Les prochains matchs et les résultats seront affichés ici.
+                    Les prochains matchs et les résultats seront
+                    affichés ici.
                 </p>
             </div>
 
+
             <div class="carte">
                 <h3>🏀 Basketball français</h3>
+
                 <p>
-                    Retrouvez également les informations sur le basketball français.
+                    Retrouvez également les informations sur
+                    le basketball français.
                 </p>
             </div>
 
         </div>
+
     </section>
 
+
     <footer>
-        <p>🏀 Basket Zone — Le basketball, notre passion.</p>
+
+        <p>
+            🏀 Basket Zone — Le basketball, notre passion.
+        </p>
+
     </footer>
 
 </body>
 </html>
+```
+
+
+
