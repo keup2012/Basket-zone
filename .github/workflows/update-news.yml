@@ -1,3 +1,4 @@
+```yaml
 name: 📰 Actualités NBA automatiques
 
 on:
@@ -43,3 +44,6 @@ jobs:
             git commit -m "Mise à jour des actualités NBA"
             git push
           fi
+```
+
+
