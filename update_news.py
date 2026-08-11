@@ -1,5 +1,4 @@
 
-```python
 import json
 import urllib.request
 import urllib.parse
@@ -8,9 +7,7 @@ from datetime import datetime, timezone
 
 
 NBA_URL = "https://www.nba.com/news"
-
 OUTPUT_FILE = "news.json"
-
 MAX_ARTICLES = 12
 
 
@@ -20,9 +17,7 @@ class NBAParser(HTMLParser):
         super().__init__()
 
         self.articles = []
-
         self.current_link = None
-
         self.current_text = []
 
     def handle_starttag(self, tag, attrs):
@@ -31,7 +26,6 @@ class NBAParser(HTMLParser):
             return
 
         attributes = dict(attrs)
-
         href = attributes.get("href")
 
         if not href:
@@ -40,16 +34,12 @@ class NBAParser(HTMLParser):
         if href.startswith("/news/"):
 
             self.current_link = href
-
             self.current_text = []
 
     def handle_data(self, data):
 
         if self.current_link is not None:
-
-            self.current_text.append(
-                data
-            )
+            self.current_text.append(data)
 
     def handle_endtag(self, tag):
 
@@ -60,9 +50,7 @@ class NBAParser(HTMLParser):
             return
 
         title = " ".join(
-            " ".join(
-                self.current_text
-            ).split()
+            " ".join(self.current_text).split()
         )
 
         if title:
@@ -86,21 +74,15 @@ class NBAParser(HTMLParser):
             )
 
             if not already_exists:
-
-                self.articles.append(
-                    article
-                )
+                self.articles.append(article)
 
         self.current_link = None
-
         self.current_text = []
 
 
 def download_nba_news():
 
-    print(
-        "🔵 Connexion à NBA.com..."
-    )
+    print("🏀 Connexion à NBA.com...")
 
     request = urllib.request.Request(
         NBA_URL,
@@ -129,11 +111,10 @@ def download_nba_news():
         data = response.read()
 
         print(
-            f"📰 Page NBA reçue : {len(data)} octets"
+            f"📥 Page NBA reçue : {len(data)} octets"
         )
 
         if not data:
-
             raise RuntimeError(
                 "❌ NBA.com a renvoyé une page vide."
             )
@@ -143,9 +124,7 @@ def download_nba_news():
 
 def parse_news(html_data):
 
-    print(
-        "🔎 Analyse de la page NBA.com..."
-    )
+    print("🔎 Analyse de la page NBA.com...")
 
     parser = NBAParser()
 
@@ -163,7 +142,6 @@ def parse_news(html_data):
     )
 
     if not articles:
-
         raise RuntimeError(
             "❌ Aucun article NBA trouvé sur NBA.com."
         )
@@ -194,20 +172,13 @@ def save_news(articles):
             indent=4
         )
 
-    print(
-        "💾 news.json mis à jour."
-    )
+    print("💾 news.json mis à jour.")
 
 
 def main():
 
-    print(
-        "🏀 Basket Zone"
-    )
-
-    print(
-        "📰 Récupération des actualités NBA..."
-    )
+    print("🏀 Basket Zone")
+    print("📰 Récupération des actualités NBA...")
 
     html_data = download_nba_news()
 
@@ -219,18 +190,13 @@ def main():
         f"✅ {len(articles)} actualités NBA trouvées."
     )
 
-    save_news(
-        articles
-    )
+    save_news(articles)
 
-    print(
-        "🎉 Mise à jour terminée."
-    )
+    print("🎉 Mise à jour terminée.")
 
 
 if __name__ == "__main__":
     main()
 ```
-
 
 
