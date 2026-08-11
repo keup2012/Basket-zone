@@ -1,10 +1,10 @@
 
-```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Basket Zone</title>
 
     <style>
@@ -20,9 +20,11 @@
             color: white;
         }
 
+        /* ================= HEADER ================= */
+
         header {
             background: #111;
-            padding: 15px 20px;
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -30,6 +32,7 @@
         }
 
         /* LOGO */
+
         .logo img {
             width: 80px;
             height: 80px;
@@ -37,20 +40,30 @@
             display: block;
         }
 
+        /* MENU */
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
         nav a {
             color: white;
             text-decoration: none;
-            margin-left: 20px;
+            margin-left: 25px;
             font-weight: bold;
+            transition: 0.3s;
         }
 
         nav a:hover {
             color: #ff6a00;
         }
 
+        /* ================= ACCUEIL ================= */
+
         .hero {
             text-align: center;
-            padding: 100px 20px;
+            padding: 110px 20px;
             background: linear-gradient(135deg, #111, #241000);
         }
 
@@ -66,7 +79,7 @@
         .hero p {
             font-size: 20px;
             color: #ccc;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
         .bouton {
@@ -77,14 +90,18 @@
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
+            transition: 0.3s;
         }
 
         .bouton:hover {
             background: #ff8533;
+            transform: scale(1.05);
         }
 
+        /* ================= SECTIONS ================= */
+
         .section {
-            padding: 50px 20px;
+            padding: 60px 20px;
             max-width: 1100px;
             margin: auto;
         }
@@ -92,8 +109,10 @@
         .section h2 {
             text-align: center;
             font-size: 35px;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
+
+        /* CARTES */
 
         .cartes {
             display: grid;
@@ -106,17 +125,25 @@
             padding: 25px;
             border-radius: 12px;
             border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .carte:hover {
+            transform: translateY(-5px);
+            border-color: #ff6a00;
         }
 
         .carte h3 {
             color: #ff6a00;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .carte p {
             color: #ccc;
-            line-height: 1.5;
+            line-height: 1.6;
         }
+
+        /* ================= FOOTER ================= */
 
         footer {
             text-align: center;
@@ -126,20 +153,30 @@
             border-top: 2px solid #ff6a00;
         }
 
-        /* ADAPTATION POUR TELEPHONE */
+        /* ================= TELEPHONE ================= */
+
         @media (max-width: 700px) {
+
             header {
                 flex-direction: column;
                 gap: 15px;
             }
 
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
             nav a {
-                margin-left: 8px;
-                margin-right: 8px;
+                margin: 5px 10px;
             }
 
             .hero h1 {
                 font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 17px;
             }
         }
     </style>
@@ -147,10 +184,15 @@
 
 <body>
 
+    <!-- ================= HEADER ================= -->
+
     <header>
 
         <div class="logo">
-            <img src="a_clean_graphic_logo_on_a_dark_black_background._o.png" alt="Basket Zone">
+            <img
+                src="Image ChatGPT 8 août 2026, 21_13_07.png"
+                alt="Logo Basket Zone"
+            >
         </div>
 
         <nav>
@@ -162,6 +204,8 @@
 
     </header>
 
+
+    <!-- ================= ACCUEIL ================= -->
 
     <section class="hero">
 
@@ -180,6 +224,8 @@
     </section>
 
 
+    <!-- ================= ACTUALITÉS ================= -->
+
     <section class="section" id="actualites">
 
         <h2>🔥 Actualités</h2>
@@ -195,7 +241,6 @@
                 </p>
             </div>
 
-
             <div class="carte">
                 <h3>⭐ Les joueurs</h3>
 
@@ -204,7 +249,6 @@
                     de basketball.
                 </p>
             </div>
-
 
             <div class="carte">
                 <h3>🏆 Les matchs</h3>
@@ -220,6 +264,8 @@
     </section>
 
 
+    <!-- ================= JOUEURS ================= -->
+
     <section class="section" id="joueurs">
 
         <h2>⭐ Joueurs à suivre</h2>
@@ -230,19 +276,19 @@
                 <h3>Victor Wembanyama</h3>
 
                 <p>
-                    Une des grandes stars du basketball français et de la NBA.
+                    Une des grandes stars du basketball français
+                    et de la NBA.
                 </p>
             </div>
-
 
             <div class="carte">
                 <h3>Stephen Curry</h3>
 
                 <p>
-                    Un des plus grands shooteurs de l'histoire de la NBA.
+                    Un des plus grands shooteurs de l'histoire
+                    de la NBA.
                 </p>
             </div>
-
 
             <div class="carte">
                 <h3>LeBron James</h3>
@@ -258,6 +304,8 @@
     </section>
 
 
+    <!-- ================= MATCHS ================= -->
+
     <section class="section" id="matchs">
 
         <h2>📅 Matchs</h2>
@@ -265,7 +313,7 @@
         <div class="cartes">
 
             <div class="carte">
-                <h3>NBA</h3>
+                <h3>🏀 NBA</h3>
 
                 <p>
                     Les prochains matchs et les résultats seront
@@ -273,9 +321,8 @@
                 </p>
             </div>
 
-
             <div class="carte">
-                <h3>🏀 Basketball français</h3>
+                <h3>🇫🇷 Basketball français</h3>
 
                 <p>
                     Retrouvez également les informations sur
@@ -288,6 +335,8 @@
     </section>
 
 
+    <!-- ================= FOOTER ================= -->
+
     <footer>
 
         <p>
@@ -298,7 +347,3 @@
 
 </body>
 </html>
-```
-
-
-
