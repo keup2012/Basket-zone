@@ -30,6 +30,9 @@ def get_text(element, tag):
 
 
 def download_rss():
+
+    print("🔵 TEST : download_rss démarre")
+
     request = urllib.request.Request(
         RSS_URL,
         headers={
@@ -38,10 +41,14 @@ def download_rss():
         }
     )
 
+    print("🟡 TEST : requête RSS créée")
+
     with urllib.request.urlopen(
         request,
         timeout=30
     ) as response:
+
+        print("🟢 TEST : réponse du serveur reçue")
 
         data = response.read()
 
@@ -49,15 +56,20 @@ def download_rss():
             f"📥 Flux RSS reçu : {len(data)} octets"
         )
 
+        print(
+            f"🔎 Début des données : {data[:300]!r}"
+        )
+
         if not data:
             raise RuntimeError(
-                "Le flux RSS est vide."
+                "❌ Le flux RSS est complètement vide."
             )
 
         return data
 
 
 def format_date(date_string):
+
     if not date_string:
         return ""
 
@@ -80,16 +92,13 @@ def parse_news(xml_data):
         f"📦 Taille des données reçues : {len(xml_data)} octets"
     )
 
-    print(
-        f"🔎 Début des données : {xml_data[:300]!r}"
-    )
-
     if not xml_data:
         raise RuntimeError(
-            "Le flux RSS est complètement vide."
+            "❌ Impossible de lire le flux RSS : données vides."
         )
 
     try:
+
         root = ET.fromstring(
             xml_data
         )
@@ -97,7 +106,7 @@ def parse_news(xml_data):
     except ET.ParseError as error:
 
         print(
-            "❌ Le flux reçu n'est pas un XML valide."
+            "❌ Le serveur n'a pas envoyé un XML valide."
         )
 
         print(
@@ -111,6 +120,7 @@ def parse_news(xml_data):
     )
 
     if channel is None:
+
         print(
             "⚠️ Aucun élément channel trouvé."
         )
@@ -212,9 +222,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-```
-
-
 
 
 
