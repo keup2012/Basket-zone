@@ -2,300 +2,809 @@
 
 
     <!DOCTYPE html>
+
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basket Zone</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+```
+<title>Basket Zone 🏀</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #080808;
+        color: white;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        background: rgba(15, 15, 15, 0.95);
+
+        padding: 10px 40px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        border-bottom: 3px solid #ff6a00;
+    }
+
+    .logo img {
+        width: 75px;
+        height: 75px;
+        object-fit: contain;
+    }
+
+    nav {
+        display: flex;
+        gap: 30px;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        position: relative;
+        transition: 0.3s;
+    }
+
+    nav a:hover {
+        color: #ff6a00;
+    }
+
+    nav a::after {
+        content: "";
+        position: absolute;
+
+        left: 0;
+        bottom: -8px;
+
+        width: 0;
+        height: 2px;
+
+        background: #ff6a00;
+
+        transition: 0.3s;
+    }
+
+    nav a:hover::after {
+        width: 100%;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+        min-height: 650px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        text-align: center;
+
+        padding: 80px 20px;
+
+        background:
+            radial-gradient(circle at center, #3a1800 0%, #111 45%, #080808 100%);
+    }
+
+    .hero-content {
+        max-width: 900px;
+    }
+
+    .ball {
+        font-size: 75px;
+        margin-bottom: 20px;
+
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+        0%, 100% {
+            transform: translateY(0);
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #0b0b0b;
-            color: white;
+        50% {
+            transform: translateY(-15px);
         }
+    }
+
+    .hero h1 {
+        font-size: 70px;
+        margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+        color: #ff6a00;
+    }
+
+    .hero p {
+        color: #ccc;
+        font-size: 21px;
+        margin-bottom: 35px;
+    }
+
+    .bouton {
+        display: inline-block;
+
+        background: #ff6a00;
+        color: white;
+
+        padding: 16px 32px;
+
+        border-radius: 8px;
+
+        text-decoration: none;
+        font-weight: bold;
+
+        transition: 0.3s;
+    }
+
+    .bouton:hover {
+        background: #ff8533;
+        transform: scale(1.07);
+    }
+
+    /* =========================
+       SECTIONS
+    ========================= */
+
+    .section {
+        max-width: 1150px;
+        margin: auto;
+
+        padding: 80px 20px;
+    }
+
+    .section h2 {
+        text-align: center;
+
+        font-size: 40px;
+
+        margin-bottom: 45px;
+    }
+
+    .section h2 span {
+        color: #ff6a00;
+    }
+
+    /* =========================
+       CARTES
+    ========================= */
+
+    .cartes {
+        display: grid;
+
+        grid-template-columns:
+            repeat(auto-fit, minmax(260px, 1fr));
+
+        gap: 25px;
+    }
+
+    .carte {
+        background: linear-gradient(145deg, #181818, #101010);
+
+        padding: 30px;
+
+        border-radius: 15px;
+
+        border: 1px solid #292929;
+
+        transition: 0.3s;
+
+        position: relative;
+
+        overflow: hidden;
+    }
+
+    .carte::before {
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 4px;
+
+        background: #ff6a00;
+    }
+
+    .carte:hover {
+        transform: translateY(-10px);
+
+        border-color: #ff6a00;
+
+        box-shadow:
+            0 15px 35px rgba(255, 106, 0, 0.18);
+    }
+
+    .icone {
+        font-size: 45px;
+        margin-bottom: 15px;
+    }
+
+    .carte h3 {
+        color: #ff6a00;
+
+        font-size: 23px;
+
+        margin-bottom: 12px;
+    }
+
+    .carte p {
+        color: #bbb;
+
+        line-height: 1.7;
+    }
+
+    .petit-bouton {
+        display: inline-block;
+
+        margin-top: 20px;
+
+        color: #ff6a00;
+
+        text-decoration: none;
+
+        font-weight: bold;
+    }
+
+    .petit-bouton:hover {
+        color: white;
+    }
+
+    /* =========================
+       JOUEURS
+    ========================= */
+
+    .joueur {
+        text-align: center;
+    }
+
+    .joueur-photo {
+        width: 120px;
+        height: 120px;
+
+        margin: 0 auto 20px;
+
+        border-radius: 50%;
+
+        background: #222;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 55px;
+
+        border: 3px solid #ff6a00;
+    }
+
+    .badge {
+        display: inline-block;
+
+        margin-top: 15px;
+
+        padding: 6px 12px;
+
+        border-radius: 20px;
+
+        background: #2a1608;
+
+        color: #ff6a00;
+
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    /* =========================
+       MATCHS
+    ========================= */
+
+    .match {
+        text-align: center;
+    }
+
+    .equipes {
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        gap: 20px;
+
+        margin: 20px 0;
+    }
+
+    .equipe {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .vs {
+        color: #ff6a00;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .date {
+        color: #aaa;
+        font-size: 14px;
+    }
+
+    /* =========================
+       BLOC ORANGE
+    ========================= */
+
+    .cta {
+        margin: 40px 20px 80px;
+
+        padding: 60px 20px;
+
+        text-align: center;
+
+        border-radius: 20px;
+
+        background:
+            linear-gradient(135deg, #ff6a00, #b93800);
+    }
+
+    .cta h2 {
+        font-size: 38px;
+        margin-bottom: 15px;
+    }
+
+    .cta p {
+        margin-bottom: 25px;
+        font-size: 18px;
+    }
+
+    .cta .bouton {
+        background: white;
+        color: #ff6a00;
+    }
+
+    .cta .bouton:hover {
+        background: #111;
+        color: white;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+        background: #111;
+
+        text-align: center;
+
+        padding: 35px 20px;
+
+        border-top: 2px solid #ff6a00;
+
+        color: #888;
+    }
+
+    footer strong {
+        color: #ff6a00;
+    }
+
+    /* =========================
+       TELEPHONE
+    ========================= */
+
+    @media (max-width: 700px) {
 
         header {
-            background: #111;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 3px solid #ff6a00;
-        }
+            padding: 10px 20px;
 
-        .logo img {
-            width: 90px;
-            height: 90px;
-            object-fit: contain;
-            display: block;
+            flex-direction: column;
+
+            gap: 10px;
         }
 
         nav {
-            display: flex;
-            align-items: center;
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            justify-content: center;
         }
 
         nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 25px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: #ff6a00;
+            font-size: 14px;
         }
 
         .hero {
-            text-align: center;
-            padding: 110px 20px;
-            background: linear-gradient(135deg, #111, #241000);
+            min-height: 550px;
         }
 
         .hero h1 {
-            font-size: 60px;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 span {
-            color: #ff6a00;
+            font-size: 42px;
         }
 
         .hero p {
-            font-size: 20px;
-            color: #ccc;
-            margin-bottom: 35px;
-        }
-
-        .bouton {
-            display: inline-block;
-            background: #ff6a00;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .bouton:hover {
-            background: #ff8533;
-            transform: scale(1.05);
-        }
-
-        .section {
-            padding: 60px 20px;
-            max-width: 1100px;
-            margin: auto;
+            font-size: 17px;
         }
 
         .section h2 {
-            text-align: center;
-            font-size: 35px;
-            margin-bottom: 35px;
+            font-size: 32px;
         }
 
-        .cartes {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        .equipes {
+            flex-direction: column;
         }
 
-        .carte {
-            background: #171717;
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid #333;
-            transition: 0.3s;
-        }
+    }
 
-        .carte:hover {
-            transform: translateY(-5px);
-            border-color: #ff6a00;
-        }
+</style>
+```
 
-        .carte h3 {
-            color: #ff6a00;
-            margin-bottom: 12px;
-        }
-
-        .carte p {
-            color: #ccc;
-            line-height: 1.6;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: #111;
-            color: #aaa;
-            border-top: 2px solid #ff6a00;
-        }
-
-        @media (max-width: 700px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            nav {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            nav a {
-                margin: 5px 10px;
-            }
-
-            .hero h1 {
-                font-size: 40px;
-            }
-
-            .hero p {
-                font-size: 17px;
-            }
-        }
-    </style>
 </head>
 
 <body>
 
-    <header>
+```
+<!-- =========================
+     HEADER
+========================== -->
 
-        <div class="logo">
-            <img src="logo.png" alt="Logo Basket Zone">
+<header>
+
+    <div class="logo">
+        <img src="logo.png" alt="Logo Basket Zone">
+    </div>
+
+    <nav>
+        <a href="#">Accueil</a>
+
+        <a href="#actualites">
+            Actualités
+        </a>
+
+        <a href="#joueurs">
+            Joueurs
+        </a>
+
+        <a href="#matchs">
+            Matchs
+        </a>
+    </nav>
+
+</header>
+
+
+<!-- =========================
+     HERO
+========================== -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="ball">
+            🏀
         </div>
 
-        <nav>
-            <a href="#">Accueil</a>
-            <a href="#actualites">Actualités</a>
-            <a href="#joueurs">Joueurs</a>
-            <a href="#matchs">Matchs</a>
-        </nav>
-
-    </header>
-
-    <section class="hero">
-
         <h1>
-            Bienvenue sur <span>Basket Zone</span> 🏀
+            Bienvenue sur
+            <span>Basket Zone</span>
         </h1>
 
         <p>
-            Toute l'actualité du basketball au même endroit.
+            Toute l'actualité du basketball,
+            les joueurs, les matchs et les grandes équipes.
         </p>
 
         <a href="#actualites" class="bouton">
-            Découvrir les actualités
+            Découvrir Basket Zone
         </a>
 
-    </section>
+    </div>
 
-    <section class="section" id="actualites">
+</section>
 
-        <h2>🔥 Actualités</h2>
 
-        <div class="cartes">
+<!-- =========================
+     ACTUALITES
+========================== -->
 
-            <div class="carte">
-                <h3>🏀 NBA</h3>
-                <p>
-                    Retrouvez les dernières informations sur la NBA,
-                    les équipes et les grandes stars du basketball.
-                </p>
+<section class="section" id="actualites">
+
+    <h2>
+        🔥 <span>Actualités</span>
+    </h2>
+
+    <div class="cartes">
+
+        <div class="carte">
+
+            <div class="icone">
+                🏀
             </div>
 
-            <div class="carte">
-                <h3>⭐ Les joueurs</h3>
-                <p>
-                    Découvrez les performances des meilleurs joueurs
-                    de basketball.
-                </p>
+            <h3>
+                NBA
+            </h3>
+
+            <p>
+                Retrouvez les informations importantes
+                de la NBA, les équipes et les grandes stars.
+            </p>
+
+            <a href="#" class="petit-bouton">
+                Lire plus →
+            </a>
+
+        </div>
+
+
+        <div class="carte">
+
+            <div class="icone">
+                🇫🇷
             </div>
 
-            <div class="carte">
-                <h3>🏆 Les matchs</h3>
-                <p>
-                    Retrouvez les résultats et les informations
-                    importantes sur les matchs.
-                </p>
+            <h3>
+                Basketball français
+            </h3>
+
+            <p>
+                Découvrez l'actualité du basketball français,
+                les clubs et les joueurs à suivre.
+            </p>
+
+            <a href="#" class="petit-bouton">
+                Lire plus →
+            </a>
+
+        </div>
+
+
+        <div class="carte">
+
+            <div class="icone">
+                🏆
+            </div>
+
+            <h3>
+                Compétitions
+            </h3>
+
+            <p>
+                Suivez les grandes compétitions et les
+                moments importants de la saison.
+            </p>
+
+            <a href="#" class="petit-bouton">
+                Lire plus →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     JOUEURS
+========================== -->
+
+<section class="section" id="joueurs">
+
+    <h2>
+        ⭐ <span>Joueurs à suivre</span>
+    </h2>
+
+    <div class="cartes">
+
+        <div class="carte joueur">
+
+            <div class="joueur-photo">
+                🏀
+            </div>
+
+            <h3>
+                Victor Wembanyama
+            </h3>
+
+            <p>
+                Jeune star française évoluant en NBA.
+            </p>
+
+            <span class="badge">
+                FRANCE 🇫🇷
+            </span>
+
+        </div>
+
+
+        <div class="carte joueur">
+
+            <div class="joueur-photo">
+                🎯
+            </div>
+
+            <h3>
+                Stephen Curry
+            </h3>
+
+            <p>
+                Un des joueurs les plus célèbres
+                de la NBA et spécialiste du tir à trois points.
+            </p>
+
+            <span class="badge">
+                NBA 🇺🇸
+            </span>
+
+        </div>
+
+
+        <div class="carte joueur">
+
+            <div class="joueur-photo">
+                👑
+            </div>
+
+            <h3>
+                LeBron James
+            </h3>
+
+            <p>
+                Une des grandes légendes du basketball
+                américain.
+            </p>
+
+            <span class="badge">
+                NBA 🇺🇸
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     MATCHS
+========================== -->
+
+<section class="section" id="matchs">
+
+    <h2>
+        📅 <span>Matchs</span>
+    </h2>
+
+    <div class="cartes">
+
+        <div class="carte match">
+
+            <h3>
+                🏀 NBA
+            </h3>
+
+            <div class="equipes">
+
+                <div class="equipe">
+                    🏀 Équipe A
+                </div>
+
+                <div class="vs">
+                    VS
+                </div>
+
+                <div class="equipe">
+                    🏀 Équipe B
+                </div>
+
+            </div>
+
+            <div class="date">
+                📅 Prochain match
             </div>
 
         </div>
 
-    </section>
 
-    <section class="section" id="joueurs">
+        <div class="carte match">
 
-        <h2>⭐ Joueurs à suivre</h2>
+            <h3>
+                🇫🇷 France
+            </h3>
 
-        <div class="cartes">
+            <div class="equipes">
 
-            <div class="carte">
-                <h3>Victor Wembanyama</h3>
-                <p>
-                    Une des grandes stars du basketball français
-                    et de la NBA.
-                </p>
+                <div class="equipe">
+                    🇫🇷 Équipe A
+                </div>
+
+                <div class="vs">
+                    VS
+                </div>
+
+                <div class="equipe">
+                    🇫🇷 Équipe B
+                </div>
+
             </div>
 
-            <div class="carte">
-                <h3>Stephen Curry</h3>
-                <p>
-                    Un des plus grands shooteurs de l'histoire
-                    de la NBA.
-                </p>
-            </div>
-
-            <div class="carte">
-                <h3>LeBron James</h3>
-                <p>
-                    Une légende du basketball et l'un des joueurs
-                    les plus connus.
-                </p>
+            <div class="date">
+                📅 Prochain match
             </div>
 
         </div>
 
-    </section>
+    </div>
 
-    <section class="section" id="matchs">
+</section>
 
-        <h2>📅 Matchs</h2>
 
-        <div class="cartes">
+<!-- =========================
+     CTA
+========================== -->
 
-            <div class="carte">
-                <h3>🏀 NBA</h3>
-                <p>
-                    Les prochains matchs et les résultats seront
-                    affichés ici.
-                </p>
-            </div>
+<section class="cta">
 
-            <div class="carte">
-                <h3>🇫🇷 Basketball français</h3>
-                <p>
-                    Retrouvez également les informations sur
-                    le basketball français.
-                </p>
-            </div>
+    <h2>
+        🏀 Bienvenue dans la Zone !
+    </h2>
 
-        </div>
+    <p>
+        Le basketball commence ici.
+    </p>
 
-    </section>
+    <a href="#actualites" class="bouton">
+        Explorer le site
+    </a>
 
-    <footer>
-        <p>🏀 Basket Zone — Le basketball, notre passion.</p>
-    </footer>
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer>
+
+    <p>
+        🏀 <strong>Basket Zone</strong>
+        — Le basketball, notre passion.
+    </p>
+
+    <p style="margin-top: 10px;">
+        © 2026 Basket Zone
+    </p>
+
+</footer>
+```
 
 </body>
 </html>
