@@ -1,168 +1,172 @@
 
+```python
 import json
 import urllib.request
-import xml.etree.ElementTree as ET
+import urllib.parse
+from html.parser import HTMLParser
 from datetime import datetime, timezone
-from email.utils import parsedate_to_datetime
 
 
-RSS_URL = "https://www.espn.com/espn/rss/nba/news"
+NBA_URL = "https://www.nba.com/news"
 
 OUTPUT_FILE = "news.json"
 
 MAX_ARTICLES = 12
 
 
-def clean_text(text):
-    if not text:
-        return ""
+class NBAParser(HTMLParser):
 
-    return " ".join(text.split())
+    def __init__(self):
+        super().__init__()
+
+        self.articles = []
+
+        self.current_link = None
+
+        self.current_text = []
+
+    def handle_starttag(self, tag, attrs):
+
+        if tag != "a":
+            return
+
+        attributes = dict(attrs)
+
+        href = attributes.get("href")
+
+        if not href:
+            return
+
+        if href.startswith("/news/"):
+
+            self.current_link = href
+
+            self.current_text = []
+
+    def handle_data(self, data):
+
+        if self.current_link is not None:
+
+            self.current_text.append(
+                data
+            )
+
+    def handle_endtag(self, tag):
+
+        if tag != "a":
+            return
+
+        if self.current_link is None:
+            return
+
+        title = " ".join(
+            " ".join(
+                self.current_text
+            ).split()
+        )
+
+        if title:
+
+            link = urllib.parse.urljoin(
+                NBA_URL,
+                self.current_link
+            )
+
+            article = {
+                "title": title,
+                "description": "",
+                "link": link,
+                "date": "",
+                "source": "NBA.com"
+            }
+
+            already_exists = any(
+                item["link"] == link
+                for item in self.articles
+            )
+
+            if not already_exists:
+
+                self.articles.append(
+                    article
+                )
+
+        self.current_link = None
+
+        self.current_text = []
 
 
-def get_text(element, tag):
-    child = element.find(tag)
+def download_nba_news():
 
-    if child is None:
-        return ""
-
-    return clean_text(child.text)
-
-
-def download_rss():
-
-    print("🔵 TEST : download_rss démarre")
-
-    request = urllib.request.Request(
-        RSS_URL,
-        headers={
-            "User-Agent": "Mozilla/5.0",
-            "Accept": "application/rss+xml, application/xml, text/xml, */*"
-        }
+    print(
+        "🔵 Connexion à NBA.com..."
     )
 
-    print("🟡 TEST : requête RSS créée")
+    request = urllib.request.Request(
+        NBA_URL,
+        headers={
+            "User-Agent": (
+                "Mozilla/5.0 "
+                "(Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 "
+                "Chrome/149.0 Safari/537.36"
+            ),
+            "Accept": (
+                "text/html,"
+                "application/xhtml+xml,"
+                "application/xml;q=0.9,"
+                "*/*;q=0.8"
+            ),
+            "Accept-Language": "en-US,en;q=0.9"
+        }
+    )
 
     with urllib.request.urlopen(
         request,
         timeout=30
     ) as response:
 
-        print("🟢 TEST : réponse du serveur reçue")
-
         data = response.read()
 
         print(
-            f"📥 Flux RSS reçu : {len(data)} octets"
-        )
-
-        print(
-            f"🔎 Début des données : {data[:300]!r}"
+            f"📰 Page NBA reçue : {len(data)} octets"
         )
 
         if not data:
+
             raise RuntimeError(
-                "❌ Le flux RSS est complètement vide."
+                "❌ NBA.com a renvoyé une page vide."
             )
 
         return data
 
 
-def format_date(date_string):
-
-    if not date_string:
-        return ""
-
-    try:
-        date = parsedate_to_datetime(
-            date_string
-        )
-
-        return date.astimezone(
-            timezone.utc
-        ).isoformat()
-
-    except Exception:
-        return date_string
-
-
-def parse_news(xml_data):
+def parse_news(html_data):
 
     print(
-        f"📦 Taille des données reçues : {len(xml_data)} octets"
+        "🔎 Analyse de la page NBA.com..."
     )
 
-    if not xml_data:
+    parser = NBAParser()
+
+    parser.feed(
+        html_data.decode(
+            "utf-8",
+            errors="ignore"
+        )
+    )
+
+    articles = parser.articles
+
+    print(
+        f"📋 Articles trouvés : {len(articles)}"
+    )
+
+    if not articles:
+
         raise RuntimeError(
-            "❌ Impossible de lire le flux RSS : données vides."
+            "❌ Aucun article NBA trouvé sur NBA.com."
         )
-
-    try:
-
-        root = ET.fromstring(
-            xml_data
-        )
-
-    except ET.ParseError as error:
-
-        print(
-            "❌ Le serveur n'a pas envoyé un XML valide."
-        )
-
-        print(
-            f"Erreur XML : {error}"
-        )
-
-        raise
-
-    channel = root.find(
-        "channel"
-    )
-
-    if channel is None:
-
-        print(
-            "⚠️ Aucun élément channel trouvé."
-        )
-
-        return []
-
-    articles = []
-
-    for item in channel.findall(
-        "item"
-    ):
-
-        title = get_text(
-            item,
-            "title"
-        )
-
-        description = get_text(
-            item,
-            "description"
-        )
-
-        link = get_text(
-            item,
-            "link"
-        )
-
-        date = get_text(
-            item,
-            "pubDate"
-        )
-
-        if not title or not link:
-            continue
-
-        articles.append({
-            "title": title,
-            "description": description,
-            "link": link,
-            "date": format_date(date),
-            "source": "ESPN"
-        })
 
     return articles[:MAX_ARTICLES]
 
@@ -190,6 +194,10 @@ def save_news(articles):
             indent=4
         )
 
+    print(
+        "💾 news.json mis à jour."
+    )
+
 
 def main():
 
@@ -201,14 +209,14 @@ def main():
         "📰 Récupération des actualités NBA..."
     )
 
-    xml_data = download_rss()
+    html_data = download_nba_news()
 
     articles = parse_news(
-        xml_data
+        html_data
     )
 
     print(
-        f"✅ {len(articles)} actualités trouvées."
+        f"✅ {len(articles)} actualités NBA trouvées."
     )
 
     save_news(
@@ -216,11 +224,13 @@ def main():
     )
 
     print(
-        "💾 news.json mis à jour."
+        "🎉 Mise à jour terminée."
     )
 
 
 if __name__ == "__main__":
     main()
+```
+
 
 
