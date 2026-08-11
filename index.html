@@ -1,7 +1,4 @@
-
-
-
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -26,13 +23,13 @@
         header {
             background: #111;
             color: white;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
         }
 
         header h1 {
-            font-size: 38px;
-            margin-bottom: 15px;
+            font-size: 40px;
+            margin-bottom: 10px;
         }
 
         header p {
@@ -40,7 +37,7 @@
             margin-bottom: 20px;
         }
 
-        /* BARRE DE RECHERCHE */
+        /* RECHERCHE */
         .search-container {
             display: flex;
             justify-content: center;
@@ -79,27 +76,94 @@
             justify-content: center;
             gap: 30px;
             padding: 14px;
+            flex-wrap: wrap;
         }
 
         nav a {
             color: white;
             text-decoration: none;
             font-weight: bold;
-            cursor: pointer;
         }
 
         nav a:hover {
             text-decoration: underline;
         }
 
-        /* TITRE */
+        /* TITRES */
         .section-title {
             text-align: center;
             margin: 35px 0 20px;
             font-size: 30px;
         }
 
-        /* CARTES */
+        /* MATCHS */
+        .matches-container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .match-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .match-card h3 {
+            color: #f58220;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .teams {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .team {
+            font-size: 17px;
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .team-icon {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .vs {
+            font-weight: bold;
+            color: #777;
+        }
+
+        .match-date {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            color: #555;
+        }
+
+        .no-game {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.10);
+        }
+
+        /* JOUEURS */
         .players-container {
             width: 90%;
             max-width: 1200px;
@@ -115,12 +179,11 @@
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.12);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s;
         }
 
         .player-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.18);
         }
 
         .player-photo {
@@ -138,10 +201,10 @@
         .player-card h3 {
             text-align: center;
             margin-top: 15px;
-            font-size: 22px;
+            font-size: 21px;
         }
 
-        .team {
+        .player-card .team-name {
             text-align: center;
             color: #777;
             margin: 8px 0 20px;
@@ -172,7 +235,6 @@
             color: #666;
         }
 
-        /* MESSAGE RECHERCHE */
         #noResults {
             text-align: center;
             font-size: 20px;
@@ -196,13 +258,13 @@
 
         /* MOBILE */
         @media (max-width: 600px) {
+
             header h1 {
                 font-size: 30px;
             }
 
             .search-container {
                 flex-direction: column;
-                align-items: center;
             }
 
             #searchInput {
@@ -213,9 +275,12 @@
                 width: 100%;
             }
 
-            nav {
-                gap: 15px;
-                flex-wrap: wrap;
+            .teams {
+                flex-direction: column;
+            }
+
+            .vs {
+                margin: 5px 0;
             }
         }
     </style>
@@ -225,6 +290,7 @@
 
     <!-- HEADER -->
     <header>
+
         <h1>🏀 Basket Zone</h1>
 
         <p>
@@ -232,6 +298,7 @@
         </p>
 
         <div class="search-container">
+
             <input
                 type="text"
                 id="searchInput"
@@ -241,38 +308,223 @@
             <button id="searchButton">
                 🔎 Rechercher
             </button>
+
         </div>
+
     </header>
+
 
     <!-- MENU -->
     <nav>
-        <a href="#">🏠 Accueil</a>
-        <a href="#">📰 Actualités</a>
-        <a href="#">🏀 Matchs</a>
-        <a href="#">⭐ Joueurs</a>
-        <a href="#">🏆 Classements</a>
+
+        <a href="#accueil">🏠 Accueil</a>
+
+        <a href="#matchs">📅 Matchs</a>
+
+        <a href="#joueurs">⭐ Joueurs</a>
+
+        <a href="#classement">🏆 Classements</a>
+
+        <a href="#actualites">📰 Actualités</a>
+
     </nav>
 
+
+    <!-- MATCHS -->
+    <main id="matchs">
+
+        <h2 class="section-title">
+            📅 Matchs
+        </h2>
+
+
+        <!-- NBA AUJOURD'HUI -->
+        <div class="no-game">
+
+            <h3>🏀 NBA</h3>
+
+            <p style="margin-top: 12px;">
+                Aucun match NBA aujourd'hui.
+            </p>
+
+            <p style="margin-top: 8px; color: #777;">
+                La saison régulière 2026-2027 commencera le
+                20 octobre 2026.
+            </p>
+
+        </div>
+
+
+        <!-- PROCHAINS MATCHS NBA -->
+        <h2 class="section-title">
+            🔥 Prochains grands matchs NBA
+        </h2>
+
+
+        <div class="matches-container">
+
+
+            <!-- DETROIT VS BOSTON -->
+            <div class="match-card">
+
+                <h3>🏀 NBA — Opening Night</h3>
+
+                <div class="teams">
+
+                    <div class="team">
+
+                        <span class="team-icon">🏀</span>
+
+                        Detroit Pistons
+
+                    </div>
+
+                    <div class="vs">
+                        VS
+                    </div>
+
+                    <div class="team">
+
+                        <span class="team-icon">🏀</span>
+
+                        Boston Celtics
+
+                    </div>
+
+                </div>
+
+                <div class="match-date">
+                    📅 20 octobre 2026
+                </div>
+
+            </div>
+
+
+            <!-- KNICKS VS 76ERS -->
+            <div class="match-card">
+
+                <h3>🏆 NBA — Ring Night</h3>
+
+                <div class="teams">
+
+                    <div class="team">
+
+                        <span class="team-icon">🏀</span>
+
+                        New York Knicks
+
+                    </div>
+
+                    <div class="vs">
+                        VS
+                    </div>
+
+                    <div class="team">
+
+                        <span class="team-icon">🏀</span>
+
+                        Philadelphia 76ers
+
+                    </div>
+
+                </div>
+
+                <div class="match-date">
+                    📅 20 octobre 2026
+                </div>
+
+            </div>
+
+
+            <!-- SPURS VS OKC -->
+            <div class="match-card">
+
+                <h3>🔥 NBA — Western Conference</h3>
+
+                <div class="teams">
+
+                    <div class="team">
+
+                        <span class="team-icon">🏀</span>
+
+                        San Antonio Spurs
+
+                    </div>
+
+                    <div class="vs">
+                        VS
+                    </div>
+
+                    <div class="team">
+
+                        <span class="team-icon">🏀</span>
+
+                        Oklahoma City Thunder
+
+                    </div>
+
+                </div>
+
+                <div class="match-date">
+                    📅 20 octobre 2026
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FRANCE -->
+        <h2 class="section-title">
+            🇫🇷 France
+        </h2>
+
+
+        <div class="no-game">
+
+            <h3>🇫🇷 Betclic Élite</h3>
+
+            <p style="margin-top: 12px;">
+                Les prochains matchs seront ajoutés
+                lorsque le calendrier sera disponible.
+            </p>
+
+        </div>
+
+    </main>
+
+
     <!-- JOUEURS -->
-    <main>
+    <section id="joueurs">
 
         <h2 class="section-title">
             ⭐ Joueurs NBA
         </h2>
 
-        <div class="players-container" id="playersContainer">
+
+        <div class="players-container">
+
 
             <!-- WEMBANYAMA -->
-            <div class="player-card" data-name="victor wembanyama">
-                <div class="player-photo">🏀</div>
+            <div
+                class="player-card"
+                data-name="victor wembanyama"
+            >
 
-                <h3>Victor Wembanyama</h3>
+                <div class="player-photo">
+                    🏀
+                </div>
 
-                <p class="team">
+                <h3>
+                    Victor Wembanyama
+                </h3>
+
+                <p class="team-name">
                     San Antonio Spurs
                 </p>
 
                 <div class="stats">
+
                     <div class="stat">
                         <strong>24.3</strong>
                         <span>PTS</span>
@@ -287,20 +539,32 @@
                         <strong>3.8</strong>
                         <span>AST</span>
                     </div>
+
                 </div>
+
             </div>
 
+
             <!-- LEBRON -->
-            <div class="player-card" data-name="lebron james">
-                <div class="player-photo">🏀</div>
+            <div
+                class="player-card"
+                data-name="lebron james"
+            >
 
-                <h3>LeBron James</h3>
+                <div class="player-photo">
+                    🏀
+                </div>
 
-                <p class="team">
+                <h3>
+                    LeBron James
+                </h3>
+
+                <p class="team-name">
                     Los Angeles Lakers
                 </p>
 
                 <div class="stats">
+
                     <div class="stat">
                         <strong>24.4</strong>
                         <span>PTS</span>
@@ -315,20 +579,32 @@
                         <strong>8.2</strong>
                         <span>AST</span>
                     </div>
+
                 </div>
+
             </div>
 
+
             <!-- CURRY -->
-            <div class="player-card" data-name="stephen curry">
-                <div class="player-photo">🏀</div>
+            <div
+                class="player-card"
+                data-name="stephen curry"
+            >
 
-                <h3>Stephen Curry</h3>
+                <div class="player-photo">
+                    🏀
+                </div>
 
-                <p class="team">
+                <h3>
+                    Stephen Curry
+                </h3>
+
+                <p class="team-name">
                     Golden State Warriors
                 </p>
 
                 <div class="stats">
+
                     <div class="stat">
                         <strong>26.4</strong>
                         <span>PTS</span>
@@ -343,20 +619,32 @@
                         <strong>5.1</strong>
                         <span>AST</span>
                     </div>
+
                 </div>
+
             </div>
 
+
             <!-- DONCIC -->
-            <div class="player-card" data-name="luka doncic">
-                <div class="player-photo">🏀</div>
+            <div
+                class="player-card"
+                data-name="luka doncic"
+            >
 
-                <h3>Luka Dončić</h3>
+                <div class="player-photo">
+                    🏀
+                </div>
 
-                <p class="team">
+                <h3>
+                    Luka Dončić
+                </h3>
+
+                <p class="team-name">
                     Los Angeles Lakers
                 </p>
 
                 <div class="stats">
+
                     <div class="stat">
                         <strong>28.5</strong>
                         <span>PTS</span>
@@ -371,20 +659,32 @@
                         <strong>8.2</strong>
                         <span>AST</span>
                     </div>
+
                 </div>
+
             </div>
 
+
             <!-- GIANNIS -->
-            <div class="player-card" data-name="giannis antetokounmpo">
-                <div class="player-photo">🏀</div>
+            <div
+                class="player-card"
+                data-name="giannis antetokounmpo"
+            >
 
-                <h3>Giannis Antetokounmpo</h3>
+                <div class="player-photo">
+                    🏀
+                </div>
 
-                <p class="team">
+                <h3>
+                    Giannis Antetokounmpo
+                </h3>
+
+                <p class="team-name">
                     Milwaukee Bucks
                 </p>
 
                 <div class="stats">
+
                     <div class="stat">
                         <strong>30.4</strong>
                         <span>PTS</span>
@@ -399,20 +699,32 @@
                         <strong>6.5</strong>
                         <span>AST</span>
                     </div>
+
                 </div>
+
             </div>
 
+
             <!-- SHAI -->
-            <div class="player-card" data-name="shai gilgeous alexander">
-                <div class="player-photo">🏀</div>
+            <div
+                class="player-card"
+                data-name="shai gilgeous alexander"
+            >
 
-                <h3>Shai Gilgeous-Alexander</h3>
+                <div class="player-photo">
+                    🏀
+                </div>
 
-                <p class="team">
+                <h3>
+                    Shai Gilgeous-Alexander
+                </h3>
+
+                <p class="team-name">
                     Oklahoma City Thunder
                 </p>
 
                 <div class="stats">
+
                     <div class="stat">
                         <strong>32.7</strong>
                         <span>PTS</span>
@@ -427,22 +739,74 @@
                         <strong>6.4</strong>
                         <span>AST</span>
                     </div>
+
                 </div>
+
             </div>
 
         </div>
+
 
         <p id="noResults">
             ❌ Aucun joueur trouvé.
         </p>
 
-    </main>
+    </section>
+
+
+    <!-- CLASSEMENT -->
+    <section id="classement">
+
+        <h2 class="section-title">
+            🏆 Classements
+        </h2>
+
+        <div class="no-game">
+
+            <h3>
+                🏀 NBA
+            </h3>
+
+            <p style="margin-top: 12px;">
+                Le classement 2026-2027 sera disponible
+                au début de la saison régulière.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ACTUALITES -->
+    <section id="actualites">
+
+        <h2 class="section-title">
+            📰 Actualités
+        </h2>
+
+        <div class="no-game">
+
+            <h3>
+                🔥 Basket Zone
+            </h3>
+
+            <p style="margin-top: 12px;">
+                Les actualités NBA seront ajoutées prochainement.
+            </p>
+
+        </div>
+
+    </section>
+
 
     <!-- FOOTER -->
     <footer>
+
         <p>
-            🏀 <span>Basket Zone</span> — Le basketball au quotidien
+            🏀 <span>Basket Zone</span>
+            — Le basketball au quotidien
         </p>
+
     </footer>
 
 
@@ -471,10 +835,12 @@
 
             let found = false;
 
+
             playerCards.forEach(function(card) {
 
                 const playerName =
                     card.dataset.name.toLowerCase();
+
 
                 if (
                     playerName.includes(searchText)
@@ -482,6 +848,7 @@
                 ) {
 
                     card.style.display = "block";
+
                     found = true;
 
                 } else {
@@ -492,11 +859,17 @@
 
             });
 
+
             if (found) {
+
                 noResults.style.display = "none";
+
             } else {
+
                 noResults.style.display = "block";
+
             }
+
         }
 
 
@@ -517,7 +890,9 @@
             function(event) {
 
                 if (event.key === "Enter") {
+
                     searchPlayers();
+
                 }
 
             }
