@@ -1,5 +1,3 @@
-
-
 ```python
 import json
 import urllib.request
@@ -32,7 +30,6 @@ def get_text(element, tag):
 
 
 def download_rss():
-
     request = urllib.request.Request(
         RSS_URL,
         headers={
@@ -54,19 +51,17 @@ def download_rss():
 
         if not data:
             raise RuntimeError(
-                "❌ Le flux RSS est complètement vide."
+                "Le flux RSS est vide."
             )
 
         return data
 
 
 def format_date(date_string):
-
     if not date_string:
         return ""
 
     try:
-
         date = parsedate_to_datetime(
             date_string
         )
@@ -76,7 +71,6 @@ def format_date(date_string):
         ).isoformat()
 
     except Exception:
-
         return date_string
 
 
@@ -92,11 +86,10 @@ def parse_news(xml_data):
 
     if not xml_data:
         raise RuntimeError(
-            "❌ Le flux RSS est complètement vide."
+            "Le flux RSS est complètement vide."
         )
 
     try:
-
         root = ET.fromstring(
             xml_data
         )
@@ -104,7 +97,7 @@ def parse_news(xml_data):
     except ET.ParseError as error:
 
         print(
-            "❌ Les données reçues ne sont pas un XML valide."
+            "❌ Le flux reçu n'est pas un XML valide."
         )
 
         print(
@@ -119,8 +112,9 @@ def parse_news(xml_data):
 
     if channel is None:
         print(
-            "⚠️ Aucun élément channel trouvé dans le flux RSS."
+            "⚠️ Aucun élément channel trouvé."
         )
+
         return []
 
     articles = []
@@ -153,38 +147,24 @@ def parse_news(xml_data):
             continue
 
         articles.append({
-
             "title": title,
-
             "description": description,
-
             "link": link,
-
-            "date": format_date(
-                date
-            ),
-
+            "date": format_date(date),
             "source": "ESPN"
-
         })
 
-    return articles[
-        :MAX_ARTICLES
-    ]
+    return articles[:MAX_ARTICLES]
 
 
 def save_news(articles):
 
     data = {
+        "updated": datetime.now(
+            timezone.utc
+        ).isoformat(),
 
-        "updated":
-            datetime.now(
-                timezone.utc
-            ).isoformat(),
-
-        "articles":
-            articles
-
+        "articles": articles
     }
 
     with open(
@@ -233,4 +213,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+
+
+
 
