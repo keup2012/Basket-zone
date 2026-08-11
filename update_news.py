@@ -1,5 +1,6 @@
 
 
+```python
 import json
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -47,14 +48,14 @@ def download_rss():
 
         data = response.read()
 
-        if not data:
-            raise RuntimeError(
-                "Le flux RSS est vide."
-            )
-
         print(
             f"📥 Flux RSS reçu : {len(data)} octets"
         )
+
+        if not data:
+            raise RuntimeError(
+                "❌ Le flux RSS est complètement vide."
+            )
 
         return data
 
@@ -81,9 +82,17 @@ def format_date(date_string):
 
 def parse_news(xml_data):
 
+    print(
+        f"📦 Taille des données reçues : {len(xml_data)} octets"
+    )
+
+    print(
+        f"🔎 Début des données : {xml_data[:300]!r}"
+    )
+
     if not xml_data:
         raise RuntimeError(
-            "Impossible de lire le flux RSS : données vides."
+            "❌ Le flux RSS est complètement vide."
         )
 
     try:
@@ -95,15 +104,11 @@ def parse_news(xml_data):
     except ET.ParseError as error:
 
         print(
-            "❌ Le flux reçu n'est pas un XML valide."
+            "❌ Les données reçues ne sont pas un XML valide."
         )
 
         print(
             f"Erreur XML : {error}"
-        )
-
-        print(
-            f"Taille des données reçues : {len(xml_data)} octets"
         )
 
         raise
@@ -113,6 +118,9 @@ def parse_news(xml_data):
     )
 
     if channel is None:
+        print(
+            "⚠️ Aucun élément channel trouvé dans le flux RSS."
+        )
         return []
 
     articles = []
@@ -224,3 +232,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+```
+
