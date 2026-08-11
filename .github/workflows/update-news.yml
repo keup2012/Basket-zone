@@ -1,4 +1,4 @@
-```yaml
+
 name: 📰 Actualités NBA automatiques
 
 on:
@@ -45,5 +45,7 @@ jobs:
             git push
           fi
 ```
+
+
 
 
