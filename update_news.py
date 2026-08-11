@@ -1,8 +1,11 @@
+
+
 import json
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
+
 
 RSS_URL = "https://www.espn.com/espn/rss/nba/news"
 
@@ -32,7 +35,8 @@ def download_rss():
     request = urllib.request.Request(
         RSS_URL,
         headers={
-            "User-Agent": "BasketZone/1.0"
+            "User-Agent": "Mozilla/5.0",
+            "Accept": "application/rss+xml, application/xml, text/xml, */*"
         }
     )
 
@@ -41,7 +45,18 @@ def download_rss():
         timeout=30
     ) as response:
 
-        return response.read()
+        data = response.read()
+
+        if not data:
+            raise RuntimeError(
+                "Le flux RSS est vide."
+            )
+
+        print(
+            f"📥 Flux RSS reçu : {len(data)} octets"
+        )
+
+        return data
 
 
 def format_date(date_string):
@@ -66,9 +81,32 @@ def format_date(date_string):
 
 def parse_news(xml_data):
 
-    root = ET.fromstring(
-        xml_data
-    )
+    if not xml_data:
+        raise RuntimeError(
+            "Impossible de lire le flux RSS : données vides."
+        )
+
+    try:
+
+        root = ET.fromstring(
+            xml_data
+        )
+
+    except ET.ParseError as error:
+
+        print(
+            "❌ Le flux reçu n'est pas un XML valide."
+        )
+
+        print(
+            f"Erreur XML : {error}"
+        )
+
+        print(
+            f"Taille des données reçues : {len(xml_data)} octets"
+        )
+
+        raise
 
     channel = root.find(
         "channel"
@@ -185,5 +223,4 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()
