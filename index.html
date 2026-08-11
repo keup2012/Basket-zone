@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -5,8 +6,7 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Basket Zone 🏀</title>
 
@@ -27,7 +27,6 @@
             background: #f2f2f2;
             color: #222;
         }
-
 
         /* =========================
            HEADER
@@ -50,553 +49,376 @@
             margin-bottom: 25px;
         }
 
-
         /* =========================
            RECHERCHE
         ========================= */
 
         .search-container {
-
             max-width: 700px;
-
             margin: auto;
-
             display: flex;
-
             gap: 10px;
         }
 
         #searchInput {
-
             flex: 1;
-
             padding: 14px;
-
             border: none;
-
             border-radius: 8px;
-
             font-size: 16px;
-
             outline: none;
         }
 
         #searchButton {
-
             padding: 14px 20px;
-
             border: none;
-
             border-radius: 8px;
-
             background: #f58220;
-
             color: white;
-
             font-weight: bold;
-
             cursor: pointer;
         }
 
         #searchButton:hover {
-
             background: #d9680c;
         }
-
 
         /* =========================
            MENU
         ========================= */
 
         nav {
-
             background: #f58220;
-
             display: flex;
-
             justify-content: center;
-
             gap: 30px;
-
             padding: 15px;
-
             flex-wrap: wrap;
-
             position: sticky;
-
             top: 0;
-
             z-index: 100;
         }
 
         nav a {
-
             color: white;
-
             text-decoration: none;
-
             font-weight: bold;
         }
 
         nav a:hover {
-
             text-decoration: underline;
         }
-
 
         /* =========================
            TITRES
         ========================= */
 
         .section-title {
-
             text-align: center;
-
             margin: 45px 0 25px;
-
             font-size: 30px;
         }
-
 
         /* =========================
            ACTUALITÉS
         ========================= */
 
         .news-status {
-
             text-align: center;
-
             color: #777;
-
             margin-bottom: 25px;
         }
 
         .news-container {
-
             width: 90%;
-
             max-width: 1200px;
-
             margin: auto;
-
             display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(300px, 1fr));
-
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(300px, 1fr)
+            );
             gap: 25px;
-
             padding-bottom: 40px;
         }
 
         .news-card {
-
             background: white;
-
             border-radius: 15px;
-
             overflow: hidden;
-
-            box-shadow:
-                0 5px 15px rgba(0,0,0,0.12);
-
-            transition:
-                transform 0.2s,
-                box-shadow 0.2s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .news-card:hover {
-
             transform: translateY(-6px);
-
-            box-shadow:
-                0 10px 25px rgba(0,0,0,0.18);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.18);
         }
 
         .news-image {
-
             background: #111;
-
             color: white;
-
             height: 150px;
-
             display: flex;
-
             justify-content: center;
-
             align-items: center;
-
             font-size: 55px;
         }
 
         .news-content {
-
             padding: 22px;
         }
 
         .news-category {
-
             display: inline-block;
-
             background: #f58220;
-
             color: white;
-
             padding: 6px 10px;
-
             border-radius: 20px;
-
             font-size: 12px;
-
             font-weight: bold;
-
             margin-bottom: 12px;
         }
 
         .news-card h3 {
-
             font-size: 21px;
-
             line-height: 1.3;
-
             margin-bottom: 12px;
         }
 
         .news-card p {
-
             color: #555;
-
             line-height: 1.5;
-
             margin-bottom: 15px;
         }
 
         .news-date {
-
             font-size: 13px;
-
             color: #888;
-
             margin-bottom: 10px;
         }
 
         .news-source {
-
             font-size: 13px;
-
             color: #f58220;
-
             font-weight: bold;
-
             margin-bottom: 15px;
         }
 
         .news-link {
-
             display: inline-block;
-
             background: #111;
-
             color: white;
-
             padding: 10px 15px;
-
             border-radius: 8px;
-
             text-decoration: none;
-
             font-weight: bold;
         }
 
         .news-link:hover {
-
             background: #f58220;
         }
 
+        /* =========================
+           MESSAGE ERREUR
+        ========================= */
+
+        .news-error {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            text-align: center;
+            color: #777;
+        }
 
         /* =========================
            MATCHS
         ========================= */
 
         .matches-container {
-
             width: 90%;
-
             max-width: 1100px;
-
             margin: auto;
-
             display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(300px, 1fr));
-
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(300px, 1fr)
+            );
             gap: 25px;
         }
 
         .match-card {
-
             background: white;
-
             border-radius: 15px;
-
             padding: 25px;
-
             text-align: center;
-
-            box-shadow:
-                0 5px 15px rgba(0,0,0,0.12);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
         }
 
         .match-card h3 {
-
             color: #f58220;
-
             margin-bottom: 20px;
         }
 
         .teams {
-
             display: flex;
-
             justify-content: space-around;
-
             align-items: center;
-
             gap: 15px;
         }
 
         .team {
-
             flex: 1;
-
             font-weight: bold;
         }
 
         .team-icon {
-
             display: block;
-
             font-size: 40px;
-
             margin-bottom: 8px;
         }
 
         .vs {
-
             color: #777;
-
             font-weight: bold;
         }
 
         .match-date {
-
             margin-top: 20px;
-
             background: #f5f5f5;
-
             padding: 10px;
-
             border-radius: 8px;
-
             color: #555;
         }
 
         .no-game {
-
             width: 90%;
-
             max-width: 800px;
-
             margin: auto;
-
             background: white;
-
             padding: 25px;
-
             border-radius: 15px;
-
             text-align: center;
-
-            box-shadow:
-                0 5px 15px rgba(0,0,0,0.10);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.10);
         }
-
 
         /* =========================
            JOUEURS
         ========================= */
 
         .players-container {
-
             width: 90%;
-
             max-width: 1200px;
-
             margin: auto;
-
             display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(250px, 1fr));
-
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(250px, 1fr)
+            );
             gap: 25px;
-
             padding-bottom: 40px;
         }
 
         .player-card {
-
             background: white;
-
             border-radius: 15px;
-
             padding: 20px;
-
-            box-shadow:
-                0 5px 15px rgba(0,0,0,0.12);
-
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
             transition: transform 0.2s;
         }
 
         .player-card:hover {
-
             transform: translateY(-5px);
         }
 
         .player-photo {
-
             width: 110px;
-
             height: 110px;
-
             margin: auto;
-
             border-radius: 50%;
-
             background: #eee;
-
             display: flex;
-
             justify-content: center;
-
             align-items: center;
-
             font-size: 45px;
         }
 
         .player-card h3 {
-
             text-align: center;
-
             margin-top: 15px;
         }
 
         .team-name {
-
             text-align: center;
-
             color: #777;
-
             margin: 8px 0 20px;
         }
-
 
         /* =========================
            STATS
         ========================= */
 
         .stats {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
+            grid-template-columns: repeat(3, 1fr);
             gap: 8px;
         }
 
         .stat {
-
             background: #f5f5f5;
-
             padding: 10px 5px;
-
             text-align: center;
-
             border-radius: 8px;
         }
 
         .stat strong {
-
             display: block;
-
             color: #f58220;
-
             font-size: 20px;
         }
 
         .stat span {
-
             font-size: 12px;
-
             color: #666;
         }
-
 
         /* =========================
            CLASSEMENT
         ========================= */
 
         .ranking {
-
             width: 90%;
-
             max-width: 800px;
-
             margin: auto;
-
             background: white;
-
             border-radius: 15px;
-
             padding: 25px;
-
-            box-shadow:
-                0 5px 15px rgba(0,0,0,0.10);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.10);
         }
 
         .ranking p {
-
             padding: 12px;
-
             border-bottom: 1px solid #eee;
         }
-
 
         /* =========================
            FOOTER
         ========================= */
 
         footer {
-
             margin-top: 50px;
-
             background: #111;
-
             color: white;
-
             text-align: center;
-
             padding: 25px;
         }
 
         footer span {
-
             color: #f58220;
         }
-
 
         /* =========================
            MOBILE
@@ -605,32 +427,26 @@
         @media (max-width: 600px) {
 
             header h1 {
-
                 font-size: 30px;
             }
 
             .search-container {
-
                 flex-direction: column;
             }
 
             #searchInput {
-
                 width: 100%;
             }
 
             #searchButton {
-
                 width: 100%;
             }
 
             .teams {
-
                 flex-direction: column;
             }
 
             .vs {
-
                 margin: 5px 0;
             }
 
@@ -644,7 +460,9 @@
 <body>
 
 
-    <!-- HEADER -->
+    <!-- =========================
+         HEADER
+    ========================= -->
 
     <header id="accueil">
 
@@ -655,7 +473,6 @@
         <p>
             Toute l'actualité du basketball en un seul endroit
         </p>
-
 
         <div class="search-container">
 
@@ -674,7 +491,9 @@
     </header>
 
 
-    <!-- MENU -->
+    <!-- =========================
+         MENU
+    ========================= -->
 
     <nav>
 
@@ -702,7 +521,7 @@
 
 
     <!-- =========================
-         ACTUALITÉS AUTOMATIQUES
+         ACTUALITÉS NBA
     ========================= -->
 
     <section id="actualites">
@@ -711,7 +530,6 @@
             📰 Actualités NBA
         </h2>
 
-
         <p
             id="newsStatus"
             class="news-status"
@@ -719,13 +537,10 @@
             🔄 Chargement des actualités...
         </p>
 
-
         <div
             id="newsContainer"
             class="news-container"
-        >
-
-        </div>
+        ></div>
 
     </section>
 
@@ -740,7 +555,6 @@
             📅 Matchs NBA
         </h2>
 
-
         <div class="no-game">
 
             <h3>
@@ -751,24 +565,18 @@
                 Aucun match NBA aujourd'hui.
             </p>
 
-            <p style="
-                margin-top:8px;
-                color:#777;
-            ">
+            <p style="margin-top:8px;color:#777;">
                 La saison régulière 2026-2027
                 commencera le 20 octobre 2026.
             </p>
 
         </div>
 
-
         <h2 class="section-title">
             🔥 Opening Night
         </h2>
 
-
         <div class="matches-container">
-
 
             <div class="match-card">
 
@@ -858,7 +666,6 @@
             🇫🇷 France
         </h2>
 
-
         <div class="no-game">
 
             <h3>
@@ -884,7 +691,6 @@
         <h2 class="section-title">
             ⭐ Joueurs NBA
         </h2>
-
 
         <div class="players-container">
 
@@ -1083,7 +889,6 @@
 
             </div>
 
-
         </div>
 
     </section>
@@ -1099,7 +904,6 @@
             🏆 Classement NBA
         </h2>
 
-
         <div class="ranking">
 
             <p>
@@ -1112,7 +916,9 @@
     </section>
 
 
-    <!-- FOOTER -->
+    <!-- =========================
+         FOOTER
+    ========================= -->
 
     <footer>
 
@@ -1122,10 +928,7 @@
             — Le basketball au quotidien
         </p>
 
-        <p style="
-            margin-top:10px;
-            color:#aaa;
-        ">
+        <p style="margin-top:10px;color:#aaa;">
             📰 Actualités mises à jour automatiquement
         </p>
 
@@ -1137,7 +940,6 @@
     ========================= -->
 
     <script>
-
 
         /* =========================
            RECHERCHE JOUEURS
@@ -1254,14 +1056,100 @@
         }
 
 
-        function formatDate(dateString) {
+        function getArticleTitle(title) {
 
-            if (!dateString) {
+            if (!title) {
+                return "Actualité NBA";
+            }
 
-                return "Date inconnue";
+            /*
+             * Certains titres récupérés depuis NBA.com
+             * contiennent également une description.
+             *
+             * On garde le titre avant le premier point
+             * lorsque cela permet d'obtenir un titre propre.
+             */
+
+            const separators = [
+                " Opening Week",
+                " The defending",
+                " Former NBA",
+                " The three-time",
+                " The 5-time",
+                " Get an in-depth",
+                " Get a team-by-team"
+            ];
+
+            for (
+                const separator of separators
+            ) {
+
+                const position =
+                    title.indexOf(separator);
+
+                if (
+                    position > 20
+                ) {
+
+                    return title
+                        .substring(
+                            0,
+                            position
+                        )
+                        .trim();
+
+                }
 
             }
 
+            return title.trim();
+        }
+
+
+        function getArticleDescription(title) {
+
+            if (!title) {
+                return "";
+            }
+
+            const separators = [
+                " Opening Week",
+                " The defending",
+                " Former NBA",
+                " The three-time",
+                " The 5-time",
+                " Get an in-depth",
+                " Get a team-by-team"
+            ];
+
+            for (
+                const separator of separators
+            ) {
+
+                const position =
+                    title.indexOf(separator);
+
+                if (
+                    position > 20
+                ) {
+
+                    return title
+                        .substring(position)
+                        .trim();
+
+                }
+
+            }
+
+            return "";
+        }
+
+
+        function formatDate(dateString) {
+
+            if (!dateString) {
+                return "";
+            }
 
             const date =
                 new Date(dateString);
@@ -1308,7 +1196,7 @@
                 if (!response.ok) {
 
                     throw new Error(
-                        "news.json introuvable"
+                        "Impossible de charger news.json"
                     );
 
                 }
@@ -1329,7 +1217,7 @@
                 ) {
 
                     newsStatus.textContent =
-                        "📰 Les actualités seront disponibles après la première mise à jour.";
+                        "📰 Aucune actualité disponible.";
 
                     return;
 
@@ -1353,6 +1241,24 @@
                             "news-card";
 
 
+                        const title =
+                            getArticleTitle(
+                                article.title
+                            );
+
+
+                        const description =
+                            getArticleDescription(
+                                article.title
+                            );
+
+
+                        const link =
+                            typeof article.link === "string"
+                                ? article.link
+                                : "#";
+
+
                         card.innerHTML = `
 
                             <div class="news-image">
@@ -1366,34 +1272,51 @@
                                 </span>
 
                                 <h3>
-                                    ${escapeHTML(
-                                        article.title
-                                    )}
+                                    ${escapeHTML(title)}
                                 </h3>
 
-                                <p>
-                                    ${escapeHTML(
-                                        article.description
-                                    )}
-                                </p>
+                                ${
+                                    description
+                                    ?
+                                    `
+                                    <p>
+                                        ${escapeHTML(
+                                            description
+                                        )}
+                                    </p>
+                                    `
+                                    :
+                                    ""
+                                }
 
-                                <div class="news-date">
-                                    📅
-                                    ${formatDate(
-                                        article.date
-                                    )}
-                                </div>
+                                ${
+                                    article.date
+                                    ?
+                                    `
+                                    <div class="news-date">
+                                        📅
+                                        ${escapeHTML(
+                                            formatDate(
+                                                article.date
+                                            )
+                                        )}
+                                    </div>
+                                    `
+                                    :
+                                    ""
+                                }
 
                                 <div class="news-source">
                                     Source :
                                     ${escapeHTML(
-                                        article.source
+                                        article.source ||
+                                        "NBA.com"
                                     )}
                                 </div>
 
                                 <a
                                     class="news-link"
-                                    href="${article.link}"
+                                    href="${escapeHTML(link)}"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
@@ -1422,25 +1345,39 @@
 
 
                 newsStatus.textContent =
-                    "❌ Impossible de charger les actualités pour le moment.";
+                    "❌ Impossible de charger les actualités.";
+
+                newsContainer.innerHTML = `
+
+                    <div class="news-error">
+
+                        📰 Les actualités NBA
+                        sont temporairement indisponibles.
+
+                    </div>
+
+                `;
 
             }
 
         }
 
 
-        /* Chargement */
+        /* =========================
+           CHARGEMENT INITIAL
+        ========================= */
 
         loadNews();
 
 
-        /* Actualisation de la page */
+        /* =========================
+           ACTUALISATION
+        ========================= */
 
         setInterval(
             loadNews,
             5 * 60 * 1000
         );
-
 
     </script>
 
@@ -1448,3 +1385,4 @@
 </body>
 
 </html>
+```
