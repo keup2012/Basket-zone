@@ -13,28 +13,20 @@ OUTPUT_FILE = "news.json"
 MAX_ARTICLES = 12
 
 
-# Pages NBA.com que nous ne voulons pas considérer
-# comme des actualités classiques.
+# Pages qui ne sont pas des articles classiques.
 EXCLUDED_PATHS = {
+    "/news",
     "/news/key-dates",
     "/news/schedule",
-    "/news/author",
-    "/news/writers-archive",
-    "/news/category",
+    "/news/trade-tracker",
 }
 
 
-# Mots qui indiquent souvent une page spéciale
-# plutôt qu'un article d'actualité.
+# Titres génériques que nous voulons éviter.
 EXCLUDED_WORDS = {
     "key dates",
-    "schedule",
     "trade tracker",
-    "free agency",
-    "playoffs",
-    "all-star",
-    "standings",
-    "scores",
+    "schedule",
 }
 
 
@@ -62,25 +54,17 @@ class NBAParser(HTMLParser):
         if not href:
             return
 
-        # On garde uniquement les liens /news/...
+        # Seulement les liens d'articles NBA.
         if not href.startswith("/news/"):
             return
 
-        # Nettoyage de l'URL
+        # Nettoyage de l'URL.
         clean_href = href.split("?")[0]
         clean_href = clean_href.split("#")[0]
 
-        # Exclusion de certaines pages
+        # Exclusion des pages spéciales.
         if clean_href in EXCLUDED_PATHS:
             return
-
-        # On vérifie aussi les mots interdits
-        lower_href = clean_href.lower()
-
-        for word in EXCLUDED_WORDS:
-
-            if word.replace(" ", "-") in lower_href:
-                return
 
         self.current_link = clean_href
 
@@ -91,9 +75,7 @@ class NBAParser(HTMLParser):
 
         if self.current_link is not None:
 
-            self.current_text.append(
-                data
-            )
+            self.current_text.append(data)
 
 
     def handle_endtag(self, tag):
@@ -110,33 +92,34 @@ class NBAParser(HTMLParser):
             ).split()
         )
 
-        # Les titres trop courts ne sont généralement
-        # pas des articles.
-        if len(title) < 25:
-
-            self.current_link = None
-
-            self.current_text = []
-
-            return
-
-        lower_title = title.lower()
-
-        # Exclusion des titres génériques.
-        for word in EXCLUDED_WORDS:
-
-            if word in lower_title:
-
-                self.current_link = None
-
-                self.current_text = []
-
-                return
-
         link = urllib.parse.urljoin(
             NBA_URL,
             self.current_link
         )
+
+        current_link = self.current_link
+
+        self.current_link = None
+
+        self.current_text = []
+
+        # Titre trop court = probablement pas un article.
+        if len(title) < 25:
+            return
+
+        title_lower = title.lower()
+
+        # Évite les titres génériques.
+        for word in EXCLUDED_WORDS:
+
+            if word in title_lower:
+                return
+
+        # Évite certaines URL spéciales.
+        for path in EXCLUDED_PATHS:
+
+            if current_link == path:
+                return
 
         # Vérification des doublons.
         already_exists = any(
@@ -144,105 +127,91 @@ class NBAParser(HTMLParser):
             for article in self.articles
         )
 
-        if not already_exists:
+        if already_exists:
+            return
 
-            self.articles.append({
-
-                "title": title,
-
-                "description": "",
-
-                "link": link,
-
-                "date": "",
-
-                "source": "NBA.com"
-
-            })
-
-        self.current_link = None
-
-        self.current_text = []
+        self.articles.append({
+            "title": title,
+            "description": "",
+            "link": link,
+            "date": "",
+            "source": "NBA.com"
+        })
 
 
 def download_nba_news():
 
-    print(
-        "🏀 Connexion à NBA.com..."
-    )
+    print("🏀 Connexion à NBA.com...")
 
     request = urllib.request.Request(
-
         NBA_URL,
-
         headers={
-
-            "User-Agent":
+            "User-Agent": (
                 "Mozilla/5.0 "
                 "(Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 "
-                "Chrome/149.0 Safari/537.36",
-
-            "Accept":
+                "(KHTML, like Gecko) "
+                "Chrome/149.0 Safari/537.36"
+            ),
+            "Accept": (
                 "text/html,"
                 "application/xhtml+xml,"
                 "application/xml;q=0.9,"
-                "*/*;q=0.8",
-
-            "Accept-Language":
-                "en-US,en;q=0.9"
-
+                "*/*;q=0.8"
+            ),
+            "Accept-Language": (
+                "fr-FR,fr;q=0.9,en;q=0.8"
+            )
         }
-
     )
 
-    with urllib.request.urlopen(
+    try:
 
-        request,
+        with urllib.request.urlopen(
+            request,
+            timeout=30
+        ) as response:
 
-        timeout=30
+            data = response.read()
 
-    ) as response:
-
-        data = response.read()
-
-        print(
-            f"📥 Page NBA reçue : {len(data)} octets"
-        )
-
-        if not data:
-
-            raise RuntimeError(
-                "❌ NBA.com a renvoyé une page vide."
+            print(
+                f"📥 Page NBA reçue : {len(data)} octets"
             )
 
-        return data
+            if not data:
+
+                raise RuntimeError(
+                    "❌ NBA.com a renvoyé une page vide."
+                )
+
+            return data
+
+    except Exception as error:
+
+        raise RuntimeError(
+            f"❌ Impossible de récupérer NBA.com : {error}"
+        )
 
 
 def parse_news(html_data):
 
     print(
-        "🔎 Analyse des actualités NBA..."
+        "🔎 Recherche des articles NBA..."
     )
 
     parser = NBAParser()
 
     parser.feed(
-
         html_data.decode(
-
             "utf-8",
-
             errors="ignore"
-
         )
-
     )
 
     articles = parser.articles
 
     print(
-        f"📋 Articles candidats : {len(articles)}"
+        f"📋 Articles trouvés : {len(articles)}"
     )
 
     if not articles:
@@ -251,8 +220,11 @@ def parse_news(html_data):
             "❌ Aucun article pertinent trouvé sur NBA.com."
         )
 
-    # Limitation à 12 articles.
     articles = articles[:MAX_ARTICLES]
+
+    print(
+        "📰 Articles sélectionnés :"
+    )
 
     for number, article in enumerate(
         articles,
@@ -263,43 +235,34 @@ def parse_news(html_data):
             f"{number}. {article['title']}"
         )
 
+        print(
+            f"   🔗 {article['link']}"
+        )
+
     return articles
 
 
 def save_news(articles):
 
     data = {
+        "updated": datetime.now(
+            timezone.utc
+        ).isoformat(),
 
-        "updated":
-            datetime.now(
-                timezone.utc
-            ).isoformat(),
-
-        "articles":
-            articles
-
+        "articles": articles
     }
 
     with open(
-
         OUTPUT_FILE,
-
         "w",
-
         encoding="utf-8"
-
     ) as file:
 
         json.dump(
-
             data,
-
             file,
-
             ensure_ascii=False,
-
             indent=4
-
         )
 
     print(
@@ -337,10 +300,6 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()
-```
-
-
 
 
