@@ -1,3 +1,4 @@
+```yaml
 name: 📰 Actualités NBA automatiques
 
 on:
@@ -14,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: 📥 Récupérer le dépôt
         uses: actions/checkout@v4
 
@@ -22,20 +24,25 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: 📰 Récupérer les actualités
+      - name: 📰 Récupérer les actualités NBA
         run: |
           python update_news.py
 
       - name: 💾 Enregistrer les actualités
         run: |
+
           git config user.name "github-actions[bot]"
+
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add news.json
 
           if git diff --cached --quiet; then
-            echo "Aucune nouvelle actualité."
+            echo "ℹ️ Aucune modification de news.json."
           else
-            git commit -m "Mise à jour des actualités NBA"
+            git commit -m "📰 Mise à jour des actualités NBA"
             git push
           fi
+```
+
+        
