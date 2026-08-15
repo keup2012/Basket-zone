@@ -72,9 +72,7 @@ def get_current_season():
 
     year = now.year
 
-    # La saison NBA commence généralement à l'automne.
-    # Avant octobre, on considère que la prochaine saison
-    # est la saison à venir.
+    # Avant octobre : intersaison précédant la prochaine saison
     if now.month >= 10:
         start_year = year
     else:
@@ -160,7 +158,6 @@ def download_standings():
 
         except (
             urllib.error.URLError,
-            TimeoutError,
             TimeoutError
         ) as error:
 
@@ -184,7 +181,8 @@ def download_standings():
         except json.JSONDecodeError as error:
 
             raise RuntimeError(
-                "NBA Stats a retourné des données qui ne sont pas du JSON valide."
+                "NBA Stats a retourné des données "
+                "qui ne sont pas du JSON valide."
             ) from error
 
     raise RuntimeError(
@@ -321,7 +319,6 @@ def create_conferences(standings):
                 name
             )
 
-    # Classement par pourcentage de victoire
     east.sort(
         key=lambda team: float(
             team["percentage"]
@@ -421,6 +418,41 @@ def main():
         "================================"
     )
 
+    now = datetime.now(
+        timezone.utc
+    )
+
+    # ========================================================
+    # INTERSAISON
+    # ========================================================
+
+    if now.month < 10:
+
+        print(
+            "⏸️ Intersaison NBA : aucun nouveau classement "
+            "à télécharger pour le moment."
+        )
+
+        if os.path.exists(OUTPUT_FILE):
+
+            print(
+                "✅ standings.json existant conservé."
+            )
+
+            print(
+                "🎉 Workflow terminé sans modification."
+            )
+
+            return
+
+        raise RuntimeError(
+            "standings.json n'existe pas encore."
+        )
+
+    # ========================================================
+    # SAISON RÉGULIÈRE
+    # ========================================================
+
     try:
 
         data = download_standings()
@@ -470,4 +502,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
