@@ -4,7 +4,6 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 
-
 RSS_URL = "https://www.espn.com/espn/rss/nba/news"
 
 OUTPUT_FILE = "news.json"
@@ -13,7 +12,6 @@ MAX_ARTICLES = 12
 
 
 def clean_text(text):
-
     if not text:
         return ""
 
@@ -21,7 +19,6 @@ def clean_text(text):
 
 
 def get_text(element, tag):
-
     child = element.find(tag)
 
     if child is None:
@@ -33,16 +30,11 @@ def get_text(element, tag):
 def download_rss():
 
     request = urllib.request.Request(
-
         RSS_URL,
-
         headers={
-            "User-Agent":
-            "BasketZone/1.0"
+            "User-Agent": "BasketZone/1.0"
         }
-
     )
-
 
     with urllib.request.urlopen(
         request,
@@ -55,17 +47,13 @@ def download_rss():
 def format_date(date_string):
 
     if not date_string:
-
         return ""
-
 
     try:
 
-        date =
-            parsedate_to_datetime(
-                date_string
-            )
-
+        date = parsedate_to_datetime(
+            date_string
+        )
 
         return date.astimezone(
             timezone.utc
@@ -78,77 +66,61 @@ def format_date(date_string):
 
 def parse_news(xml_data):
 
-    root =
-        ET.fromstring(xml_data)
+    root = ET.fromstring(
+        xml_data
+    )
 
-
-    channel =
-        root.find("channel")
-
+    channel = root.find(
+        "channel"
+    )
 
     if channel is None:
-
         return []
 
-
     articles = []
-
 
     for item in channel.findall(
         "item"
     ):
 
+        title = get_text(
+            item,
+            "title"
+        )
 
-        title =
-            get_text(
-                item,
-                "title"
-            )
+        description = get_text(
+            item,
+            "description"
+        )
 
+        link = get_text(
+            item,
+            "link"
+        )
 
-        description =
-            get_text(
-                item,
-                "description"
-            )
-
-
-        link =
-            get_text(
-                item,
-                "link"
-            )
-
-
-        date =
-            get_text(
-                item,
-                "pubDate"
-            )
-
+        date = get_text(
+            item,
+            "pubDate"
+        )
 
         if not title or not link:
-
             continue
-
 
         articles.append({
 
             "title": title,
 
-            "description":
-                description,
+            "description": description,
 
             "link": link,
 
-            "date":
-                format_date(date),
+            "date": format_date(
+                date
+            ),
 
-            "source":
-                "ESPN"
+            "source": "ESPN"
 
         })
-
 
     return articles[
         :MAX_ARTICLES
@@ -169,7 +141,6 @@ def save_news(articles):
 
     }
 
-
     with open(
         OUTPUT_FILE,
         "w",
@@ -177,15 +148,10 @@ def save_news(articles):
     ) as file:
 
         json.dump(
-
             data,
-
             file,
-
             ensure_ascii=False,
-
             indent=4
-
         )
 
 
@@ -199,26 +165,19 @@ def main():
         "📰 Récupération des actualités NBA..."
     )
 
+    xml_data = download_rss()
 
-    xml_data =
-        download_rss()
-
-
-    articles =
-        parse_news(
-            xml_data
-        )
-
+    articles = parse_news(
+        xml_data
+    )
 
     print(
         f"✅ {len(articles)} actualités trouvées."
     )
 
-
     save_news(
         articles
     )
-
 
     print(
         "💾 news.json mis à jour."
