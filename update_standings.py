@@ -1,5 +1,8 @@
 import json
+import os
+import time
 import urllib.request
+import urllib.error
 from datetime import datetime, timezone
 
 
@@ -7,14 +10,15 @@ from datetime import datetime, timezone
 # CONFIGURATION
 # ============================================================
 
-NBA_URL = (
-    "https://stats.nba.com/stats/leaguestandings"
-    "?LeagueID=00"
-    "&Season=2025-26"
-    "&SeasonType=Regular%20Season"
-)
+NBA_URL = "https://stats.nba.com/stats/leaguestandings"
 
 OUTPUT_FILE = "standings.json"
+
+# Nombre de tentatives en cas de problème de connexion
+MAX_RETRIES = 3
+
+# Délai d'attente par tentative
+TIMEOUT = 60
 
 
 # ============================================================
@@ -59,12 +63,46 @@ WEST_TEAMS = {
 
 
 # ============================================================
+# SAISON NBA
+# ============================================================
+
+def get_current_season():
+
+    now = datetime.now(timezone.utc)
+
+    year = now.year
+
+    # La saison NBA commence généralement à l'automne.
+    # Avant octobre, on considère que la prochaine saison
+    # est la saison à venir.
+    if now.month >= 10:
+        start_year = year
+    else:
+        start_year = year - 1
+
+    end_year = start_year + 1
+
+    return f"{start_year}-{str(end_year)[-2:]}"
+
+
+# ============================================================
 # REQUÊTE NBA
 # ============================================================
 
 def download_standings():
 
+    season = get_current_season()
+
     print("🏀 Connexion à NBA Stats...")
+    print("📅 Saison demandée :", season)
+
+    params = (
+        "?LeagueID=00"
+        f"&Season={season}"
+        "&SeasonType=Regular%20Season"
+    )
+
+    url = NBA_URL + params
 
     headers = {
         "User-Agent": (
@@ -75,35 +113,83 @@ def download_standings():
             "Chrome/149.0 Safari/537.36"
         ),
         "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
         "Referer": "https://www.nba.com/",
-        "Origin": "https://www.nba.com"
+        "Origin": "https://www.nba.com",
+        "Connection": "keep-alive"
     }
 
     request = urllib.request.Request(
-        NBA_URL,
-        headers=headers
+        url,
+        headers=headers,
+        method="GET"
     )
 
-    with urllib.request.urlopen(
-        request,
-        timeout=30
-    ) as response:
+    last_error = None
 
-        data = response.read()
+    for attempt in range(1, MAX_RETRIES + 1):
 
-    print(
-        "📥 Données reçues :",
-        len(data),
-        "octets"
-    )
-
-    if not data:
-        raise RuntimeError(
-            "NBA Stats a retourné une réponse vide."
+        print(
+            f"🔄 Tentative {attempt}/{MAX_RETRIES}..."
         )
 
-    return json.loads(
-        data.decode("utf-8")
+        try:
+
+            with urllib.request.urlopen(
+                request,
+                timeout=TIMEOUT
+            ) as response:
+
+                data = response.read()
+
+            print(
+                "📥 Données reçues :",
+                len(data),
+                "octets"
+            )
+
+            if not data:
+
+                raise RuntimeError(
+                    "NBA Stats a retourné une réponse vide."
+                )
+
+            return json.loads(
+                data.decode("utf-8")
+            )
+
+        except (
+            urllib.error.URLError,
+            TimeoutError,
+            TimeoutError
+        ) as error:
+
+            last_error = error
+
+            print(
+                "⚠️ Problème de connexion :",
+                str(error)
+            )
+
+            if attempt < MAX_RETRIES:
+
+                wait_time = attempt * 5
+
+                print(
+                    f"⏳ Nouvelle tentative dans {wait_time} secondes..."
+                )
+
+                time.sleep(wait_time)
+
+        except json.JSONDecodeError as error:
+
+            raise RuntimeError(
+                "NBA Stats a retourné des données qui ne sont pas du JSON valide."
+            ) from error
+
+    raise RuntimeError(
+        f"Impossible de récupérer le classement NBA après "
+        f"{MAX_RETRIES} tentatives : {last_error}"
     )
 
 
@@ -119,6 +205,7 @@ def parse_standings(data):
     )
 
     if not result_sets:
+
         raise RuntimeError(
             "Aucun resultSet trouvé dans la réponse NBA."
         )
@@ -131,10 +218,12 @@ def parse_standings(data):
             result_set.get("name")
             == "Standings"
         ):
+
             standings_set = result_set
             break
 
     if standings_set is None:
+
         raise RuntimeError(
             "Le tableau Standings est absent."
         )
@@ -150,6 +239,7 @@ def parse_standings(data):
     )
 
     if not headers or not rows:
+
         raise RuntimeError(
             "Le classement NBA est vide."
         )
@@ -233,15 +323,15 @@ def create_conferences(standings):
 
     # Classement par pourcentage de victoire
     east.sort(
-        key=lambda team: (
-            float(team["percentage"])
+        key=lambda team: float(
+            team["percentage"]
         ),
         reverse=True
     )
 
     west.sort(
-        key=lambda team: (
-            float(team["percentage"])
+        key=lambda team: float(
+            team["percentage"]
         ),
         reverse=True
     )
@@ -273,9 +363,11 @@ def save_json(east, west):
         timezone.utc
     ).isoformat()
 
+    season = get_current_season()
+
     output = {
 
-        "season": "2025-2026",
+        "season": season,
 
         "updated": now,
 
@@ -372,5 +464,10 @@ def main():
         raise
 
 
+# ============================================================
+# LANCEMENT
+# ============================================================
+
 if __name__ == "__main__":
     main()
+
