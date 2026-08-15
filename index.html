@@ -1,5 +1,3 @@
-
-```html
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -395,22 +393,67 @@
         }
 
         /* =========================
-           CLASSEMENT
+           CLASSEMENT NBA
         ========================= */
 
-        .ranking {
+        .standings-container {
             width: 90%;
-            max-width: 800px;
+            max-width: 1200px;
             margin: auto;
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.10);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            padding-bottom: 40px;
         }
 
-        .ranking p {
-            padding: 12px;
+        .conference-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        }
+
+        .conference-card h3 {
+            text-align: center;
+            color: #f58220;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .standings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .standings-table th {
+            background: #111;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+        }
+
+        .standings-table td {
+            padding: 12px 8px;
+            text-align: center;
             border-bottom: 1px solid #eee;
+        }
+
+        .standings-table th:nth-child(2),
+        .standings-table td:nth-child(2) {
+            text-align: left;
+        }
+
+        .standings-table tbody tr:hover {
+            background: #fff4eb;
+        }
+
+        .standings-table tbody tr:first-child {
+            font-weight: bold;
         }
 
         /* =========================
@@ -432,6 +475,14 @@
         /* =========================
            MOBILE
         ========================= */
+
+        @media (max-width: 800px) {
+
+            .standings-container {
+                grid-template-columns: 1fr;
+            }
+
+        }
 
         @media (max-width: 600px) {
 
@@ -457,6 +508,15 @@
 
             .vs {
                 margin: 5px 0;
+            }
+
+            .standings-table {
+                font-size: 14px;
+            }
+
+            .standings-table th,
+            .standings-table td {
+                padding: 9px 5px;
             }
 
         }
@@ -695,9 +755,7 @@
 
         <div class="players-container">
 
-            <!-- =========================
-                 VICTOR WEMBANYAMA
-            ========================= -->
+            <!-- VICTOR WEMBANYAMA -->
 
             <div
                 class="player-card"
@@ -742,9 +800,7 @@
 
             </div>
 
-            <!-- =========================
-                 LEBRON JAMES
-            ========================= -->
+            <!-- LEBRON JAMES -->
 
             <div
                 class="player-card"
@@ -789,9 +845,7 @@
 
             </div>
 
-            <!-- =========================
-                 STEPHEN CURRY
-            ========================= -->
+            <!-- STEPHEN CURRY -->
 
             <div
                 class="player-card"
@@ -836,9 +890,7 @@
 
             </div>
 
-            <!-- =========================
-                 GIANNIS ANTETOKOUNMPO
-            ========================= -->
+            <!-- GIANNIS ANTETOKOUNMPO -->
 
             <div
                 class="player-card"
@@ -883,9 +935,7 @@
 
             </div>
 
-            <!-- =========================
-                 SHAI GILGEOUS-ALEXANDER
-            ========================= -->
+            <!-- SHAI GILGEOUS-ALEXANDER -->
 
             <div
                 class="player-card"
@@ -935,21 +985,338 @@
     </section>
 
     <!-- =========================
-         CLASSEMENT
+         CLASSEMENT NBA
     ========================= -->
 
     <section id="classement">
 
         <h2 class="section-title">
-            🏆 Classement NBA
+            🏆 Classement NBA 2026-2027
         </h2>
 
-        <div class="ranking">
+        <p style="
+            text-align:center;
+            color:#777;
+            margin:-10px auto 25px;
+            width:90%;
+        ">
+            📅 La saison régulière 2026-2027 commencera
+            le 20 octobre 2026.
+        </p>
 
-            <p>
-                Le classement 2026-2027 sera disponible
-                au début de la saison régulière.
-            </p>
+        <div class="standings-container">
+
+            <!-- =========================
+                 EST
+            ========================= -->
+
+            <div class="conference-card">
+
+                <h3>
+                    🏀 Conférence Est
+                </h3>
+
+                <div class="table-wrapper">
+
+                    <table class="standings-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>#</th>
+                                <th>Équipe</th>
+                                <th>V</th>
+                                <th>D</th>
+                                <th>%</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>1</td>
+                                <td>Boston Celtics</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>Brooklyn Nets</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>New York Knicks</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>Philadelphia 76ers</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>5</td>
+                                <td>Toronto Raptors</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>6</td>
+                                <td>Chicago Bulls</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>7</td>
+                                <td>Cleveland Cavaliers</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>8</td>
+                                <td>Detroit Pistons</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>9</td>
+                                <td>Indiana Pacers</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>10</td>
+                                <td>Milwaukee Bucks</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>11</td>
+                                <td>Atlanta Hawks</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>12</td>
+                                <td>Charlotte Hornets</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>13</td>
+                                <td>Miami Heat</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>14</td>
+                                <td>Orlando Magic</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>15</td>
+                                <td>Washington Wizards</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <!-- =========================
+                 OUEST
+            ========================= -->
+
+            <div class="conference-card">
+
+                <h3>
+                    🏀 Conférence Ouest
+                </h3>
+
+                <div class="table-wrapper">
+
+                    <table class="standings-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>#</th>
+                                <th>Équipe</th>
+                                <th>V</th>
+                                <th>D</th>
+                                <th>%</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>1</td>
+                                <td>Denver Nuggets</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>Minnesota Timberwolves</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>Oklahoma City Thunder</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>Portland Trail Blazers</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>5</td>
+                                <td>Utah Jazz</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>6</td>
+                                <td>Golden State Warriors</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>7</td>
+                                <td>LA Clippers</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>8</td>
+                                <td>Los Angeles Lakers</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>9</td>
+                                <td>Phoenix Suns</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>10</td>
+                                <td>Sacramento Kings</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>11</td>
+                                <td>Dallas Mavericks</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>12</td>
+                                <td>Houston Rockets</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>13</td>
+                                <td>Memphis Grizzlies</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>14</td>
+                                <td>New Orleans Pelicans</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                            <tr>
+                                <td>15</td>
+                                <td>San Antonio Spurs</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>—</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -1375,4 +1742,3 @@
 </body>
 
 </html>
-```
