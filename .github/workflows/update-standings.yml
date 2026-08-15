@@ -1,1 +1,78 @@
+name: 🏆 Mise à jour du classement NBA
 
+on:
+
+  workflow_dispatch:
+
+  schedule:
+    - cron: "15 */3 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+
+  update-standings:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # ==========================================
+      # RÉCUPÉRATION DU DÉPÔT
+      # ==========================================
+
+      - name: 📥 Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      # ==========================================
+      # PYTHON
+      # ==========================================
+
+      - name: 🐍 Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ==========================================
+      # MISE À JOUR DU CLASSEMENT
+      # ==========================================
+
+      - name: 🏀 Mettre à jour le classement NBA
+        run: |
+          python update_standings.py
+
+      # ==========================================
+      # VÉRIFICATION
+      # ==========================================
+
+      - name: 🔎 Vérifier standings.json
+        run: |
+          python -m json.tool standings.json
+
+      # ==========================================
+      # COMMIT
+      # ==========================================
+
+      - name: 💾 Enregistrer le classement
+        run: |
+
+          git config user.name "github-actions[bot]"
+
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add standings.json
+
+          if git diff --cached --quiet; then
+
+            echo "ℹ️ Aucun changement dans le classement."
+
+          else
+
+            git commit \
+              -m "🏆 Mise à jour du classement NBA"
+
+            git push
+
+          fi
