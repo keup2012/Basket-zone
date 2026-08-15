@@ -985,7 +985,7 @@
     </section>
 
     <!-- =========================
-         CLASSEMENT NBA
+         CLASSEMENT AUTOMATIQUE
     ========================= -->
 
     <section id="classement">
@@ -994,331 +994,22 @@
             🏆 Classement NBA 2026-2027
         </h2>
 
-        <p style="
-            text-align:center;
-            color:#777;
-            margin:-10px auto 25px;
-            width:90%;
-        ">
-            📅 La saison régulière 2026-2027 commencera
-            le 20 octobre 2026.
+        <p
+            id="standingsStatus"
+            style="
+                text-align:center;
+                color:#777;
+                margin:-10px auto 25px;
+                width:90%;
+            "
+        >
+            🔄 Chargement du classement...
         </p>
 
-        <div class="standings-container">
-
-            <!-- =========================
-                 EST
-            ========================= -->
-
-            <div class="conference-card">
-
-                <h3>
-                    🏀 Conférence Est
-                </h3>
-
-                <div class="table-wrapper">
-
-                    <table class="standings-table">
-
-                        <thead>
-
-                            <tr>
-                                <th>#</th>
-                                <th>Équipe</th>
-                                <th>V</th>
-                                <th>D</th>
-                                <th>%</th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            <tr>
-                                <td>1</td>
-                                <td>Boston Celtics</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>2</td>
-                                <td>Brooklyn Nets</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>3</td>
-                                <td>New York Knicks</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>4</td>
-                                <td>Philadelphia 76ers</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>5</td>
-                                <td>Toronto Raptors</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>6</td>
-                                <td>Chicago Bulls</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>7</td>
-                                <td>Cleveland Cavaliers</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>8</td>
-                                <td>Detroit Pistons</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>9</td>
-                                <td>Indiana Pacers</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>10</td>
-                                <td>Milwaukee Bucks</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>11</td>
-                                <td>Atlanta Hawks</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>12</td>
-                                <td>Charlotte Hornets</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>13</td>
-                                <td>Miami Heat</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>14</td>
-                                <td>Orlando Magic</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>15</td>
-                                <td>Washington Wizards</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-            <!-- =========================
-                 OUEST
-            ========================= -->
-
-            <div class="conference-card">
-
-                <h3>
-                    🏀 Conférence Ouest
-                </h3>
-
-                <div class="table-wrapper">
-
-                    <table class="standings-table">
-
-                        <thead>
-
-                            <tr>
-                                <th>#</th>
-                                <th>Équipe</th>
-                                <th>V</th>
-                                <th>D</th>
-                                <th>%</th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            <tr>
-                                <td>1</td>
-                                <td>Denver Nuggets</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>2</td>
-                                <td>Minnesota Timberwolves</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>3</td>
-                                <td>Oklahoma City Thunder</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>4</td>
-                                <td>Portland Trail Blazers</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>5</td>
-                                <td>Utah Jazz</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>6</td>
-                                <td>Golden State Warriors</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>7</td>
-                                <td>LA Clippers</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>8</td>
-                                <td>Los Angeles Lakers</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>9</td>
-                                <td>Phoenix Suns</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>10</td>
-                                <td>Sacramento Kings</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>11</td>
-                                <td>Dallas Mavericks</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>12</td>
-                                <td>Houston Rockets</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>13</td>
-                                <td>Memphis Grizzlies</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>14</td>
-                                <td>New Orleans Pelicans</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                            <tr>
-                                <td>15</td>
-                                <td>San Antonio Spurs</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>—</td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </div>
+        <div
+            id="standingsContainer"
+            class="standings-container"
+        ></div>
 
     </section>
 
@@ -1730,10 +1421,205 @@
 
         }
 
+        /* =========================
+           CLASSEMENT AUTOMATIQUE
+        ========================= */
+
+        const standingsContainer =
+            document.getElementById(
+                "standingsContainer"
+            );
+
+        const standingsStatus =
+            document.getElementById(
+                "standingsStatus"
+            );
+
+        async function loadStandings() {
+
+            try {
+
+                standingsStatus.textContent =
+                    "🔄 Chargement du classement...";
+
+                const response =
+                    await fetch(
+                        "standings.json?t=" +
+                        Date.now()
+                    );
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Impossible de charger standings.json"
+                    );
+
+                }
+
+                const data =
+                    await response.json();
+
+                if (
+                    !Array.isArray(data.east)
+                    ||
+                    !Array.isArray(data.west)
+                ) {
+
+                    throw new Error(
+                        "Format de standings.json incorrect"
+                    );
+
+                }
+
+                standingsContainer.innerHTML =
+                    "";
+
+                function createConference(
+                    title,
+                    teams
+                ) {
+
+                    const conference =
+                        document.createElement(
+                            "div"
+                        );
+
+                    conference.className =
+                        "conference-card";
+
+                    let rows = "";
+
+                    teams.forEach(
+                        function(team, index) {
+
+                            rows += `
+
+                                <tr>
+
+                                    <td>
+                                        ${index + 1}
+                                    </td>
+
+                                    <td>
+                                        ${escapeHTML(
+                                            team.team
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        ${team.wins}
+                                    </td>
+
+                                    <td>
+                                        ${team.losses}
+                                    </td>
+
+                                    <td>
+                                        ${escapeHTML(
+                                            String(
+                                                team.percentage
+                                            )
+                                        )}
+                                    </td>
+
+                                </tr>
+
+                            `;
+
+                        }
+                    );
+
+                    conference.innerHTML = `
+
+                        <h3>
+                            🏀 ${title}
+                        </h3>
+
+                        <div class="table-wrapper">
+
+                            <table class="standings-table">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Équipe</th>
+                                        <th>V</th>
+                                        <th>D</th>
+                                        <th>%</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+                                    ${rows}
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    `;
+
+                    standingsContainer.appendChild(
+                        conference
+                    );
+
+                }
+
+                createConference(
+                    "Conférence Est",
+                    data.east
+                );
+
+                createConference(
+                    "Conférence Ouest",
+                    data.west
+                );
+
+                standingsStatus.textContent =
+                    "🟢 Classement chargé automatiquement";
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur classement :",
+                    error
+                );
+
+                standingsStatus.textContent =
+                    "❌ Impossible de charger le classement.";
+
+                standingsContainer.innerHTML = `
+
+                    <div class="no-game">
+
+                        🏀 Le classement est
+                        temporairement indisponible.
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+        /* =========================
+           LANCEMENT
+        ========================= */
+
         loadNews();
+
+        loadStandings();
 
         setInterval(
             loadNews,
+            5 * 60 * 1000
+        );
+
+        setInterval(
+            loadStandings,
             5 * 60 * 1000
         );
 
