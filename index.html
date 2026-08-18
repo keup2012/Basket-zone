@@ -397,27 +397,29 @@
         ========================= */
 
         .standings-container {
-            width: 90%;
-            max-width: 1200px;
+            width: 92%;
+            max-width: 1250px;
             margin: auto;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-            padding-bottom: 40px;
+            gap: 30px;
+            padding-bottom: 50px;
         }
 
         .conference-card {
             background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            overflow: hidden;
         }
 
         .conference-card h3 {
             text-align: center;
             color: #f58220;
             margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 25px;
+            font-weight: bold;
         }
 
         .table-wrapper {
@@ -427,20 +429,32 @@
 
         .standings-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
         }
 
         .standings-table th {
             background: #111;
             color: white;
-            padding: 12px 8px;
+            padding: 13px 9px;
             text-align: center;
+            font-size: 14px;
+        }
+
+        .standings-table th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .standings-table th:last-child {
+            border-radius: 0 8px 0 0;
         }
 
         .standings-table td {
-            padding: 12px 8px;
+            padding: 13px 9px;
             text-align: center;
             border-bottom: 1px solid #eee;
+            font-size: 14px;
         }
 
         .standings-table th:nth-child(2),
@@ -448,12 +462,75 @@
             text-align: left;
         }
 
+        .standings-table tbody tr {
+            transition: background 0.2s, transform 0.2s;
+        }
+
         .standings-table tbody tr:hover {
             background: #fff4eb;
         }
 
         .standings-table tbody tr:first-child {
+            background: #fff4eb;
             font-weight: bold;
+        }
+
+        .standings-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .rank-number {
+            display: inline-flex;
+            width: 30px;
+            height: 30px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .rank-number.first {
+            background: #f58220;
+            color: white;
+        }
+
+        .team-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 180px;
+            font-weight: bold;
+        }
+
+        .team-logo {
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            border-radius: 50%;
+            background: #111;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            border: 2px solid #f58220;
+        }
+
+        .record-wins {
+            font-weight: bold;
+        }
+
+        .percentage {
+            font-weight: bold;
+            color: #f58220;
+        }
+
+        .standings-empty {
+            text-align: center;
+            padding: 30px;
+            color: #777;
         }
 
         /* =========================
@@ -480,6 +557,7 @@
 
             .standings-container {
                 grid-template-columns: 1fr;
+                width: 94%;
             }
 
         }
@@ -511,12 +589,29 @@
             }
 
             .standings-table {
-                font-size: 14px;
+                font-size: 13px;
             }
 
             .standings-table th,
             .standings-table td {
                 padding: 9px 5px;
+            }
+
+            .team-cell {
+                min-width: 155px;
+                gap: 7px;
+            }
+
+            .team-logo {
+                width: 30px;
+                height: 30px;
+                min-width: 30px;
+                font-size: 9px;
+            }
+
+            .rank-number {
+                width: 27px;
+                height: 27px;
             }
 
         }
@@ -1487,39 +1582,133 @@
                     conference.className =
                         "conference-card";
 
+                    const teamAbbreviations = {
+
+                        "Atlanta Hawks": "ATL",
+                        "Boston Celtics": "BOS",
+                        "Brooklyn Nets": "BKN",
+                        "Charlotte Hornets": "CHA",
+                        "Chicago Bulls": "CHI",
+                        "Cleveland Cavaliers": "CLE",
+                        "Detroit Pistons": "DET",
+                        "Indiana Pacers": "IND",
+                        "Miami Heat": "MIA",
+                        "Milwaukee Bucks": "MIL",
+                        "New York Knicks": "NYK",
+                        "Orlando Magic": "ORL",
+                        "Philadelphia 76ers": "PHI",
+                        "Toronto Raptors": "TOR",
+                        "Washington Wizards": "WAS",
+
+                        "Dallas Mavericks": "DAL",
+                        "Denver Nuggets": "DEN",
+                        "Golden State Warriors": "GSW",
+                        "Houston Rockets": "HOU",
+                        "LA Clippers": "LAC",
+                        "Los Angeles Lakers": "LAL",
+                        "Memphis Grizzlies": "MEM",
+                        "Minnesota Timberwolves": "MIN",
+                        "New Orleans Pelicans": "NOP",
+                        "Oklahoma City Thunder": "OKC",
+                        "Phoenix Suns": "PHX",
+                        "Portland Trail Blazers": "POR",
+                        "Sacramento Kings": "SAC",
+                        "San Antonio Spurs": "SAS",
+                        "Utah Jazz": "UTA"
+
+                    };
+
                     let rows = "";
 
                     teams.forEach(
                         function(team, index) {
+
+                            const rank =
+                                index + 1;
+
+                            const abbreviation =
+                                teamAbbreviations[
+                                    team.team
+                                ] || "NBA";
+
+                            const percentage =
+                                Number(
+                                    team.percentage
+                                );
+
+                            let percentageText =
+                                "-";
+
+                            if (
+                                !isNaN(
+                                    percentage
+                                )
+                            ) {
+
+                                percentageText =
+                                    percentage.toFixed(3);
+
+                            }
+
+                            const rankClass =
+                                rank === 1
+                                    ? "rank-number first"
+                                    : "rank-number";
 
                             rows += `
 
                                 <tr>
 
                                     <td>
-                                        ${index + 1}
+
+                                        <span
+                                            class="${rankClass}"
+                                        >
+                                            ${rank}
+                                        </span>
+
                                     </td>
 
                                     <td>
-                                        ${escapeHTML(
-                                            team.team
-                                        )}
+
+                                        <div
+                                            class="team-cell"
+                                        >
+
+                                            <span
+                                                class="team-logo"
+                                            >
+                                                ${abbreviation}
+                                            </span>
+
+                                            <span>
+                                                ${escapeHTML(
+                                                    team.team
+                                                )}
+                                            </span>
+
+                                        </div>
+
+                                    </td>
+
+                                    <td
+                                        class="record-wins"
+                                    >
+                                        ${Number(
+                                            team.wins
+                                        ) || 0}
                                     </td>
 
                                     <td>
-                                        ${team.wins}
+                                        ${Number(
+                                            team.losses
+                                        ) || 0}
                                     </td>
 
-                                    <td>
-                                        ${team.losses}
-                                    </td>
-
-                                    <td>
-                                        ${escapeHTML(
-                                            String(
-                                                team.percentage
-                                            )
-                                        )}
+                                    <td
+                                        class="percentage"
+                                    >
+                                        ${percentageText}
                                     </td>
 
                                 </tr>
@@ -1537,22 +1726,57 @@
 
                         <div class="table-wrapper">
 
-                            <table class="standings-table">
+                            <table
+                                class="standings-table"
+                            >
 
                                 <thead>
 
                                     <tr>
-                                        <th>#</th>
-                                        <th>Équipe</th>
-                                        <th>V</th>
-                                        <th>D</th>
-                                        <th>%</th>
+
+                                        <th>
+                                            #
+                                        </th>
+
+                                        <th>
+                                            Équipe
+                                        </th>
+
+                                        <th>
+                                            V
+                                        </th>
+
+                                        <th>
+                                            D
+                                        </th>
+
+                                        <th>
+                                            %
+                                        </th>
+
                                     </tr>
 
                                 </thead>
 
                                 <tbody>
-                                    ${rows}
+
+                                    ${
+                                        rows ||
+                                        `
+                                        <tr>
+
+                                            <td
+                                                colspan="5"
+                                                class="standings-empty"
+                                            >
+                                                Aucun classement
+                                                disponible
+                                            </td>
+
+                                        </tr>
+                                        `
+                                    }
+
                                 </tbody>
 
                             </table>
