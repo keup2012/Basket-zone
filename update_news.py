@@ -1,10 +1,11 @@
 import json
+import re
 import urllib.request
-import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
-from email.utils import parsedate_to_datetime
+from html import unescape
 
-RSS_URL = "https://www.espn.com/espn/rss/nba/news"
+
+NEWS_URL = "https://www.nba.com/news"
 
 OUTPUT_FILE = "news.json"
 
@@ -12,27 +13,41 @@ MAX_ARTICLES = 12
 
 
 def clean_text(text):
+
     if not text:
         return ""
 
-    return " ".join(text.split())
+    text = unescape(text)
+
+    text = re.sub(
+        r"<[^>]+>",
+        " ",
+        text
+    )
+
+    return " ".join(
+        text.split()
+    )
 
 
-def get_text(element, tag):
-    child = element.find(tag)
-
-    if child is None:
-        return ""
-
-    return clean_text(child.text)
-
-
-def download_rss():
+def download_page(url):
 
     request = urllib.request.Request(
-        RSS_URL,
+        url,
         headers={
-            "User-Agent": "BasketZone/1.0"
+            "User-Agent":
+                "Mozilla/5.0 "
+                "(Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 "
+                "(KHTML, like Gecko) "
+                "Chrome/120.0 Safari/537.36",
+
+            "Accept":
+                "text/html,application/xhtml+xml,"
+                "application/xml;q=0.9,*/*;q=0.8",
+
+            "Accept-Language":
+                "en-US,en;q=0.9"
         }
     )
 
@@ -41,90 +56,234 @@ def download_rss():
         timeout=30
     ) as response:
 
-        return response.read()
+        return response.read().decode(
+            "utf-8",
+            errors="ignore"
+        )
 
 
-def format_date(date_string):
-
-    if not date_string:
-        return ""
+def get_article_image(url):
 
     try:
 
-        date = parsedate_to_datetime(
-            date_string
+        html = download_page(
+            url
         )
 
-        return date.astimezone(
-            timezone.utc
-        ).isoformat()
+        patterns = [
 
-    except Exception:
+            r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
 
-        return date_string
+            r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']',
+
+            r'<meta[^>]+name=["\']twitter:image["\'][^>]+content=["\']([^"\']+)["\']',
+
+            r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+name=["\']twitter:image["\']'
+
+        ]
+
+        for pattern in patterns:
+
+            match = re.search(
+                pattern,
+                html,
+                re.IGNORECASE
+            )
+
+            if match:
+
+                image_url = unescape(
+                    match.group(1)
+                )
+
+                if image_url.startswith(
+                    "http"
+                ):
+
+                    return image_url
+
+        return ""
+
+    except Exception as error:
+
+        print(
+            f"⚠️ Image introuvable : "
+            f"{error}"
+        )
+
+        return ""
 
 
-def parse_news(xml_data):
-
-    root = ET.fromstring(
-        xml_data
-    )
-
-    channel = root.find(
-        "channel"
-    )
-
-    if channel is None:
-        return []
+def extract_articles(html):
 
     articles = []
 
-    for item in channel.findall(
-        "item"
+    pattern = re.compile(
+
+        r'href=["\']'
+        r'(/news/[^"\']+)'
+        r'["\']'
+
+    )
+
+    links = []
+
+    for match in pattern.finditer(
+        html
     ):
 
-        title = get_text(
-            item,
-            "title"
+        link = match.group(1)
+
+        if link not in links:
+
+            links.append(
+                link
+            )
+
+    for link in links:
+
+        if len(
+            articles
+        ) >= MAX_ARTICLES:
+
+            break
+
+        article_url = (
+            "https://www.nba.com"
+            + link
         )
 
-        description = get_text(
-            item,
-            "description"
-        )
+        try:
 
-        link = get_text(
-            item,
-            "link"
-        )
+            article_html = download_page(
+                article_url
+            )
 
-        date = get_text(
-            item,
-            "pubDate"
-        )
+            title = ""
 
-        if not title or not link:
-            continue
+            title_patterns = [
 
-        articles.append({
+                r'<meta[^>]+property=["\']og:title["\'][^>]+content=["\']([^"\']+)["\']',
 
-            "title": title,
+                r'<title[^>]*>(.*?)</title>'
 
-            "description": description,
+            ]
 
-            "link": link,
+            for pattern_title in title_patterns:
 
-            "date": format_date(
-                date
-            ),
+                match = re.search(
 
-            "source": "ESPN"
+                    pattern_title,
 
-        })
+                    article_html,
 
-    return articles[
-        :MAX_ARTICLES
-    ]
+                    re.IGNORECASE
+                    | re.DOTALL
+
+                )
+
+                if match:
+
+                    title = clean_text(
+
+                        match.group(1)
+
+                    )
+
+                    break
+
+            if not title:
+
+                continue
+
+            title = title.replace(
+                " | NBA.com",
+                ""
+            )
+
+            description = ""
+
+            description_patterns = [
+
+                r'<meta[^>]+property=["\']og:description["\'][^>]+content=["\']([^"\']+)["\']',
+
+                r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']+)["\']'
+
+            ]
+
+            for pattern_description in description_patterns:
+
+                match = re.search(
+
+                    pattern_description,
+
+                    article_html,
+
+                    re.IGNORECASE
+                    | re.DOTALL
+
+                )
+
+                if match:
+
+                    description = clean_text(
+
+                        match.group(1)
+
+                    )
+
+                    break
+
+            image = get_article_image(
+                article_url
+            )
+
+            articles.append({
+
+                "title":
+                    title,
+
+                "description":
+                    description,
+
+                "link":
+                    article_url,
+
+                "date":
+                    "",
+
+                "source":
+                    "NBA.com",
+
+                "image":
+                    image
+
+            })
+
+            print(
+                f"📰 {title}"
+            )
+
+            if image:
+
+                print(
+                    "🖼️ Image trouvée"
+                )
+
+            else:
+
+                print(
+                    "⚠️ Aucune image trouvée"
+                )
+
+        except Exception as error:
+
+            print(
+                f"⚠️ Article ignoré : "
+                f"{error}"
+            )
+
+    return articles
 
 
 def save_news(articles):
@@ -142,16 +301,25 @@ def save_news(articles):
     }
 
     with open(
+
         OUTPUT_FILE,
+
         "w",
+
         encoding="utf-8"
+
     ) as file:
 
         json.dump(
+
             data,
+
             file,
+
             ensure_ascii=False,
+
             indent=4
+
         )
 
 
@@ -165,23 +333,36 @@ def main():
         "📰 Récupération des actualités NBA..."
     )
 
-    xml_data = download_rss()
+    try:
 
-    articles = parse_news(
-        xml_data
-    )
+        html = download_page(
+            NEWS_URL
+        )
 
-    print(
-        f"✅ {len(articles)} actualités trouvées."
-    )
+        articles = extract_articles(
+            html
+        )
 
-    save_news(
-        articles
-    )
+        print(
+            f"✅ {len(articles)} "
+            f"actualités trouvées."
+        )
 
-    print(
-        "💾 news.json mis à jour."
-    )
+        save_news(
+            articles
+        )
+
+        print(
+            "💾 news.json mis à jour."
+        )
+
+    except Exception as error:
+
+        print(
+            f"❌ ERREUR : {error}"
+        )
+
+        raise
 
 
 if __name__ == "__main__":
