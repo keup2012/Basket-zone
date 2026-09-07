@@ -32,3 +32,4 @@ jobs:
           git add player-stats.json
           git diff --cached --quiet || git commit -m "📊 Mise à jour des statistiques joueurs"
           git push
+
