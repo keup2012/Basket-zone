@@ -1,0 +1,36 @@
+{
+  "season": "2026-27",
+  "updated_at": "2026-09-07T16:47:29.789198+00:00",
+  "players": {
+    "wembanyama": {
+      "name": "Victor Wembanyama",
+      "pts": null,
+      "reb": null,
+      "ast": null
+    },
+    "lebron": {
+      "name": "LeBron James",
+      "pts": null,
+      "reb": null,
+      "ast": null
+    },
+    "curry": {
+      "name": "Stephen Curry",
+      "pts": null,
+      "reb": null,
+      "ast": null
+    },
+    "giannis": {
+      "name": "Giannis Antetokounmpo",
+      "pts": null,
+      "reb": null,
+      "ast": null
+    },
+    "shai": {
+      "name": "Shai Gilgeous-Alexander",
+      "pts": null,
+      "reb": null,
+      "ast": null
+    }
+  }
+}
