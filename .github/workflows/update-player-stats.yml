@@ -1,4 +1,4 @@
-```yaml
+yaml
 name: 🏀 Mise à jour automatique des statistiques joueurs
 
 on:
