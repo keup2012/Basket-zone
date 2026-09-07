@@ -1,9 +1,13 @@
+```yaml
 name: 🏀 Mise à jour automatique des statistiques joueurs
 
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 */6 * * *"
+
+permissions:
+  contents: write
 
 jobs:
   update-player-stats:
@@ -28,3 +32,4 @@ jobs:
           git add player-stats.json
           git diff --cached --quiet || git commit -m "📊 Mise à jour des statistiques joueurs"
           git push
+```
