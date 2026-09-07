@@ -838,6 +838,18 @@
 
     </style>
 
+<style id="manual-news-refresh-style">
+#manual-news-refresh {
+  cursor: pointer;
+  padding: .55rem .9rem;
+  border-radius: .65rem;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.08);
+  color: inherit;
+}
+#manual-news-refresh:disabled { opacity: .55; cursor: wait; }
+#news-refresh-status { margin-left: .6rem; font-size: .9rem; opacity: .8; }
+</style>
 </head>
 
 <body>
@@ -921,6 +933,11 @@
             id="newsStatus"
             class="news-status"
         >
+<button id="manual-news-refresh" type="button" aria-label="Actualiser les actualités NBA">
+    ↻ Actualiser
+</button>
+<span id="news-refresh-status" role="status" aria-live="polite"></span>
+
 
             🔄 Chargement des actualités...
 
@@ -2516,6 +2533,70 @@
 
 
     </script>
+
+<script id="manual-news-refresh-script">
+(() => {
+  const NEWS_REFRESH_COOLDOWN_MS = 5 * 60 * 1000; // 5 min
+  const AUTO_REFRESH_MS = 30 * 60 * 1000; // 30 min
+  const KEY = "basket-zone-news-last-refresh";
+  const button = document.getElementById("manual-news-refresh");
+  const status = document.getElementById("news-refresh-status");
+
+  function remaining() {
+    const last = Number(localStorage.getItem(KEY) || 0);
+    return Math.max(0, NEWS_REFRESH_COOLDOWN_MS - (Date.now() - last));
+  }
+
+  function setStatus(message) {
+    if (status) status.textContent = message || "";
+  }
+
+  async function refreshNews(force = false) {
+    if (!button) return;
+    const left = remaining();
+    if (force && left > 0) {
+      setStatus(`Patiente encore ${Math.ceil(left / 60000)} min.`);
+      return;
+    }
+
+    button.disabled = true;
+    setStatus("Actualisation…");
+    if (force) localStorage.setItem(KEY, String(Date.now()));
+
+    try {
+      // Cache-bust only this request; no request storm because of cooldown.
+      const url = `news.json?t=${Date.now()}`;
+      const response = await fetch(url, { cache: "no-store" });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+
+      // Let existing page code consume the refreshed JSON when it exposes a loader.
+      if (typeof window.loadNews === "function") {
+        await window.loadNews(data);
+      } else if (typeof window.renderNews === "function") {
+        await window.renderNews(data);
+      } else {
+        // Safest fallback: reload once so existing app initialization reads fresh JSON.
+        window.location.reload();
+        return;
+      }
+
+      setStatus("Actualités mises à jour.");
+    } catch (error) {
+      console.error("News refresh failed:", error);
+      setStatus("Impossible de mettre à jour les actualités pour le moment.");
+      if (force) localStorage.removeItem(KEY);
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  button?.addEventListener("click", () => refreshNews(true));
+
+  // Browser-side refresh is intentionally modest; GitHub Actions remains the source update.
+  window.setInterval(() => refreshNews(false), AUTO_REFRESH_MS);
+})();
+</script>
 
 </body>
 
