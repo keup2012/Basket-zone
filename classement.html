@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>🏆 Classement - Basket Zone</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f4f4;
+        color: #222;
+        line-height: 1.6;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+        background: linear-gradient(135deg, #ff6a00, #ff8c00);
+        color: white;
+        text-align: center;
+        padding: 35px 20px;
+    }
+
+    header h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    header p {
+        font-size: 18px;
+    }
+
+    /* =========================
+       MENU
+    ========================= */
+
+    nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: #111;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        padding: 10px;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+
+    nav a:hover,
+    nav a.active {
+        background: #ff6a00;
+    }
+
+    /* =========================
+       CONTENU
+    ========================= */
+
+    main {
+        max-width: 1200px;
+        margin: auto;
+        padding: 40px 20px;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 30px;
+        color: #ff6a00;
+    }
+
+    /* =========================
+       CLASSEMENT
+    ========================= */
+
+    .standings-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 25px;
+    }
+
+    .conference {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        overflow-x: auto;
+    }
+
+    .conference h3 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #ff6a00;
+    }
+
+    .standings-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .standings-table th,
+    .standings-table td {
+        padding: 10px 7px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+    }
+
+    .standings-table th {
+        background: #111;
+        color: white;
+    }
+
+    .standings-table img {
+        width: 35px;
+        height: 35px;
+        object-fit: contain;
+        vertical-align: middle;
+        margin-right: 6px;
+    }
+
+    .team-cell {
+        text-align: left !important;
+        white-space: nowrap;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+        background: #111;
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+        margin-top: 40px;
+    }
+
+    footer p {
+        margin-bottom: 10px;
+    }
+
+    footer a {
+        color: white;
+        text-decoration: none;
+        margin: 0 8px;
+    }
+
+    footer a:hover {
+        color: #ff6a00;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
+
+        header h1 {
+            font-size: 32px;
+        }
+
+        header p {
+            font-size: 15px;
+        }
+
+        nav {
+            position: static;
+        }
+
+        nav a {
+            font-size: 13px;
+            padding: 8px 10px;
+        }
+
+        .section-title {
+            font-size: 27px;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+<header>
+
+```
+<h1>🏀 Basket Zone</h1>
+
+<p>
+    Toute l'actualité du basketball au même endroit
+</p>
+```
+
+</header>
+
+<!-- MENU -->
+
+<nav>
+
+```
+<a href="index.html">
+    🏠 Accueil
+</a>
+
+<a href="actualites.html">
+    📰 Actualités
+</a>
+
+<a href="matchs.html">
+    🏀 Matchs
+</a>
+
+<a href="joueurs.html">
+    ⭐ Joueurs
+</a>
+
+<a href="classement.html" class="active">
+    🏆 Classement
+</a>
+
+<a href="apropos.html">
+    ℹ️ À propos
+</a>
+
+<a href="contact.html">
+    📞 Contact
+</a>
+```
+
+</nav>
+
+<!-- CONTENU -->
+
+<main>
+
+```
+<h2 class="section-title">
+    🏆 Classement NBA
+</h2>
+
+<div class="standings-container">
+
+    <!-- EASTERN CONFERENCE -->
+
+    <div class="conference">
+
+        <h3>
+            🏀 Eastern Conference
+        </h3>
+
+        <div id="eastStandings">
+            Chargement du classement...
+        </div>
+
+    </div>
+
+
+    <!-- WESTERN CONFERENCE -->
+
+    <div class="conference">
+
+        <h3>
+            🏀 Western Conference
+        </h3>
+
+        <div id="westStandings">
+            Chargement du classement...
+        </div>
+
+    </div>
+
+</div>
+```
+
+</main>
+
+<!-- FOOTER -->
+
+<footer>
+
+```
+<p>
+    🏀 <strong>Basket Zone</strong>
+</p>
+
+<p>
+    Toute l'actualité du basketball au même endroit.
+</p>
+
+<p>
+
+    <a href="apropos.html">
+        À propos
+    </a>
+
+    |
+
+    <a href="contact.html">
+        Contact
+    </a>
+
+    |
+
+    <a href="confidentialite.html">
+        Politique de confidentialité
+    </a>
+
+</p>
+
+<p>
+    © 2026 Basket Zone - Tous droits réservés.
+</p>
+```
+
+</footer>
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+    /* =========================
+       PROTECTION HTML
+    ========================= */
+
+    function escapeHTML(value) {
+
+        if (value === null || value === undefined) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    /* =========================
+       LOGOS NBA
+    ========================= */
+
+    const teamLogos = {
+
+        "Atlanta Hawks":
+            "photos/atlanta-hawks_big_square.png",
+
+        "Boston Celtics":
+            "photos/boston-celtics_big_square.png",
+
+        "Brooklyn Nets":
+            "photos/brooklyn-nets_big_square.png",
+
+        "Charlotte Hornets":
+            "photos/charlotte-hornets_big_square.png",
+
+        "Chicago Bulls":
+            "photos/chicago-bulls_big_square.png",
+
+        "Cleveland Cavaliers":
+            "photos/cleveland-cavaliers_big_square.png",
+
+        "Dallas Mavericks":
+            "photos/dallas-mavericks_big_square.png",
+
+        "Denver Nuggets":
+            "photos/denver-nuggets_big_square.png",
+
+        "Detroit Pistons":
+            "photos/detroit-pistons_big_square.png",
+
+        "Golden State Warriors":
+            "photos/golden-state-warriors_big_square.png",
+
+        "Houston Rockets":
+            "photos/houston-rockets_big_square.png",
+
+        "Indiana Pacers":
+            "photos/indiana-pacers_big_square.png",
+
+        "LA Clippers":
+            "photos/la-clippers_big_square.png",
+
+        "Los Angeles Clippers":
+            "photos/la-clippers_big_square.png",
+
+        "Los Angeles Lakers":
+            "photos/los-angeles-lakers_big_square.png",
+
+        "Memphis Grizzlies":
+            "photos/memphis-grizzlies_big_square.png",
+
+        "Miami Heat":
+            "photos/miami-heat_big_square.png",
+
+        "Milwaukee Bucks":
+            "photos/milwaukee-bucks_big_square.png",
+
+        "Minnesota Timberwolves":
+            "photos/minnesota-timberwolves_big_square.png",
+
+        "New Orleans Pelicans":
+            "photos/new-orleans-pelicans_big_square.png",
+
+        "New York Knicks":
+            "photos/new-york-knicks_big_square.png",
+
+        "Oklahoma City Thunder":
+            "photos/oklahoma-city-thunder_big_square.png",
+
+        "Orlando Magic":
+            "photos/orlando-magic_big_square.png",
+
+        "Philadelphia 76ers":
+            "photos/philadelphia-76ers_big_square.png",
+
+        "Phoenix Suns":
+            "photos/phoenix-suns_big_square.png",
+
+        "Portland Trail Blazers":
+            "photos/portland-trail-blazers_big_square.png",
+
+        "Sacramento Kings":
+            "photos/sacramento-kings_big_square.png",
+
+        "San Antonio Spurs":
+            "photos/san-antonio-spurs_big_square.png",
+
+        "Toronto Raptors":
+            "photos/toronto-raptors_big_square.png",
+
+        "Utah Jazz":
+            "photos/utah-jazz_big_square.png",
+
+        "Washington Wizards":
+            "photos/washington-wizards_big_square.png"
+    };
+
+
+    /* =========================
+       CLASSEMENT NBA
+    ========================= */
+
+    async function loadStandings() {
+
+        const east =
+            document.getElementById(
+                "eastStandings"
+            );
+
+        const west =
+            document.getElementById(
+                "westStandings"
+            );
+
+        try {
+
+            const response =
+                await fetch(
+                    "standings.json?t=" + Date.now()
+                );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Impossible de charger standings.json"
+                );
+            }
+
+            const data =
+                await response.json();
+
+
+            function renderConference(
+                teams,
+                container
+            ) {
+
+                if (
+                    !Array.isArray(teams) ||
+                    teams.length === 0
+                ) {
+
+                    container.innerHTML =
+                        "<p>Aucun classement disponible.</p>";
+
+                    return;
+                }
+
+
+                let html = `
+
+                    <table class="standings-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>#</th>
+                                <th>Équipe</th>
+                                <th>V</th>
+                                <th>D</th>
+                                <th>%</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+                `;
+
+
+                teams.forEach(
+                    function (team, index) {
+
+                        const name =
+                            team.team ||
+                            team.name ||
+                            team.TeamName ||
+                            "Équipe";
+
+                        const wins =
+                            team.wins ??
+                            team.W ??
+                            "-";
+
+                        const losses =
+                            team.losses ??
+                            team.L ??
+                            "-";
+
+                        const pct =
+                            team.pct ??
+                            team.win_pct ??
+                            team.WinPct ??
+                            "-";
+
+                        const logo =
+                            teamLogos[name] || "";
+
+
+                        html += `
+
+                            <tr>
+
+                                <td>
+                                    ${index + 1}
+                                </td>
+
+                                <td class="team-cell">
+
+                                    ${
+                                        logo
+                                        ? `
+                                            <img
+                                                src="${escapeHTML(logo)}"
+                                                alt="${escapeHTML(name)}"
+                                                loading="lazy"
+                                            >
+                                        `
+                                        : ""
+                                    }
+
+                                    ${escapeHTML(name)}
+
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(wins)}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(losses)}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(pct)}
+                                </td>
+
+                            </tr>
+                        `;
+
+                    }
+                );
+
+
+                html += `
+
+                        </tbody>
+
+                    </table>
+                `;
+
+
+                container.innerHTML =
+                    html;
+
+            }
+
+
+            renderConference(
+                data.east,
+                east
+            );
+
+
+            renderConference(
+                data.west,
+                west
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "❌ Erreur classement :",
+                error
+            );
+
+            east.innerHTML =
+                "<p>❌ Impossible de charger le classement.</p>";
+
+            west.innerHTML =
+                "<p>❌ Impossible de charger le classement.</p>";
+
+        }
+
+    }
+
+
+    /* =========================
+       CHARGEMENT INITIAL
+    ========================= */
+
+    loadStandings();
+
+
+    /* =========================
+       ACTUALISATION
+       TOUTES LES 5 MINUTES
+    ========================= */
+
+    setInterval(
+        loadStandings,
+        5 * 60 * 1000
+    );
+
+</script>
+
+</body>
+
+</html>
