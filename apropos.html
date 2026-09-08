@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>ℹ️ À propos - Basket Zone</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f4f4;
+        color: #222;
+        line-height: 1.6;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+        background: linear-gradient(135deg, #ff6a00, #ff8c00);
+        color: white;
+        text-align: center;
+        padding: 35px 20px;
+    }
+
+    header h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    header p {
+        font-size: 18px;
+    }
+
+    /* =========================
+       MENU
+    ========================= */
+
+    nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: #111;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        padding: 10px;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+        background: #ff6a00;
+    }
+
+    /* =========================
+       CONTENU
+    ========================= */
+
+    main {
+        max-width: 900px;
+        margin: auto;
+        padding: 40px 20px;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 30px;
+        color: #ff6a00;
+    }
+
+    .page-card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .page-card p {
+        margin-bottom: 18px;
+    }
+
+    .page-card h3 {
+        margin-top: 25px;
+        margin-bottom: 12px;
+        color: #ff6a00;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+        background: #111;
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+        margin-top: 40px;
+    }
+
+    footer p {
+        margin-bottom: 10px;
+    }
+
+    footer a {
+        color: white;
+        text-decoration: none;
+        margin: 0 8px;
+    }
+
+    footer a:hover {
+        color: #ff6a00;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
+
+        header h1 {
+            font-size: 32px;
+        }
+
+        header p {
+            font-size: 15px;
+        }
+
+        nav {
+            position: static;
+        }
+
+        nav a {
+            font-size: 13px;
+            padding: 8px 10px;
+        }
+
+        .section-title {
+            font-size: 27px;
+        }
+
+        .page-card {
+            padding: 20px;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+```
+<h1>🏀 Basket Zone</h1>
+
+<p>
+    Toute l'actualité du basketball au même endroit
+</p>
+```
+
+</header>
+
+<!-- =========================
+     MENU
+========================= -->
+
+<nav>
+
+```
+<a href="index.html">
+    🏠 Accueil
+</a>
+
+<a href="actualites.html">
+    📰 Actualités
+</a>
+
+<a href="matchs.html">
+    🏀 Matchs
+</a>
+
+<a href="joueurs.html">
+    ⭐ Joueurs
+</a>
+
+<a href="classement.html">
+    🏆 Classement
+</a>
+
+<a href="apropos.html" class="active">
+    ℹ️ À propos
+</a>
+
+<a href="contact.html">
+    📞 Contact
+</a>
+```
+
+</nav>
+
+<!-- =========================
+     CONTENU
+========================= -->
+
+<main>
+
+```
+<h2 class="section-title">
+    ℹ️ À propos de Basket Zone
+</h2>
+
+
+<div class="page-card">
+
+    <h3>
+        🏀 Bienvenue sur Basket Zone
+    </h3>
+
+    <p>
+        <strong>Basket Zone</strong> est un site consacré
+        à l'univers du basketball.
+    </p>
+
+    <p>
+        Notre objectif est de réunir au même endroit les
+        actualités, les matchs, les joueurs et les classements
+        afin de proposer une expérience simple et agréable aux
+        passionnés de basketball.
+    </p>
+
+
+    <h3>
+        📰 Les actualités
+    </h3>
+
+    <p>
+        Les actualités NBA affichées sur Basket Zone sont
+        mises à jour automatiquement grâce au système
+        d'actualisation du site.
+    </p>
+
+
+    <h3>
+        📊 Les classements
+    </h3>
+
+    <p>
+        Le classement NBA est mis à jour automatiquement
+        lorsque les nouvelles données disponibles sont
+        récupérées par le système du site.
+    </p>
+
+
+    <h3>
+        ⭐ Les joueurs
+    </h3>
+
+    <p>
+        Basket Zone présente également plusieurs joueurs NBA
+        et leurs statistiques principales, notamment les points,
+        les rebonds et les passes décisives.
+    </p>
+
+    <p>
+        Les statistiques affichées peuvent être mises à jour
+        automatiquement selon les données disponibles.
+    </p>
+
+
+    <h3>
+        🚀 L'avenir de Basket Zone
+    </h3>
+
+    <p>
+        Basket Zone est actuellement en développement.
+        De nouvelles fonctionnalités pourront être ajoutées
+        progressivement afin d'améliorer l'expérience des
+        visiteurs.
+    </p>
+
+    <p>
+        🏀 Merci de visiter Basket Zone et de suivre
+        l'actualité du basketball avec nous !
+    </p>
+
+</div>
+```
+
+</main>
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+```
+<p>
+    🏀 <strong>Basket Zone</strong>
+</p>
+
+<p>
+    Toute l'actualité du basketball au même endroit.
+</p>
+
+<p>
+
+    <a href="apropos.html">
+        À propos
+    </a>
+
+    |
+
+    <a href="contact.html">
+        Contact
+    </a>
+
+    |
+
+    <a href="confidentialite.html">
+        Politique de confidentialité
+    </a>
+
+</p>
+
+<p>
+    © 2026 Basket Zone - Tous droits réservés.
+</p>
+```
+
+</footer>
+
+</body>
+
+</html>
