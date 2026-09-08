@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>🏀 Matchs - Basket Zone</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f4f4;
+        color: #222;
+        line-height: 1.6;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+        background: linear-gradient(135deg, #ff6a00, #ff8c00);
+        color: white;
+        text-align: center;
+        padding: 35px 20px;
+    }
+
+    header h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    header p {
+        font-size: 18px;
+    }
+
+    /* =========================
+       MENU
+    ========================= */
+
+    nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: #111;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        padding: 10px;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+        background: #ff6a00;
+    }
+
+    /* =========================
+       CONTENU
+    ========================= */
+
+    main {
+        max-width: 1000px;
+        margin: auto;
+        padding: 40px 20px;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 30px;
+        color: #ff6a00;
+    }
+
+    /* =========================
+       MATCHS
+    ========================= */
+
+    .matches-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .match-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        text-align: center;
+    }
+
+    .match-date {
+        font-weight: bold;
+        color: #ff6a00;
+        margin-bottom: 20px;
+        font-size: 17px;
+    }
+
+    .teams {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .team {
+        flex: 1;
+    }
+
+    .team img {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+        margin-bottom: 10px;
+    }
+
+    .team-name {
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .vs {
+        font-size: 24px;
+        font-weight: bold;
+        color: #ff6a00;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+        background: #111;
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+        margin-top: 40px;
+    }
+
+    footer p {
+        margin-bottom: 10px;
+    }
+
+    footer a {
+        color: white;
+        text-decoration: none;
+        margin: 0 8px;
+    }
+
+    footer a:hover {
+        color: #ff6a00;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
+
+        header h1 {
+            font-size: 32px;
+        }
+
+        header p {
+            font-size: 15px;
+        }
+
+        nav {
+            position: static;
+        }
+
+        nav a {
+            font-size: 13px;
+            padding: 8px 10px;
+        }
+
+        .section-title {
+            font-size: 27px;
+        }
+
+        .teams {
+            gap: 10px;
+        }
+
+        .team img {
+            width: 65px;
+            height: 65px;
+        }
+
+        .vs {
+            font-size: 18px;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<!-- HEADER -->
+
+<header>
+
+    <h1>🏀 Basket Zone</h1>
+
+    <p>
+        Toute l'actualité du basketball au même endroit
+    </p>
+
+</header>
+
+
+<!-- MENU -->
+
+<nav>
+
+    <a href="index.html">
+        🏠 Accueil
+    </a>
+
+    <a href="actualites.html">
+        📰 Actualités
+    </a>
+
+    <a href="matchs.html" class="active">
+        🏀 Matchs
+    </a>
+
+    <a href="joueurs.html">
+        ⭐ Joueurs
+    </a>
+
+    <a href="classement.html">
+        🏆 Classement
+    </a>
+
+    <a href="apropos.html">
+        ℹ️ À propos
+    </a>
+
+    <a href="contact.html">
+        📞 Contact
+    </a>
+
+</nav>
+
+
+<!-- CONTENU -->
+
+<main>
+
+    <h2 class="section-title">
+        🏀 Prochains matchs NBA
+    </h2>
+
+    <div class="matches-container">
+
+        <!-- MATCH 1 -->
+
+        <div class="match-card">
+
+            <div class="match-date">
+                📅 20 octobre 2026
+            </div>
+
+            <div class="teams">
+
+                <div class="team">
+
+                    <img
+                        src="photos/new-york-knicks_big_square.png"
+                        alt="New York Knicks"
+                    >
+
+                    <div class="team-name">
+                        New York Knicks
+                    </div>
+
+                </div>
+
+                <div class="vs">
+                    VS
+                </div>
+
+                <div class="team">
+
+                    <img
+                        src="photos/philadelphia-76ers_big_square.png"
+                        alt="Philadelphia 76ers"
+                    >
+
+                    <div class="team-name">
+                        Philadelphia 76ers
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MATCH 2 -->
+
+        <div class="match-card">
+
+            <div class="match-date">
+                📅 20 octobre 2026
+            </div>
+
+            <div class="teams">
+
+                <div class="team">
+
+                    <img
+                        src="photos/san-antonio-spurs_big_square.png"
+                        alt="San Antonio Spurs"
+                    >
+
+                    <div class="team-name">
+                        San Antonio Spurs
+                    </div>
+
+                </div>
+
+                <div class="vs">
+                    VS
+                </div>
+
+                <div class="team">
+
+                    <img
+                        src="photos/oklahoma-city-thunder_big_square.png"
+                        alt="Oklahoma City Thunder"
+                    >
+
+                    <div class="team-name">
+                        Oklahoma City Thunder
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <p>
+        🏀 <strong>Basket Zone</strong>
+    </p>
+
+    <p>
+        Toute l'actualité du basketball au même endroit.
+    </p>
+
+    <p>
+
+        <a href="apropos.html">
+            À propos
+        </a>
+
+        |
+
+        <a href="contact.html">
+            Contact
+        </a>
+
+        |
+
+        <a href="confidentialite.html">
+            Politique de confidentialité
+        </a>
+
+    </p>
+
+    <p>
+        © 2026 Basket Zone - Tous droits réservés.
+    </p>
+
+</footer>
+```
+
+</body>
+
+</html>
