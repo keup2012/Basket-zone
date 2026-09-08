@@ -1,5 +1,5 @@
 {
-    "updated": "2026-09-08T02:28:57.087305+00:00",
+    "updated": "2026-09-08T02:54:58.872596+00:00",
     "articles": [
         {
             "title": "2026-27 NBA key dates",
@@ -16,6 +16,14 @@
             "date": "",
             "source": "NBA.com",
             "image": "https://cdn.nba.com/logos/nba/fallback/NBA.Com-National-Basketball-Association.png"
+        },
+        {
+            "title": "2025-26 NBA player & coach pronunciation guide",
+            "description": "Learn how to pronounce NBA player and coach names by listening to the player or coach say their respective names.",
+            "link": "https://www.nba.com/news/2025-26-nba-player-pronunciation-guide",
+            "date": "",
+            "source": "NBA.com",
+            "image": "https://cdn.nba.com/manage/2023/04/nba-app-pregame.jpg"
         },
         {
             "title": "Starting 5 Daily Newsletter",
@@ -88,14 +96,6 @@
             "date": "",
             "source": "NBA.com",
             "image": "https://cdn.nba.com/manage/2026/09/Amen_Thompson_1920x1080.jpg"
-        },
-        {
-            "title": "NBA announces penalties and findings arising from investigation of LA Clippers and Kawhi Leonard",
-            "description": "The investigation found a pattern of misconduct and multiple significant rules violations by the Clippers organization",
-            "link": "https://www.nba.com/news/nba-investigation-findings-la-clippers",
-            "date": "",
-            "source": "NBA.com",
-            "image": "https://cdn.nba.com/manage/2026/09/GettyImages-2268519234-scaled-e1788381368408.jpg"
         }
     ]
 }
