@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>📞 Contact - Basket Zone</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f4f4;
+        color: #222;
+        line-height: 1.6;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+        background: linear-gradient(135deg, #ff6a00, #ff8c00);
+        color: white;
+        text-align: center;
+        padding: 35px 20px;
+    }
+
+    header h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    header p {
+        font-size: 18px;
+    }
+
+    /* =========================
+       MENU
+    ========================= */
+
+    nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: #111;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        padding: 10px;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+        background: #ff6a00;
+    }
+
+    /* =========================
+       CONTENU
+    ========================= */
+
+    main {
+        max-width: 900px;
+        margin: auto;
+        padding: 40px 20px;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 30px;
+        color: #ff6a00;
+    }
+
+    .contact-card {
+        background: white;
+        padding: 35px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .contact-card p {
+        margin-bottom: 20px;
+        font-size: 17px;
+    }
+
+    .contact-email {
+        display: block;
+        background: #f4f4f4;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin: 25px 0;
+    }
+
+    .contact-email a {
+        color: #ff6a00;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 18px;
+    }
+
+    .contact-email a:hover {
+        text-decoration: underline;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+        background: #111;
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+        margin-top: 40px;
+    }
+
+    footer p {
+        margin-bottom: 10px;
+    }
+
+    footer a {
+        color: white;
+        text-decoration: none;
+        margin: 0 8px;
+    }
+
+    footer a:hover {
+        color: #ff6a00;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
+
+        header h1 {
+            font-size: 32px;
+        }
+
+        header p {
+            font-size: 15px;
+        }
+
+        nav {
+            position: static;
+        }
+
+        nav a {
+            font-size: 13px;
+            padding: 8px 10px;
+        }
+
+        .section-title {
+            font-size: 27px;
+        }
+
+        .contact-card {
+            padding: 25px 20px;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <h1>🏀 Basket Zone</h1>
+
+    <p>
+        Toute l'actualité du basketball au même endroit
+    </p>
+
+</header>
+
+
+<!-- =========================
+     MENU
+========================= -->
+
+<nav>
+
+    <a href="index.html">
+        🏠 Accueil
+    </a>
+
+    <a href="actualites.html">
+        📰 Actualités
+    </a>
+
+    <a href="matchs.html">
+        🏀 Matchs
+    </a>
+
+    <a href="joueurs.html">
+        ⭐ Joueurs
+    </a>
+
+    <a href="classement.html">
+        🏆 Classement
+    </a>
+
+    <a href="apropos.html">
+        ℹ️ À propos
+    </a>
+
+    <a href="contact.html" class="active">
+        📞 Contact
+    </a>
+
+</nav>
+
+
+<!-- =========================
+     CONTENU
+========================= -->
+
+<main>
+
+    <h2 class="section-title">
+        📞 Contact
+    </h2>
+
+    <div class="contact-card">
+
+        <p>
+            Une question, une suggestion ou un problème
+            concernant Basket Zone ?
+        </p>
+
+        <p>
+            Vous pouvez nous contacter directement par email.
+        </p>
+
+        <div class="contact-email">
+
+            📩
+
+            <a href="mailto:kouassiemolo@outlook.fr">
+                kouassiemolo@outlook.fr
+            </a>
+
+        </div>
+
+        <p>
+            Nous sommes à votre écoute pour améliorer
+            Basket Zone et proposer une meilleure expérience
+            aux passionnés de basketball. 🏀
+        </p>
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+        🏀 <strong>Basket Zone</strong>
+    </p>
+
+    <p>
+        Toute l'actualité du basketball au même endroit.
+    </p>
+
+    <p>
+
+        <a href="apropos.html">
+            À propos
+        </a>
+
+        |
+
+        <a href="contact.html">
+            Contact
+        </a>
+
+        |
+
+        <a href="confidentialite.html">
+            Politique de confidentialité
+        </a>
+
+    </p>
+
+    <p>
+        © 2026 Basket Zone - Tous droits réservés.
+    </p>
+
+</footer>
+```
+
+</body>
+
+</html>
