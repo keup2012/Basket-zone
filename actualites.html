@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>📰 Actualités - Basket Zone</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f4f4;
+        color: #222;
+        line-height: 1.6;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+        background: linear-gradient(135deg, #ff6a00, #ff8c00);
+        color: white;
+        text-align: center;
+        padding: 35px 20px;
+    }
+
+    header h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    header p {
+        font-size: 18px;
+    }
+
+    /* =========================
+       MENU
+    ========================= */
+
+    nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: #111;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        padding: 10px;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+        background: #ff6a00;
+    }
+
+    /* =========================
+       CONTENU
+    ========================= */
+
+    main {
+        max-width: 1200px;
+        margin: auto;
+        padding: 40px 20px;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 30px;
+        color: #ff6a00;
+    }
+
+    /* =========================
+       ACTUALITÉS
+    ========================= */
+
+    .news-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .news-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        transition: transform 0.2s;
+    }
+
+    .news-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .news-card img {
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .news-content {
+        padding: 18px;
+    }
+
+    .news-content h3 {
+        margin-bottom: 10px;
+        color: #111;
+    }
+
+    .news-content p {
+        margin-bottom: 10px;
+        color: #555;
+    }
+
+    .news-date {
+        font-size: 13px;
+        color: #777;
+        margin-bottom: 10px;
+    }
+
+    .news-source {
+        font-size: 13px;
+        font-weight: bold;
+        color: #ff6a00;
+        margin-bottom: 12px;
+    }
+
+    .news-link {
+        display: inline-block;
+        background: #ff6a00;
+        color: white;
+        text-decoration: none;
+        padding: 9px 13px;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+
+    .news-link:hover {
+        background: #e65c00;
+    }
+
+    .refresh-button {
+        display: block;
+        margin: 30px auto 0;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 7px;
+        background: #111;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .refresh-button:hover {
+        background: #ff6a00;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+        background: #111;
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+        margin-top: 40px;
+    }
+
+    footer p {
+        margin-bottom: 10px;
+    }
+
+    footer a {
+        color: white;
+        text-decoration: none;
+        margin: 0 8px;
+    }
+
+    footer a:hover {
+        color: #ff6a00;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
+
+        header h1 {
+            font-size: 32px;
+        }
+
+        header p {
+            font-size: 15px;
+        }
+
+        nav {
+            position: static;
+        }
+
+        nav a {
+            font-size: 13px;
+            padding: 8px 10px;
+        }
+
+        .section-title {
+            font-size: 27px;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <h1>🏀 Basket Zone</h1>
+
+    <p>
+        Toute l'actualité du basketball au même endroit
+    </p>
+
+</header>
+
+
+<!-- =========================
+     MENU
+========================= -->
+
+<nav>
+
+    <a href="index.html">
+        🏠 Accueil
+    </a>
+
+    <a href="actualites.html" class="active">
+        📰 Actualités
+    </a>
+
+    <a href="matchs.html">
+        🏀 Matchs
+    </a>
+
+    <a href="joueurs.html">
+        ⭐ Joueurs
+    </a>
+
+    <a href="classement.html">
+        🏆 Classement
+    </a>
+
+    <a href="apropos.html">
+        ℹ️ À propos
+    </a>
+
+    <a href="contact.html">
+        📞 Contact
+    </a>
+
+</nav>
+
+
+<!-- =========================
+     CONTENU
+========================= -->
+
+<main>
+
+    <h2 class="section-title">
+        📰 Actualités NBA
+    </h2>
+
+    <div id="newsContainer" class="news-container">
+
+        <p>
+            Chargement des actualités...
+        </p>
+
+    </div>
+
+
+    <button
+        id="refreshNews"
+        class="refresh-button"
+        type="button"
+    >
+        🔄 Actualiser les actualités
+    </button>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+        🏀 <strong>Basket Zone</strong>
+    </p>
+
+    <p>
+        Toute l'actualité du basketball au même endroit.
+    </p>
+
+    <p>
+
+        <a href="apropos.html">
+            À propos
+        </a>
+
+        |
+
+        <a href="contact.html">
+            Contact
+        </a>
+
+        |
+
+        <a href="confidentialite.html">
+            Politique de confidentialité
+        </a>
+
+    </p>
+
+    <p>
+        © 2026 Basket Zone - Tous droits réservés.
+    </p>
+
+</footer>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+    /* =========================
+       SÉCURITÉ IMAGE
+    ========================= */
+
+    function safeImageURL(url) {
+
+        if (!url || typeof url !== "string") {
+            return "";
+        }
+
+        if (
+            url.startsWith("http://") ||
+            url.startsWith("https://") ||
+            url.startsWith("photos/") ||
+            url.startsWith("/")
+        ) {
+            return url;
+        }
+
+        return "";
+    }
+
+
+    /* =========================
+       PROTECTION HTML
+    ========================= */
+
+    function escapeHTML(value) {
+
+        if (value === null || value === undefined) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    /* =========================
+       DATE
+    ========================= */
+
+    function formatDate(dateValue) {
+
+        if (!dateValue) {
+            return "";
+        }
+
+        const date =
+            new Date(dateValue);
+
+        if (Number.isNaN(date.getTime())) {
+            return escapeHTML(dateValue);
+        }
+
+        return date.toLocaleDateString(
+            "fr-FR",
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }
+        );
+    }
+
+
+    /* =========================
+       ACTUALITÉS
+    ========================= */
+
+    async function loadNews() {
+
+        const container =
+            document.getElementById("newsContainer");
+
+        container.innerHTML =
+            "<p>Chargement des actualités...</p>";
+
+        try {
+
+            const response =
+                await fetch(
+                    "news.json?t=" + Date.now()
+                );
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Impossible de charger news.json"
+                );
+
+            }
+
+            const data =
+                await response.json();
+
+            const articles =
+                Array.isArray(data.articles)
+                    ? data.articles
+                    : [];
+
+            if (articles.length === 0) {
+
+                container.innerHTML =
+                    "<p>Aucune actualité disponible pour le moment.</p>";
+
+                return;
+
+            }
+
+            container.innerHTML = "";
+
+            articles.forEach(function (article) {
+
+                const title =
+                    escapeHTML(
+                        article.title ||
+                        "Actualité NBA"
+                    );
+
+                const description =
+                    escapeHTML(
+                        article.description ||
+                        ""
+                    );
+
+                const date =
+                    formatDate(
+                        article.date ||
+                        article.pubDate ||
+                        article.published
+                    );
+
+                const source =
+                    escapeHTML(
+                        article.source ||
+                        "NBA.com"
+                    );
+
+                const link =
+                    typeof article.link === "string"
+                        ? article.link
+                        : "#";
+
+                const image =
+                    safeImageURL(
+                        article.image ||
+                        article.thumbnail ||
+                        ""
+                    );
+
+                const card =
+                    document.createElement("article");
+
+                card.className =
+                    "news-card";
+
+                let imageHTML = "";
+
+                if (image) {
+
+                    imageHTML = `
+                        <img
+                            src="${escapeHTML(image)}"
+                            alt="${title}"
+                            loading="lazy"
+                        >
+                    `;
+
+                }
+
+                card.innerHTML = `
+
+                    ${imageHTML}
+
+                    <div class="news-content">
+
+                        <h3>
+                            ${title}
+                        </h3>
+
+                        ${
+                            date
+                            ? `
+                                <div class="news-date">
+                                    📅 ${date}
+                                </div>
+                            `
+                            : ""
+                        }
+
+                        <div class="news-source">
+                            📰 ${source}
+                        </div>
+
+                        ${
+                            description
+                            ? `
+                                <p>
+                                    ${description}
+                                </p>
+                            `
+                            : ""
+                        }
+
+                        ${
+                            link !== "#"
+                            ? `
+                                <a
+                                    class="news-link"
+                                    href="${escapeHTML(link)}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Lire l'article →
+                                </a>
+                            `
+                            : ""
+                        }
+
+                    </div>
+                `;
+
+                container.appendChild(card);
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "Erreur actualités :",
+                error
+            );
+
+            container.innerHTML = `
+                <p>
+                    ❌ Impossible de charger les actualités
+                    pour le moment.
+                </p>
+            `;
+
+        }
+
+    }
+
+
+    /* =========================
+       BOUTON ACTUALISATION
+    ========================= */
+
+    document
+        .getElementById("refreshNews")
+        .addEventListener(
+            "click",
+            loadNews
+        );
+
+
+    /* =========================
+       CHARGEMENT INITIAL
+    ========================= */
+
+    loadNews();
+
+
+    /* =========================
+       ACTUALISATION AUTOMATIQUE
+       TOUTES LES 5 MINUTES
+    ========================= */
+
+    setInterval(
+        loadNews,
+        5 * 60 * 1000
+    );
+
+</script>
+```
+
+</body>
+</html>
