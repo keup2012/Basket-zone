@@ -1,1521 +1,751 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="description"
-        content="Basket Zone - Actualités NBA, matchs, joueurs et classement NBA."
-    >
-
-    <title>Basket Zone | Actualités NBA</title>
+    <title>Basket Zone | Actualité Basketball</title>
+    <meta name="description" content="Basket Zone - Toute l'actualité du basketball au même endroit. NBA, matchs, joueurs et classements.">
 
     <style>
-
-        /* =========================================================
-           RESET
-        ========================================================= */
-
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 75px;
         }
 
         body {
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            background: #f3f4f6;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f5f7;
             color: #171717;
-            line-height: 1.5;
-        }
-
-        img {
-            max-width: 100%;
-        }
-
-        button,
-        input {
-            font: inherit;
+            line-height: 1.6;
         }
 
         a {
+            text-decoration: none;
             color: inherit;
         }
 
-
-        /* =========================================================
-           COULEURS
-        ========================================================= */
-
-        :root {
-            --orange: #ff6a00;
-            --orange-dark: #d94f00;
-            --orange-light: #fff1e8;
-
-            --black: #0b0b0b;
-            --dark: #151515;
-            --dark-2: #202020;
-
-            --white: #ffffff;
-            --gray: #6b7280;
-            --light-gray: #e5e7eb;
-            --background: #f3f4f6;
-
-            --shadow:
-                0 10px 30px rgba(0, 0, 0, 0.08);
-
-            --shadow-hover:
-                0 18px 40px rgba(0, 0, 0, 0.14);
-
-            --radius: 16px;
-        }
-
-
-        /* =========================================================
-           HEADER / HERO
-        ========================================================= */
+        /* =========================
+           HEADER
+        ========================= */
 
         header {
-            position: relative;
-            min-height: 480px;
+            background: linear-gradient(135deg, #111111, #222222);
+            color: white;
+        }
 
+        .top-bar {
+            max-width: 1250px;
+            margin: auto;
+            padding: 22px 20px;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-basket {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #ff6a00;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-
-            text-align: center;
-
-            color: white;
-
-            padding: 70px 20px 90px;
-
-            overflow: hidden;
-
-            background:
-                radial-gradient(
-                    circle at 15% 30%,
-                    rgba(255, 106, 0, 0.35),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 85% 20%,
-                    rgba(255, 255, 255, 0.08),
-                    transparent 25%
-                ),
-                linear-gradient(
-                    135deg,
-                    #050505 0%,
-                    #111111 50%,
-                    #251207 100%
-                );
+            font-size: 29px;
+            box-shadow: 0 5px 18px rgba(255, 106, 0, 0.35);
         }
 
-        /*
-          Décoration du terrain de basket
-        */
-
-        header::before {
-            content: "";
-
-            position: absolute;
-
-            width: 600px;
-            height: 600px;
-
-            border: 2px solid rgba(255, 106, 0, 0.18);
-            border-radius: 50%;
-
-            right: -180px;
-            bottom: -300px;
-
-            pointer-events: none;
+        .logo-text h1 {
+            font-size: 29px;
+            font-weight: 800;
+            letter-spacing: -1px;
         }
 
-        header::after {
-            content: "";
-
-            position: absolute;
-
-            width: 350px;
-            height: 350px;
-
-            border: 2px solid rgba(255, 255, 255, 0.06);
-            border-radius: 50%;
-
-            left: -150px;
-            top: -180px;
-
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-
-            width: 100%;
-            max-width: 1050px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-
-            padding: 7px 14px;
-
-            margin-bottom: 22px;
-
-            border: 1px solid rgba(255,255,255,0.18);
-            border-radius: 999px;
-
-            background: rgba(255,255,255,0.07);
-
-            color: #ddd;
-
+        .logo-text p {
+            color: #bcbcbc;
             font-size: 13px;
-            font-weight: 700;
-
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-top: 2px;
         }
 
-        .hero-title {
-            font-size: clamp(48px, 8vw, 88px);
-
-            line-height: 0.95;
-
-            font-weight: 900;
-
-            letter-spacing: -4px;
-
-            margin-bottom: 22px;
-        }
-
-        .hero-title span {
-            color: var(--orange);
-        }
-
-        .hero-subtitle {
-            max-width: 700px;
-
-            margin: 0 auto 32px;
-
-            color: #d6d6d6;
-
-            font-size: clamp(17px, 2vw, 21px);
-        }
-
-        .hero-search {
-            width: 100%;
-            max-width: 720px;
-
-            margin: 0 auto;
-
-            display: flex;
-
-            padding: 6px;
-
-            border-radius: 12px;
-
-            background: white;
-
-            box-shadow:
-                0 15px 45px rgba(0,0,0,0.3);
-        }
-
-        #searchInput {
-            flex: 1;
-
-            min-width: 0;
-
-            border: none;
-            outline: none;
-
-            padding: 15px 18px;
-
-            color: #222;
-
-            background: transparent;
-
-            font-size: 16px;
-        }
-
-        #searchButton {
-            border: none;
-            border-radius: 9px;
-
-            padding: 0 22px;
-
-            background: var(--orange);
-            color: white;
-
-            font-weight: 700;
-
-            cursor: pointer;
-
-            transition:
-                background 0.2s,
-                transform 0.2s;
-        }
-
-        #searchButton:hover {
-            background: var(--orange-dark);
-            transform: translateY(-1px);
-        }
-
-
-        /* =========================================================
+        /* =========================
            NAVIGATION
-        ========================================================= */
+        ========================= */
 
         nav {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            background: #090909;
+            border-top: 1px solid #303030;
+            border-bottom: 1px solid #303030;
+        }
 
+        .nav-container {
+            max-width: 1250px;
+            margin: auto;
             display: flex;
-            justify-content: center;
             align-items: center;
-
-            gap: 5px;
-
-            padding: 8px 15px;
-
-            background: rgba(10,10,10,0.97);
-
-            border-bottom:
-                1px solid rgba(255,255,255,0.08);
-
-            backdrop-filter: blur(12px);
-
+            gap: 4px;
+            padding: 0 15px;
             overflow-x: auto;
         }
 
         nav a {
-            white-space: nowrap;
-
-            padding: 11px 14px;
-
-            border-radius: 9px;
-
             color: #d8d8d8;
-
-            text-decoration: none;
-
+            padding: 17px 14px;
             font-size: 14px;
             font-weight: 700;
-
-            transition:
-                background 0.2s,
-                color 0.2s;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: 0.2s;
         }
 
         nav a:hover {
             color: white;
-            background: rgba(255,255,255,0.08);
+            background: #1d1d1d;
+            border-bottom-color: #ff6a00;
         }
 
         nav a.active {
-            background: var(--orange);
             color: white;
+            background: #181818;
+            border-bottom-color: #ff6a00;
         }
 
+        /* =========================
+           SEARCH
+        ========================= */
 
-        /* =========================================================
-           GENERAL
-        ========================================================= */
+        .search-area {
+            max-width: 1250px;
+            margin: auto;
+            padding: 18px 20px;
+        }
 
-        section {
+        .search-box {
+            position: relative;
+            max-width: 500px;
+            margin-left: auto;
+        }
+
+        .search-box input {
             width: 100%;
-
-            max-width: 1280px;
-
-            margin: 0 auto;
-
-            padding:
-                75px 25px;
+            padding: 14px 18px 14px 46px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            color: #222;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
         }
 
-        .section-heading {
-            display: flex;
-
-            justify-content: space-between;
-            align-items: flex-end;
-
-            gap: 20px;
-
-            margin-bottom: 30px;
+        .search-icon {
+            position: absolute;
+            left: 17px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #777;
         }
 
-        .section-heading-left {
-            border-left: 5px solid var(--orange);
+        /* =========================
+           MAIN
+        ========================= */
 
-            padding-left: 15px;
-        }
-
-        .section-label {
-            color: var(--orange);
-
-            font-size: 12px;
-            font-weight: 800;
-
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-
-            margin-bottom: 4px;
+        main {
+            max-width: 1250px;
+            margin: auto;
+            padding: 30px 20px 60px;
         }
 
         .section-title {
-            font-size: 34px;
-
-            line-height: 1.1;
-
-            font-weight: 900;
-
-            color: var(--black);
-        }
-
-        .section-description {
-            color: var(--gray);
-
-            max-width: 650px;
-
-            margin-top: 8px;
-        }
-
-
-        /* =========================================================
-           ACTUALITÉS
-        ========================================================= */
-
-        #actualites {
-            background: white;
-
-            max-width: none;
-
-            padding-left: max(25px, calc((100% - 1230px) / 2));
-            padding-right: max(25px, calc((100% - 1230px) / 2));
-        }
-
-        .news-toolbar {
             display: flex;
-
             align-items: center;
-            gap: 12px;
-
-            margin-bottom: 15px;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 18px;
         }
 
-        #manual-news-refresh {
-            border: none;
-
-            padding: 10px 16px;
-
-            border-radius: 9px;
-
-            background: var(--orange);
-            color: white;
-
-            font-weight: 700;
-
-            cursor: pointer;
+        .section-title h2 {
+            font-size: 25px;
+            font-weight: 800;
         }
 
-        #manual-news-refresh:hover {
-            background: var(--orange-dark);
+        .section-title h2::before {
+            content: "";
+            display: inline-block;
+            width: 5px;
+            height: 26px;
+            background: #ff6a00;
+            margin-right: 10px;
+            vertical-align: -4px;
+            border-radius: 3px;
         }
 
-        #manual-news-refresh:disabled {
-            opacity: 0.55;
-            cursor: wait;
-        }
-
-        #news-refresh-status {
-            color: var(--gray);
-            font-size: 13px;
-        }
-
-        .news-status {
-            color: var(--gray);
-
-            margin-bottom: 25px;
-
+        .section-title a {
+            color: #ff6a00;
             font-size: 14px;
+            font-weight: 700;
         }
 
-        .news-container {
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            background:
+                linear-gradient(90deg, rgba(0,0,0,0.88), rgba(0,0,0,0.45)),
+                linear-gradient(135deg, #ff6a00, #121212);
+            min-height: 330px;
+            border-radius: 14px;
+            padding: 45px;
+            color: white;
+            display: flex;
+            align-items: center;
+            margin-bottom: 35px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.16);
+        }
+
+        .hero-content {
+            max-width: 700px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: #ff6a00;
+            padding: 6px 11px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+
+        .hero h2 {
+            font-size: 42px;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            color: #dddddd;
+            font-size: 16px;
+            max-width: 650px;
+            margin-bottom: 24px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 7px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .btn-orange {
+            background: #ff6a00;
+            color: white;
+        }
+
+        .btn-orange:hover {
+            background: #e85f00;
+            transform: translateY(-1px);
+        }
+
+        .btn-light {
+            background: white;
+            color: #111;
+        }
+
+        .btn-light:hover {
+            background: #eeeeee;
+        }
+
+        /* =========================
+           ACTUALITÉS
+        ========================= */
+
+        .news-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(290px, 1fr)
-                );
-
-            gap: 24px;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 40px;
         }
 
         .news-card {
-            display: flex;
-            flex-direction: column;
-
-            overflow: hidden;
-
             background: white;
-
-            border:
-                1px solid #e8e8e8;
-
-            border-radius: var(--radius);
-
-            box-shadow: var(--shadow);
-
-            transition:
-                transform 0.25s,
-                box-shadow 0.25s;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+            transition: 0.25s;
+            border: 1px solid #eeeeee;
         }
 
         .news-card:hover {
-            transform: translateY(-6px);
-
-            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 9px 25px rgba(0,0,0,0.12);
         }
 
         .news-image {
-            position: relative;
-
-            width: 100%;
-            height: 220px;
-
-            overflow: hidden;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #111,
-                    #2a2a2a
-                );
-        }
-
-        .news-image img {
-            width: 100%;
-            height: 100%;
-
-            object-fit: cover;
-
-            display: block;
-
-            transition:
-                transform 0.45s;
-        }
-
-        .news-card:hover .news-image img {
-            transform: scale(1.05);
-        }
-
-        .news-image::after {
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            background:
-                linear-gradient(
-                    to top,
-                    rgba(0,0,0,0.35),
-                    transparent 55%
-                );
-
-            pointer-events: none;
-        }
-
-        .news-image-placeholder {
-            width: 100%;
-            height: 100%;
-
+            height: 175px;
+            background: linear-gradient(135deg, #222, #ff6a00);
             display: flex;
-
-            flex-direction: column;
-
-            justify-content: center;
             align-items: center;
-
-            gap: 7px;
-
+            justify-content: center;
             color: white;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #111,
-                    #2a2a2a 55%,
-                    var(--orange)
-                );
+            font-size: 50px;
         }
 
-        .news-image-placeholder strong {
-            font-size: 25px;
-        }
-
-        .news-image-placeholder span {
-            color: #ddd;
-            font-size: 13px;
+        .news-card.main-news .news-image {
+            height: 245px;
         }
 
         .news-content {
-            display: flex;
-            flex-direction: column;
-
-            flex: 1;
-
-            padding: 21px;
+            padding: 17px;
         }
 
-        .news-category {
-            align-self: flex-start;
-
-            padding: 5px 9px;
-
-            margin-bottom: 12px;
-
-            border-radius: 6px;
-
-            background: var(--orange-light);
-
-            color: var(--orange-dark);
-
+        .news-meta {
             font-size: 11px;
+            color: #ff6a00;
             font-weight: 800;
-
             text-transform: uppercase;
-            letter-spacing: 0.6px;
+            margin-bottom: 7px;
         }
 
-        .news-card h3 {
-            margin-bottom: 10px;
-
-            font-size: 20px;
-            line-height: 1.3;
+        .news-content h3 {
+            font-size: 19px;
+            line-height: 1.25;
+            margin-bottom: 9px;
         }
 
-        .news-card p {
-            color: #606060;
-
-            font-size: 14px;
-
-            line-height: 1.55;
-
-            margin-bottom: 15px;
+        .news-card:not(.main-news) .news-content h3 {
+            font-size: 16px;
         }
 
-        .news-date {
-            color: #888;
-
-            font-size: 12px;
-
-            margin-top: auto;
-
-            margin-bottom: 5px;
-        }
-
-        .news-source {
-            color: var(--orange-dark);
-
-            font-size: 12px;
-            font-weight: 700;
-
-            margin-bottom: 15px;
+        .news-content p {
+            color: #6b6b6b;
+            font-size: 13px;
         }
 
         .news-link {
-            display: inline-flex;
-
-            align-items: center;
-            justify-content: center;
-
-            width: 100%;
-
-            padding: 11px;
-
-            border-radius: 9px;
-
-            background: var(--black);
-            color: white;
-
-            text-decoration: none;
-
+            display: inline-block;
+            color: #ff6a00;
+            margin-top: 12px;
             font-size: 13px;
             font-weight: 700;
-
-            transition:
-                background 0.2s;
         }
 
-        .news-link:hover {
-            background: var(--orange);
-        }
-
-        .news-error {
-            grid-column: 1 / -1;
-
-            padding: 35px;
-
-            border-radius: var(--radius);
-
-            background: #f7f7f7;
-
-            text-align: center;
-
-            color: var(--gray);
-        }
-
-
-        /* =========================================================
+        /* =========================
            MATCHS
-        ========================================================= */
+        ========================= */
 
-        #matchs {
-            background: var(--background);
-        }
-
-        .matches-container {
+        .matches-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(330px, 1fr)
-                );
-
-            gap: 24px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 40px;
         }
 
         .match-card {
-            position: relative;
-
-            overflow: hidden;
-
-            padding: 25px;
-
-            border:
-                1px solid #e6e6e6;
-
-            border-radius: var(--radius);
-
             background: white;
-
-            box-shadow: var(--shadow);
-
-            transition:
-                transform 0.25s,
-                box-shadow 0.25s;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+            border: 1px solid #eeeeee;
         }
 
-        .match-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .match-card-top {
+        .match-top {
             display: flex;
-
             justify-content: space-between;
             align-items: center;
-
-            margin-bottom: 22px;
+            margin-bottom: 18px;
         }
 
-        .match-league {
-            color: var(--orange);
-
-            font-size: 11px;
-            font-weight: 800;
-
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .match-status {
-            padding: 5px 9px;
-
-            border-radius: 999px;
-
-            background: #f1f1f1;
-
-            color: #555;
-
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .match-status.upcoming {
-            background: var(--orange-light);
-            color: var(--orange-dark);
-        }
-
-        .teams {
-            display: grid;
-
-            grid-template-columns:
-                1fr
-                auto
-                1fr;
-
-            align-items: center;
-
-            gap: 15px;
-        }
-
-        .team {
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            text-align: center;
-
-            font-size: 14px;
-            font-weight: 800;
-        }
-
-        .match-team-logo {
-            width: 90px;
-            height: 90px;
-
-            object-fit: contain;
-
-            margin-bottom: 10px;
-        }
-
-        .vs {
-            width: 42px;
-            height: 42px;
-
-            display: flex;
-
-            justify-content: center;
-            align-items: center;
-
-            border-radius: 50%;
-
-            background: var(--black);
-            color: white;
-
+        .competition {
+            color: #ff6a00;
             font-size: 12px;
-            font-weight: 900;
+            font-weight: 800;
+            text-transform: uppercase;
         }
 
         .match-date {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .teams {
             display: flex;
-
-            justify-content: center;
             align-items: center;
-
-            margin-top: 22px;
-
-            padding: 12px;
-
-            border-top:
-                1px solid #eee;
-
-            color: #555;
-
-            font-size: 13px;
-            font-weight: 700;
+            justify-content: space-around;
+            gap: 20px;
         }
 
-        .no-game {
-            max-width: 750px;
-
-            margin: 0 auto;
-
-            padding: 35px;
-
-            border:
-                1px solid #e5e5e5;
-
-            border-radius: var(--radius);
-
-            background: white;
-
-            box-shadow: var(--shadow);
-
+        .team {
             text-align: center;
+            width: 40%;
         }
 
-        .no-game h3 {
+        .team img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
             margin-bottom: 8px;
         }
 
-        .no-game p {
-            color: var(--gray);
+        .team-name {
+            display: block;
+            font-weight: 700;
+            font-size: 14px;
         }
 
+        .vs {
+            font-weight: 900;
+            color: #999;
+            font-size: 14px;
+        }
 
-        /* =========================================================
+        /* =========================
            JOUEURS
-        ========================================================= */
+        ========================= */
 
-        #joueurs {
-            background: white;
-
-            max-width: none;
-
-            padding-left: max(25px, calc((100% - 1230px) / 2));
-            padding-right: max(25px, calc((100% - 1230px) / 2));
-        }
-
-        .players-container {
+        .players-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(210px, 1fr)
-                );
-
-            gap: 22px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 40px;
         }
 
         .player-card {
-            position: relative;
-
-            overflow: hidden;
-
             background: white;
-
-            border:
-                1px solid #e8e8e8;
-
-            border-radius: var(--radius);
-
-            box-shadow: var(--shadow);
-
-            transition:
-                transform 0.25s,
-                box-shadow 0.25s;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+            border: 1px solid #eeeeee;
+            transition: 0.25s;
         }
 
         .player-card:hover {
-            transform: translateY(-7px);
-
-            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
         }
 
         .player-photo {
-            position: relative;
-
-            width: 100%;
-            height: 250px;
-
+            height: 205px;
+            background: #e8e8e8;
             overflow: hidden;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #191919,
-                    #333
-                );
-        }
-
-        .player-photo::after {
-            content: "";
-
-            position: absolute;
-
-            inset: 0;
-
-            background:
-                linear-gradient(
-                    to top,
-                    rgba(0,0,0,0.65),
-                    transparent 60%
-                );
         }
 
         .player-photo img {
             width: 100%;
             height: 100%;
-
             object-fit: cover;
-
-            display: block;
-
-            transition:
-                transform 0.45s;
+            object-position: center top;
         }
 
-        .player-card:hover .player-photo img {
-            transform: scale(1.04);
+        .player-info {
+            padding: 14px;
         }
 
-        .player-content {
-            padding: 18px;
+        .player-info h3 {
+            font-size: 16px;
+            margin-bottom: 2px;
         }
 
-        .player-card h3 {
-            font-size: 18px;
-
-            line-height: 1.2;
-
-            margin-bottom: 5px;
-        }
-
-        .team-name {
-            color: var(--gray);
-
-            font-size: 13px;
-
-            margin-bottom: 17px;
+        .player-team {
+            color: #ff6a00;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 12px;
         }
 
         .stats {
             display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 7px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            border-top: 1px solid #eeeeee;
+            padding-top: 10px;
         }
 
         .stat {
-            padding: 10px 4px;
-
-            border-radius: 9px;
-
-            background: #f5f5f5;
-
             text-align: center;
         }
 
         .stat strong {
             display: block;
-
-            color: var(--orange);
-
-            font-size: 19px;
+            font-size: 15px;
         }
 
         .stat span {
-            color: #777;
-
             font-size: 10px;
-            font-weight: 800;
-
-            letter-spacing: 0.5px;
-        }
-
-
-        /* =========================================================
-           CLASSEMENT
-        ========================================================= */
-
-        #classement {
-            background: var(--background);
-
-            max-width: none;
-
-            padding-left: max(25px, calc((100% - 1230px) / 2));
-            padding-right: max(25px, calc((100% - 1230px) / 2));
-        }
-
-        .standings-container {
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-
-            gap: 25px;
-        }
-
-        .conference-card {
-            overflow: hidden;
-
-            border:
-                1px solid #e5e5e5;
-
-            border-radius: var(--radius);
-
-            background: white;
-
-            box-shadow: var(--shadow);
-        }
-
-        .conference-header {
-            padding: 20px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #111,
-                    #252525
-                );
-
-            color: white;
-        }
-
-        .conference-header h3 {
-            font-size: 21px;
-        }
-
-        .conference-header p {
-            color: #aaa;
-
-            font-size: 12px;
-
-            margin-top: 3px;
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        .standings-table {
-            width: 100%;
-
-            border-collapse: collapse;
-        }
-
-        .standings-table th {
-            padding: 12px 9px;
-
-            background: #fafafa;
-
-            border-bottom:
-                1px solid #eee;
-
-            color: #777;
-
-            font-size: 11px;
-
+            color: #888;
             text-transform: uppercase;
-
-            letter-spacing: 0.5px;
-
-            text-align: center;
         }
 
-        .standings-table th:nth-child(2) {
-            text-align: left;
+        /* =========================
+           CLASSEMENT
+        ========================= */
+
+        .standings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
         }
 
-        .standings-table td {
-            padding: 11px 9px;
+        .standings-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+            border: 1px solid #eeeeee;
+        }
 
-            border-bottom:
-                1px solid #f0f0f0;
+        .standings-box h3 {
+            margin-bottom: 14px;
+            font-size: 19px;
+        }
 
+        .conference {
+            color: #ff6a00;
+        }
+
+        .standing-row {
+            display: grid;
+            grid-template-columns: 35px 1fr 50px 50px;
+            gap: 8px;
+            align-items: center;
+            padding: 9px 0;
+            border-bottom: 1px solid #eeeeee;
             font-size: 13px;
-
-            text-align: center;
         }
 
-        .standings-table tbody tr {
-            transition:
-                background 0.2s;
-        }
-
-        .standings-table tbody tr:hover {
-            background: #fff7f1;
-        }
-
-        .standings-table tbody tr:last-child td {
+        .standing-row:last-child {
             border-bottom: none;
         }
 
-        .rank-number {
-            display: inline-flex;
-
-            width: 28px;
-            height: 28px;
-
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background: #f0f0f0;
-
-            font-size: 12px;
+        .standing-rank {
             font-weight: 800;
+            color: #888;
         }
 
-        .rank-number.first {
-            background: var(--orange);
-            color: white;
-        }
-
-        .team-cell {
-            display: flex;
-
-            align-items: center;
-
-            gap: 9px;
-
-            min-width: 180px;
-
+        .standing-team {
             font-weight: 700;
-
-            text-align: left;
         }
 
-        .team-logo {
-            width: 34px;
-            height: 34px;
-
-            min-width: 34px;
-
-            object-fit: contain;
-        }
-
-        .record-wins {
-            font-weight: 800;
-        }
-
-        .percentage {
-            color: var(--orange-dark);
-
-            font-weight: 800;
-        }
-
-
-        /* =========================================================
-           À PROPOS
-        ========================================================= */
-
-        #apropos {
-            background: white;
-        }
-
-        .about-box {
-            display: grid;
-
-            grid-template-columns:
-                1.3fr
-                0.7fr;
-
-            gap: 35px;
-
-            padding: 35px;
-
-            border-radius: var(--radius);
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #111,
-                    #222
-                );
-
-            color: white;
-
-            box-shadow: var(--shadow);
-        }
-
-        .about-box h3 {
-            font-size: 28px;
-
-            margin-bottom: 12px;
-        }
-
-        .about-box p {
-            color: #ccc;
-
-            line-height: 1.7;
-        }
-
-        .about-highlight {
-            display: flex;
-
-            flex-direction: column;
-
-            justify-content: center;
-
-            padding: 25px;
-
-            border-radius: 14px;
-
-            background:
-                rgba(255,106,0,0.12);
-
-            border:
-                1px solid rgba(255,106,0,0.25);
-        }
-
-        .about-highlight strong {
-            color: var(--orange);
-
-            font-size: 34px;
-        }
-
-        .about-highlight span {
-            color: #ccc;
-
-            font-size: 13px;
-        }
-
-
-        /* =========================================================
-           CONTACT
-        ========================================================= */
-
-        #contact {
-            background: var(--background);
-        }
-
-        .contact-card {
-            max-width: 850px;
-
-            margin: auto;
-
-            padding: 35px;
-
-            border-radius: var(--radius);
-
-            background: white;
-
-            box-shadow: var(--shadow);
-
+        .standing-value {
             text-align: center;
+            color: #555;
         }
 
-        .contact-card h3 {
-            font-size: 28px;
-
-            margin-bottom: 10px;
-        }
-
-        .contact-card p {
-            color: var(--gray);
-
-            margin-bottom: 22px;
-        }
-
-        .contact-email {
-            display: inline-block;
-
-            padding: 13px 20px;
-
-            border-radius: 9px;
-
-            background: var(--black);
-
-            color: white;
-
-            text-decoration: none;
-
+        .standing-header {
+            color: #999;
+            font-size: 10px;
+            text-transform: uppercase;
             font-weight: 700;
         }
 
-        .contact-email:hover {
-            background: var(--orange);
+        /* =========================
+           CTA
+        ========================= */
+
+        .cta {
+            background: #111;
+            color: white;
+            border-radius: 13px;
+            padding: 35px;
+            text-align: center;
+            margin-top: 20px;
         }
 
-
-        /* =========================================================
-           CONFIDENTIALITÉ
-        ========================================================= */
-
-        #confidentialite {
-            background: white;
-        }
-
-        .privacy-box {
-            max-width: 850px;
-
-            margin: auto;
-
-            padding: 30px;
-
-            border:
-                1px solid #e5e5e5;
-
-            border-radius: var(--radius);
-
-            background: #fafafa;
-        }
-
-        .privacy-box h3 {
+        .cta h2 {
+            font-size: 28px;
             margin-bottom: 10px;
         }
 
-        .privacy-box p {
-            color: var(--gray);
-
-            font-size: 14px;
-
-            line-height: 1.7;
+        .cta p {
+            color: #bdbdbd;
+            max-width: 650px;
+            margin: 0 auto 20px;
         }
 
-
-        /* =========================================================
+        /* =========================
            FOOTER
-        ========================================================= */
+        ========================= */
 
         footer {
-            padding: 35px 20px;
-
-            background: #090909;
-
+            background: #0b0b0b;
             color: white;
-
-            text-align: center;
+            margin-top: 50px;
         }
 
-        footer .footer-logo {
-            color: var(--orange);
-
-            font-size: 22px;
-            font-weight: 900;
-
-            margin-bottom: 8px;
+        .footer-container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 35px 20px 20px;
         }
 
-        footer p {
-            color: #888;
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 30px;
+            padding-bottom: 25px;
+        }
 
+        .footer-column h3 {
+            font-size: 15px;
+            margin-bottom: 13px;
+        }
+
+        .footer-column p,
+        .footer-column a {
+            color: #999;
             font-size: 13px;
         }
 
-        footer .footer-bottom {
-            margin-top: 20px;
+        .footer-column a {
+            display: block;
+            margin-bottom: 7px;
+        }
 
+        .footer-column a:hover {
+            color: #ff6a00;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #292929;
             padding-top: 18px;
-
-            border-top:
-                1px solid #222;
-
-            color: #666;
-
+            text-align: center;
+            color: #777;
             font-size: 12px;
         }
 
+        /* =========================
+           MESSAGE CHARGEMENT
+        ========================= */
 
-        /* =========================================================
-           MOBILE
-        ========================================================= */
-
-        @media (max-width: 900px) {
-
-            .standings-container {
-                grid-template-columns: 1fr;
-            }
-
-            .about-box {
-                grid-template-columns: 1fr;
-            }
-
+        .loading {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+            background: white;
+            border-radius: 10px;
         }
 
+        /* =========================
+           RESPONSIVE
+        ========================= */
 
-        @media (max-width: 650px) {
-
-            header {
-                min-height: 430px;
-
-                padding:
-                    55px 16px
-                    70px;
+        @media (max-width: 1000px) {
+            .players-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
 
-            .hero-title {
-                font-size: 50px;
-
-                letter-spacing: -2px;
+            .news-grid {
+                grid-template-columns: 1fr 1fr;
             }
 
-            .hero-search {
-                flex-direction: column;
-
-                padding: 5px;
+            .news-card.main-news {
+                grid-column: 1 / -1;
             }
 
-            #searchButton {
-                min-height: 48px;
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .top-bar {
+                padding: 16px;
+            }
+
+            .logo-text h1 {
+                font-size: 23px;
+            }
+
+            .logo-basket {
+                width: 45px;
+                height: 45px;
+                font-size: 23px;
             }
 
             nav {
-                justify-content: flex-start;
+                overflow-x: auto;
+            }
+
+            .nav-container {
+                padding: 0 5px;
             }
 
             nav a {
-                font-size: 13px;
-                padding: 10px 11px;
+                padding: 14px 11px;
+                font-size: 12px;
             }
 
-            section {
-                padding:
-                    55px 17px;
+            main {
+                padding: 20px 14px 40px;
             }
 
-            .section-heading {
-                align-items: flex-start;
-
-                flex-direction: column;
+            .hero {
+                padding: 28px 22px;
+                min-height: 300px;
             }
 
-            .section-title {
-                font-size: 28px;
+            .hero h2 {
+                font-size: 30px;
             }
 
-            .news-container,
-            .matches-container {
+            .hero p {
+                font-size: 14px;
+            }
+
+            .news-grid {
                 grid-template-columns: 1fr;
             }
 
-            .players-container {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
+            .news-card.main-news {
+                grid-column: auto;
             }
 
-            .player-photo {
-                height: 210px;
+            .matches-grid {
+                grid-template-columns: 1fr;
             }
 
-            .teams {
-                grid-template-columns:
-                    1fr;
+            .players-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .vs {
-                margin: 4px auto;
+            .standings-grid {
+                grid-template-columns: 1fr;
             }
 
-            .match-team-logo {
-                width: 75px;
-                height: 75px;
+            .footer-grid {
+                grid-template-columns: 1fr;
             }
 
-            .about-box,
-            .contact-card,
-            .privacy-box {
-                padding: 24px;
+            .section-title h2 {
+                font-size: 21px;
             }
-
         }
 
-
         @media (max-width: 430px) {
-
-            .players-container {
+            .players-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -1523,257 +753,279 @@
                 height: 260px;
             }
 
-            .hero-title {
-                font-size: 43px;
+            .search-box {
+                max-width: none;
             }
-
         }
-
     </style>
 </head>
 
-
 <body>
 
+<!-- =========================
+     HEADER
+========================= -->
 
-    <!-- =========================================================
-         HERO
-    ========================================================= -->
+<header>
 
-    <header id="accueil">
+    <div class="top-bar">
+
+        <a href="index.html" class="logo-area">
+            <div class="logo-basket">🏀</div>
+
+            <div class="logo-text">
+                <h1>Basket Zone</h1>
+                <p>Toute l'actualité du basketball au même endroit</p>
+            </div>
+        </a>
+
+    </div>
+
+    <nav>
+        <div class="nav-container">
+
+            <a href="index.html" class="active">Accueil</a>
+            <a href="actualites.html">Actualités</a>
+            <a href="matchs.html">Matchs</a>
+            <a href="joueurs.html">Joueurs</a>
+            <a href="classement.html">Classement</a>
+            <a href="apropos.html">À propos</a>
+            <a href="contact.html">Contact</a>
+            <a href="confidentialite.html">Confidentialité</a>
+
+        </div>
+    </nav>
+
+    <div class="search-area">
+
+        <div class="search-box">
+
+            <span class="search-icon">🔎</span>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Rechercher un joueur..."
+            >
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     CONTENU
+========================= -->
+
+<main>
+
+    <!-- HERO -->
+
+    <section class="hero">
 
         <div class="hero-content">
 
-            <div class="hero-badge">
-                Basketball • NBA • Actualités
-            </div>
+            <span class="hero-tag">Basket Zone</span>
 
-            <h1 class="hero-title">
-                Basket <span>Zone</span>
-            </h1>
+            <h2>
+                Le basketball.<br>
+                Toute l'actualité.
+            </h2>
 
-            <p class="hero-subtitle">
-                Toute l'actualité du basketball au même endroit.
-                Retrouvez les dernières nouvelles NBA, les matchs,
-                les joueurs et le classement.
+            <p>
+                Retrouvez les dernières actualités NBA, les matchs,
+                les meilleurs joueurs et les classements sur Basket Zone.
             </p>
 
-            <div class="hero-search">
+            <div class="hero-buttons">
 
-                <input
-                    id="searchInput"
-                    type="text"
-                    placeholder="Rechercher un joueur..."
-                    autocomplete="off"
-                >
+                <a href="actualites.html" class="btn btn-orange">
+                    Voir les actualités
+                </a>
 
-                <button id="searchButton">
-                    Rechercher
-                </button>
+                <a href="matchs.html" class="btn btn-light">
+                    Voir les matchs
+                </a>
 
             </div>
 
         </div>
-
-    </header>
-
-
-    <!-- =========================================================
-         NAVIGATION
-    ========================================================= -->
-
-    <nav>
-
-        <a
-            href="#accueil"
-            class="active"
-        >
-            Accueil
-        </a>
-
-        <a href="#actualites">
-            Actualités
-        </a>
-
-        <a href="#matchs">
-            Matchs
-        </a>
-
-        <a href="#joueurs">
-            Joueurs
-        </a>
-
-        <a href="#classement">
-            Classement
-        </a>
-
-        <a href="#apropos">
-            À propos
-        </a>
-
-        <a href="#contact">
-            Contact
-        </a>
-
-        <a href="#confidentialite">
-            Confidentialité
-        </a>
-
-    </nav>
-
-
-    <!-- =========================================================
-         ACTUALITÉS
-    ========================================================= -->
-
-    <section id="actualites">
-
-        <div class="section-heading">
-
-            <div class="section-heading-left">
-
-                <div class="section-label">
-                    NBA News
-                </div>
-
-                <h2 class="section-title">
-                    Dernières actualités
-                </h2>
-
-                <p class="section-description">
-                    Les dernières informations du basketball
-                    et de la NBA.
-                </p>
-
-            </div>
-
-            <div class="news-toolbar">
-
-                <button
-                    id="manual-news-refresh"
-                    type="button"
-                >
-                    Actualiser
-                </button>
-
-                <span id="news-refresh-status"></span>
-
-            </div>
-
-        </div>
-
-
-        <p
-            id="newsStatus"
-            class="news-status"
-        >
-            Chargement des actualités...
-        </p>
-
-
-        <div
-            id="newsContainer"
-            class="news-container"
-        ></div>
 
     </section>
 
 
-    <!-- =========================================================
-         MATCHS
-    ========================================================= -->
+    <!-- =========================
+         ACTUALITÉS
+    ========================= -->
 
-    <section id="matchs">
+    <section>
 
-        <div class="section-heading">
+        <div class="section-title">
 
-            <div class="section-heading-left">
+            <h2>Dernières actualités</h2>
 
-                <div class="section-label">
-                    Calendrier
+            <a href="actualites.html">
+                Toutes les actualités →
+            </a>
+
+        </div>
+
+        <div id="newsContainer" class="news-grid">
+
+            <div class="news-card main-news">
+
+                <div class="news-image">
+                    🏀
                 </div>
 
-                <h2 class="section-title">
-                    Prochains matchs
-                </h2>
+                <div class="news-content">
 
-                <p class="section-description">
-                    Les grandes affiches NBA à venir.
-                </p>
+                    <div class="news-meta">
+                        NBA
+                    </div>
+
+                    <h3>
+                        Les dernières nouvelles du basketball
+                    </h3>
+
+                    <p>
+                        Retrouvez les informations les plus importantes
+                        du monde du basketball.
+                    </p>
+
+                    <a href="actualites.html" class="news-link">
+                        Lire l'article →
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="news-card">
+
+                <div class="news-image">
+                    🏆
+                </div>
+
+                <div class="news-content">
+
+                    <div class="news-meta">
+                        NBA
+                    </div>
+
+                    <h3>
+                        La nouvelle saison NBA approche
+                    </h3>
+
+                    <p>
+                        Découvrez les principales informations
+                        concernant la prochaine saison.
+                    </p>
+
+                    <a href="actualites.html" class="news-link">
+                        En savoir plus →
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="news-card">
+
+                <div class="news-image">
+                    ⭐
+                </div>
+
+                <div class="news-content">
+
+                    <div class="news-meta">
+                        Joueurs
+                    </div>
+
+                    <h3>
+                        Les stars à suivre cette saison
+                    </h3>
+
+                    <p>
+                        Wembanyama, LeBron, Curry, Giannis et bien d'autres.
+                    </p>
+
+                    <a href="joueurs.html" class="news-link">
+                        Voir les joueurs →
+                    </a>
+
+                </div>
 
             </div>
 
         </div>
 
+    </section>
 
-        <div class="no-game">
 
-            <h3>
-                Saison NBA 2026-2027
-            </h3>
+    <!-- =========================
+         MATCHS
+    ========================= -->
 
-            <p>
-                La saison régulière commencera le
-                20 octobre 2026.
-            </p>
+    <section>
+
+        <div class="section-title">
+
+            <h2>Prochains matchs</h2>
+
+            <a href="matchs.html">
+                Tous les matchs →
+            </a>
 
         </div>
 
+        <div class="matches-grid">
 
-        <div style="height: 28px;"></div>
+            <!-- MATCH 1 -->
 
+            <div class="match-card">
 
-        <div class="matches-container">
+                <div class="match-top">
 
-
-            <!-- KNICKS VS 76ERS -->
-
-            <article class="match-card">
-
-                <div class="match-card-top">
-
-                    <span class="match-league">
-                        NBA • Opening Night
+                    <span class="competition">
+                        NBA
                     </span>
 
-                    <span class="match-status upcoming">
-                        À venir
+                    <span class="match-date">
+                        20 octobre 2026
                     </span>
 
                 </div>
-
 
                 <div class="teams">
 
                     <div class="team">
 
                         <img
-                            class="match-team-logo"
                             src="photos/new-york-knicks_big_square.png"
                             alt="New York Knicks"
                         >
 
-                        <span>
+                        <span class="team-name">
                             New York Knicks
                         </span>
 
                     </div>
 
-
-                    <div class="vs">
+                    <span class="vs">
                         VS
-                    </div>
-
+                    </span>
 
                     <div class="team">
 
                         <img
-                            class="match-team-logo"
                             src="photos/philadelphia-76ers_big_square.png"
                             alt="Philadelphia 76ers"
                         >
 
-                        <span>
+                        <span class="team-name">
                             Philadelphia 76ers
                         </span>
 
@@ -1781,62 +1033,52 @@
 
                 </div>
 
-
-                <div class="match-date">
-                    20 octobre 2026
-                </div>
-
-            </article>
+            </div>
 
 
-            <!-- SPURS VS THUNDER -->
+            <!-- MATCH 2 -->
 
-            <article class="match-card">
+            <div class="match-card">
 
-                <div class="match-card-top">
+                <div class="match-top">
 
-                    <span class="match-league">
-                        NBA • Opening Night
+                    <span class="competition">
+                        NBA
                     </span>
 
-                    <span class="match-status upcoming">
-                        À venir
+                    <span class="match-date">
+                        20 octobre 2026
                     </span>
 
                 </div>
-
 
                 <div class="teams">
 
                     <div class="team">
 
                         <img
-                            class="match-team-logo"
                             src="photos/san-antonio-spurs_big_square.png"
                             alt="San Antonio Spurs"
                         >
 
-                        <span>
+                        <span class="team-name">
                             San Antonio Spurs
                         </span>
 
                     </div>
 
-
-                    <div class="vs">
+                    <span class="vs">
                         VS
-                    </div>
-
+                    </span>
 
                     <div class="team">
 
                         <img
-                            class="match-team-logo"
                             src="photos/oklahoma-city-thunder_big_square.png"
                             alt="Oklahoma City Thunder"
                         >
 
-                        <span>
+                        <span class="team-name">
                             Oklahoma City Thunder
                         </span>
 
@@ -1844,140 +1086,66 @@
 
                 </div>
 
-
-                <div class="match-date">
-                    20 octobre 2026
-                </div>
-
-            </article>
-
-        </div>
-
-
-        <div style="height: 50px;"></div>
-
-
-        <div class="section-heading">
-
-            <div class="section-heading-left">
-
-                <div class="section-label">
-                    Basketball français
-                </div>
-
-                <h2 class="section-title">
-                    France
-                </h2>
-
             </div>
-
-        </div>
-
-
-        <div class="no-game">
-
-            <h3>
-                Betclic Élite
-            </h3>
-
-            <p>
-                Les prochains matchs du championnat
-                seront ajoutés avec les données disponibles.
-            </p>
 
         </div>
 
     </section>
 
 
-    <!-- =========================================================
+    <!-- =========================
          JOUEURS
-    ========================================================= -->
+    ========================= -->
 
-    <section id="joueurs">
+    <section>
 
-        <div class="section-heading">
+        <div class="section-title">
 
-            <div class="section-heading-left">
+            <h2>Stars de la NBA</h2>
 
-                <div class="section-label">
-                    NBA Stars
-                </div>
-
-                <h2 class="section-title">
-                    Joueurs à suivre
-                </h2>
-
-                <p class="section-description">
-                    Retrouvez les statistiques des joueurs
-                    suivis par Basket Zone.
-                </p>
-
-            </div>
+            <a href="joueurs.html">
+                Tous les joueurs →
+            </a>
 
         </div>
 
-
-        <div class="players-container">
-
+        <div id="playersContainer" class="players-grid">
 
             <!-- WEMBANYAMA -->
 
-            <article
-                class="player-card"
-                data-name="victor wembanyama"
-                data-player-id="1641705"
-            >
+            <article class="player-card">
 
                 <div class="player-photo">
 
                     <img
                         src="wembanyama.jpg"
                         alt="Victor Wembanyama"
-                        loading="lazy"
-                        onerror="
-                            this.style.display='none';
-                        "
                     >
 
                 </div>
 
-                <div class="player-content">
+                <div class="player-info">
 
-                    <h3>
-                        Victor Wembanyama
-                    </h3>
+                    <h3>Victor Wembanyama</h3>
 
-                    <p class="team-name">
+                    <div class="player-team">
                         San Antonio Spurs
-                    </p>
+                    </div>
 
                     <div class="stats">
 
                         <div class="stat">
-                            <strong
-                                class="player-pts"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="wembanyama-pts">24.3</strong>
                             <span>PTS</span>
                         </div>
 
                         <div class="stat">
-                            <strong
-                                class="player-reb"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="wembanyama-reb">11.0</strong>
                             <span>REB</span>
                         </div>
 
                         <div class="stat">
-                            <strong
-                                class="player-ast"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="wembanyama-ast">3.8</strong>
                             <span>AST</span>
                         </div>
 
@@ -1990,61 +1158,39 @@
 
             <!-- LEBRON -->
 
-            <article
-                class="player-card"
-                data-name="lebron james"
-                data-player-id="2544"
-            >
+            <article class="player-card">
 
                 <div class="player-photo">
 
                     <img
                         src="lebron.jpg"
                         alt="LeBron James"
-                        loading="lazy"
-                        onerror="
-                            this.style.display='none';
-                        "
                     >
 
                 </div>
 
-                <div class="player-content">
+                <div class="player-info">
 
-                    <h3>
-                        LeBron James
-                    </h3>
+                    <h3>LeBron James</h3>
 
-                    <p class="team-name">
+                    <div class="player-team">
                         Philadelphia 76ers
-                    </p>
+                    </div>
 
                     <div class="stats">
 
                         <div class="stat">
-                            <strong
-                                class="player-pts"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="lebron-pts">—</strong>
                             <span>PTS</span>
                         </div>
 
                         <div class="stat">
-                            <strong
-                                class="player-reb"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="lebron-reb">—</strong>
                             <span>REB</span>
                         </div>
 
                         <div class="stat">
-                            <strong
-                                class="player-ast"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="lebron-ast">—</strong>
                             <span>AST</span>
                         </div>
 
@@ -2057,61 +1203,39 @@
 
             <!-- CURRY -->
 
-            <article
-                class="player-card"
-                data-name="stephen curry"
-                data-player-id="201939"
-            >
+            <article class="player-card">
 
                 <div class="player-photo">
 
                     <img
                         src="curry.jpg"
                         alt="Stephen Curry"
-                        loading="lazy"
-                        onerror="
-                            this.style.display='none';
-                        "
                     >
 
                 </div>
 
-                <div class="player-content">
+                <div class="player-info">
 
-                    <h3>
-                        Stephen Curry
-                    </h3>
+                    <h3>Stephen Curry</h3>
 
-                    <p class="team-name">
+                    <div class="player-team">
                         Golden State Warriors
-                    </p>
+                    </div>
 
                     <div class="stats">
 
                         <div class="stat">
-                            <strong
-                                class="player-pts"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="curry-pts">—</strong>
                             <span>PTS</span>
                         </div>
 
                         <div class="stat">
-                            <strong
-                                class="player-reb"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="curry-reb">—</strong>
                             <span>REB</span>
                         </div>
 
                         <div class="stat">
-                            <strong
-                                class="player-ast"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="curry-ast">—</strong>
                             <span>AST</span>
                         </div>
 
@@ -2124,61 +1248,39 @@
 
             <!-- GIANNIS -->
 
-            <article
-                class="player-card"
-                data-name="giannis antetokounmpo"
-                data-player-id="203507"
-            >
+            <article class="player-card">
 
                 <div class="player-photo">
 
                     <img
                         src="giannis.jpg"
                         alt="Giannis Antetokounmpo"
-                        loading="lazy"
-                        onerror="
-                            this.style.display='none';
-                        "
                     >
 
                 </div>
 
-                <div class="player-content">
+                <div class="player-info">
 
-                    <h3>
-                        Giannis Antetokounmpo
-                    </h3>
+                    <h3>Giannis Antetokounmpo</h3>
 
-                    <p class="team-name">
+                    <div class="player-team">
                         Miami Heat
-                    </p>
+                    </div>
 
                     <div class="stats">
 
                         <div class="stat">
-                            <strong
-                                class="player-pts"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="giannis-pts">—</strong>
                             <span>PTS</span>
                         </div>
 
                         <div class="stat">
-                            <strong
-                                class="player-reb"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="giannis-reb">—</strong>
                             <span>REB</span>
                         </div>
 
                         <div class="stat">
-                            <strong
-                                class="player-ast"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="giannis-ast">—</strong>
                             <span>AST</span>
                         </div>
 
@@ -2191,61 +1293,39 @@
 
             <!-- SHAI -->
 
-            <article
-                class="player-card"
-                data-name="shai gilgeous alexander"
-                data-player-id="1628983"
-            >
+            <article class="player-card">
 
                 <div class="player-photo">
 
                     <img
                         src="shai.jpg"
                         alt="Shai Gilgeous-Alexander"
-                        loading="lazy"
-                        onerror="
-                            this.style.display='none';
-                        "
                     >
 
                 </div>
 
-                <div class="player-content">
+                <div class="player-info">
 
-                    <h3>
-                        Shai Gilgeous-Alexander
-                    </h3>
+                    <h3>Shai Gilgeous-Alexander</h3>
 
-                    <p class="team-name">
+                    <div class="player-team">
                         Oklahoma City Thunder
-                    </p>
+                    </div>
 
                     <div class="stats">
 
                         <div class="stat">
-                            <strong
-                                class="player-pts"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="shai-pts">—</strong>
                             <span>PTS</span>
                         </div>
 
                         <div class="stat">
-                            <strong
-                                class="player-reb"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="shai-reb">—</strong>
                             <span>REB</span>
                         </div>
 
                         <div class="stat">
-                            <strong
-                                class="player-ast"
-                            >
-                                —
-                            </strong>
+                            <strong data-player="shai-ast">—</strong>
                             <span>AST</span>
                         </div>
 
@@ -2260,1383 +1340,571 @@
     </section>
 
 
-    <!-- =========================================================
+    <!-- =========================
          CLASSEMENT
-    ========================================================= -->
+    ========================= -->
 
-    <section id="classement">
+    <section>
 
-        <div class="section-heading">
+        <div class="section-title">
 
-            <div class="section-heading-left">
+            <h2>Classement NBA</h2>
 
-                <div class="section-label">
-                    NBA Standings
-                </div>
-
-                <h2 class="section-title">
-                    Classement NBA
-                </h2>
-
-                <p class="section-description">
-                    Le classement est chargé automatiquement
-                    depuis standings.json.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <p
-            id="standingsStatus"
-            style="
-                color:#777;
-                margin-bottom:20px;
-                font-size:13px;
-            "
-        >
-            Chargement du classement...
-        </p>
-
-
-        <div
-            id="standingsContainer"
-            class="standings-container"
-        ></div>
-
-    </section>
-
-
-    <!-- =========================================================
-         À PROPOS
-    ========================================================= -->
-
-    <section id="apropos">
-
-        <div class="section-heading">
-
-            <div class="section-heading-left">
-
-                <div class="section-label">
-                    Basket Zone
-                </div>
-
-                <h2 class="section-title">
-                    À propos
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="about-box">
-
-            <div>
-
-                <h3>
-                    Le basketball au même endroit
-                </h3>
-
-                <p>
-                    Basket Zone est un site consacré à
-                    l'actualité du basketball.
-                    L'objectif est de réunir les actualités,
-                    les matchs, les joueurs et les classements
-                    dans une interface simple et moderne.
-                </p>
-
-                <br>
-
-                <p>
-                    Les informations affichées sur certaines
-                    sections sont mises à jour automatiquement
-                    grâce aux données du projet.
-                </p>
-
-            </div>
-
-
-            <div class="about-highlight">
-
-                <strong>
-                    NBA
-                </strong>
-
-                <span>
-                    Actualités, matchs, joueurs et classement
-                    réunis sur Basket Zone.
-                </span>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================================
-         CONTACT
-    ========================================================= -->
-
-    <section id="contact">
-
-        <div class="section-heading">
-
-            <div class="section-heading-left">
-
-                <div class="section-label">
-                    Nous contacter
-                </div>
-
-                <h2 class="section-title">
-                    Contact
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="contact-card">
-
-            <h3>
-                Une question ?
-            </h3>
-
-            <p>
-                Pour toute question ou suggestion concernant
-                Basket Zone, vous pouvez nous contacter par e-mail.
-            </p>
-
-            <a
-                class="contact-email"
-                href="mailto:kouassiemolo@outlook.fr"
-            >
-                kouassiemolo@outlook.fr
+            <a href="classement.html">
+                Classement complet →
             </a>
 
         </div>
 
-    </section>
+        <div class="standings-grid">
 
+            <!-- EAST -->
 
-    <!-- =========================================================
-         CONFIDENTIALITÉ
-    ========================================================= -->
+            <div class="standings-box">
 
-    <section id="confidentialite">
+                <h3>
+                    <span class="conference">Est</span>
+                </h3>
 
-        <div class="section-heading">
-
-            <div class="section-heading-left">
-
-                <div class="section-label">
-                    Informations
+                <div class="standing-row standing-header">
+                    <span>#</span>
+                    <span>Équipe</span>
+                    <span>V</span>
+                    <span>D</span>
                 </div>
 
-                <h2 class="section-title">
-                    Confidentialité
-                </h2>
+                <div id="eastStandings">
+
+                    <div class="standing-row">
+                        <span class="standing-rank">1</span>
+                        <span class="standing-team">Boston Celtics</span>
+                        <span class="standing-value">0</span>
+                        <span class="standing-value">0</span>
+                    </div>
+
+                    <div class="standing-row">
+                        <span class="standing-rank">2</span>
+                        <span class="standing-team">Brooklyn Nets</span>
+                        <span class="standing-value">0</span>
+                        <span class="standing-value">0</span>
+                    </div>
+
+                    <div class="standing-row">
+                        <span class="standing-rank">3</span>
+                        <span class="standing-team">New York Knicks</span>
+                        <span class="standing-value">0</span>
+                        <span class="standing-value">0</span>
+                    </div>
+
+                    <div class="standing-row">
+                        <span class="standing-rank">4</span>
+                        <span class="standing-team">Philadelphia 76ers</span>
+                        <span class="standing-value">0</span>
+                        <span class="standing-value">0</span>
+                    </div>
+
+                    <div class="standing-row">
+                        <span class="standing-rank">5</span>
+                        <span class="standing-team">Toronto Raptors</span>
+                        <span class="standing-value">0</span>
+                        <span class="standing-value">0</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- WEST -->
+
+            <div class="standings-box">
+
+                <h3>
+                    <span class="conference">Ouest</span>
+                </h3>
+
+                <div class="standing-row standing-header">
+                    <span>#</span>
+                    <span>Équipe</span>
+                    <span>V</span>
+                    <span>D</span>
+                </div>
+
+                <div id="westStandings">
+
+                    <div class="standing-row">
+                        <span class="standing-rank">1</span>
+                        <span class="standing-team">Denver Nuggets</span>
+                        <span class="standing-value">0</span>
+                        <span class="standing-value">0</span>
+                    </div>
+
+                    <div class="standing-row">
+                        <span class="standing-rank">2</span>
+                        <span class="standing-team">Minnesota Timberwolves</span>
+                        <span class="standing-value">0</span>
+                        <span class="standing-value">0</span>
+                    </div>
+
+                    <div class="standing-row">
+                        <span class="standing-rank">3</span>
+                        <span class="standing-team">Oklahoma City Thunder</span>
+                        <span class="standing-value">0</span>
+                        <span class="standing-value">0</span>
+                    </div>
+
+                    <div class="standing-row">
+                        <span class="standing-rank">4</span>
+                        <span class="standing-team">Portland Trail Blazers</span>
+                        <span class="standing-value">0</span>
+                        <span class="standing-value">0</span>
+                    </div>
+
+                    <div class="standing-row">
+                        <span class="standing-rank">5</span>
+                        <span class="standing-team">Utah Jazz</span>
+                        <span class="standing-value">0</span>
+                        <span class="standing-value">0</span>
+                    </div>
+
+                </div>
 
             </div>
 
         </div>
 
-
-        <div class="privacy-box">
-
-            <h3>
-                Protection des données
-            </h3>
-
-            <p>
-                Basket Zone ne demande pas de création de compte
-                pour consulter les contenus du site.
-                Les informations personnelles envoyées par e-mail
-                sont utilisées uniquement pour répondre aux demandes
-                de contact.
-            </p>
-
-        </div>
-
     </section>
 
 
-    <!-- =========================================================
-         FOOTER
-    ========================================================= -->
+    <!-- =========================
+         CTA
+    ========================= -->
 
-    <footer>
+    <section class="cta">
 
-        <div class="footer-logo">
-            Basket Zone
-        </div>
+        <h2>Tout le basketball sur Basket Zone</h2>
 
         <p>
-            L'actualité du basketball au même endroit.
+            Actualités, matchs, joueurs et classements :
+            retrouve tout ce qu'il faut pour suivre la NBA.
         </p>
 
-        <div class="footer-bottom">
-            © 2026 Basket Zone — Tous droits réservés.
+        <a href="actualites.html" class="btn btn-orange">
+            Découvrir les actualités
+        </a>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="footer-container">
+
+        <div class="footer-grid">
+
+            <div class="footer-column">
+
+                <h3>Basket Zone</h3>
+
+                <p>
+                    Toute l'actualité du basketball au même endroit.
+                    NBA, matchs, joueurs et classements.
+                </p>
+
+            </div>
+
+            <div class="footer-column">
+
+                <h3>Navigation</h3>
+
+                <a href="index.html">Accueil</a>
+                <a href="actualites.html">Actualités</a>
+                <a href="matchs.html">Matchs</a>
+                <a href="joueurs.html">Joueurs</a>
+
+            </div>
+
+            <div class="footer-column">
+
+                <h3>Basketball</h3>
+
+                <a href="classement.html">Classement NBA</a>
+                <a href="matchs.html">Prochains matchs</a>
+                <a href="joueurs.html">Stars NBA</a>
+
+            </div>
+
+            <div class="footer-column">
+
+                <h3>Informations</h3>
+
+                <a href="apropos.html">À propos</a>
+                <a href="contact.html">Contact</a>
+                <a href="confidentialite.html">Confidentialité</a>
+
+            </div>
+
         </div>
 
-    </footer>
+        <div class="footer-bottom">
 
+            © 2026 Basket Zone — Tous droits réservés.
 
-    <!-- =========================================================
-         JAVASCRIPT
-    ========================================================= -->
+        </div>
 
-    <script>
+    </div>
 
-        /* =====================================================
-           RECHERCHE DES JOUEURS
-        ===================================================== */
+</footer>
 
-        const searchInput =
-            document.getElementById("searchInput");
 
-        const searchButton =
-            document.getElementById("searchButton");
+<!-- =========================
+     JAVASCRIPT
+========================= -->
 
-        const playerCards =
-            document.querySelectorAll(".player-card");
+<script>
 
+    /* =====================================
+       ACTUALITÉS
+    ===================================== */
 
-        function searchPlayers() {
+    async function loadNews() {
 
-            const text =
-                searchInput.value
-                    .toLowerCase()
-                    .trim();
+        const container = document.getElementById("newsContainer");
 
+        try {
 
-            playerCards.forEach(function(card) {
-
-                const name =
-                    card.dataset.name
-                        .toLowerCase();
-
-
-                card.style.display =
-                    name.includes(text) || text === ""
-                        ? ""
-                        : "none";
-
-            });
-
-        }
-
-
-        searchButton.addEventListener(
-            "click",
-            searchPlayers
-        );
-
-
-        searchInput.addEventListener(
-            "input",
-            searchPlayers
-        );
-
-
-        searchInput.addEventListener(
-            "keydown",
-            function(event) {
-
-                if (event.key === "Enter") {
-                    searchPlayers();
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           NAVIGATION ACTIVE
-        ===================================================== */
-
-        const navLinks =
-            document.querySelectorAll("nav a");
-
-
-        navLinks.forEach(function(link) {
-
-            link.addEventListener(
-                "click",
-                function() {
-
-                    navLinks.forEach(
-                        function(item) {
-                            item.classList.remove("active");
-                        }
-                    );
-
-                    link.classList.add("active");
-
-                }
-            );
-
-        });
-
-
-        /* =====================================================
-           SÉCURITÉ HTML
-        ===================================================== */
-
-        function escapeHTML(text) {
-
-            const div =
-                document.createElement("div");
-
-            div.textContent =
-                text || "";
-
-            return div.innerHTML;
-
-        }
-
-
-        function safeImageURL(value) {
-
-            if (
-                typeof value !== "string"
-                ||
-                !value.trim()
-            ) {
-                return "";
-            }
-
-
-            try {
-
-                const url =
-                    new URL(
-                        value.trim(),
-                        window.location.origin
-                    );
-
-
-                if (
-                    url.protocol !== "https:"
-                    &&
-                    url.protocol !== "http:"
-                ) {
-                    return "";
-                }
-
-
-                return url.href;
-
-            } catch {
-
-                return "";
-
-            }
-
-        }
-
-
-        /* =====================================================
-           DATES
-        ===================================================== */
-
-        function formatDate(dateString) {
-
-            if (!dateString) {
-                return "";
-            }
-
-
-            const date =
-                new Date(dateString);
-
-
-            if (
-                isNaN(
-                    date.getTime()
-                )
-            ) {
-                return dateString;
-            }
-
-
-            return date.toLocaleDateString(
-                "fr-FR",
+            const response = await fetch(
+                "news.json?t=" + Date.now(),
                 {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric"
+                    cache: "no-store"
                 }
             );
 
-        }
+            if (!response.ok) {
+                throw new Error("Impossible de charger news.json");
+            }
 
+            const data = await response.json();
 
-        /* =====================================================
-           ACTUALITÉS
-        ===================================================== */
+            if (!data.news || data.news.length === 0) {
+                return;
+            }
 
-        const newsContainer =
-            document.getElementById(
-                "newsContainer"
-            );
+            const articles = data.news.slice(0, 3);
 
+            container.innerHTML = "";
 
-        const newsStatus =
-            document.getElementById(
-                "newsStatus"
-            );
+            articles.forEach((article, index) => {
 
+                const card = document.createElement("article");
 
-        async function loadNews() {
+                card.className =
+                    "news-card" +
+                    (index === 0 ? " main-news" : "");
 
-            try {
+                let icon = "🏀";
 
-                newsStatus.textContent =
-                    "Chargement des actualités...";
-
-
-                const response =
-                    await fetch(
-                        "news.json?t=" +
-                        Date.now(),
-                        {
-                            cache: "no-store"
-                        }
-                    );
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Impossible de charger news.json"
-                    );
-
+                if (index === 1) {
+                    icon = "🏆";
                 }
 
-
-                const data =
-                    await response.json();
-
-
-                newsContainer.innerHTML =
-                    "";
-
-
-                if (
-                    !data.articles
-                    ||
-                    data.articles.length === 0
-                ) {
-
-                    newsStatus.textContent =
-                        "Aucune actualité disponible.";
-
-                    return;
-
+                if (index === 2) {
+                    icon = "⭐";
                 }
 
+                card.innerHTML = `
 
-                newsStatus.textContent =
-                    "Actualités NBA mises à jour automatiquement";
-
-
-                data.articles.forEach(
-                    function(article) {
-
-                        const card =
-                            document.createElement(
-                                "article"
-                            );
-
-
-                        card.className =
-                            "news-card";
-
-
-                        const title =
-                            article.title
-                            ||
-                            "Actualité NBA";
-
-
-                        const description =
-                            article.description
-                            ||
-                            "";
-
-
-                        const link =
-                            typeof article.link === "string"
-                                ? article.link
-                                : "#";
-
-
-                        const imageURL =
-                            safeImageURL(
-                                article.image
-                            );
-
-
-                        let imageHTML = `
-
-                            <div class="news-image">
-
-                                <div
-                                    class="news-image-placeholder"
-                                >
-
-                                    <strong>
-                                        NBA
-                                    </strong>
-
-                                    <span>
-                                        Image indisponible
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-                        `;
-
-
-                        if (imageURL) {
-
-                            imageHTML = `
-
-                                <div class="news-image">
-
-                                    <img
-                                        src="${escapeHTML(imageURL)}"
-                                        alt="${escapeHTML(title)}"
-                                        loading="lazy"
-                                        referrerpolicy="no-referrer"
-                                        onerror="
-                                            this.style.display='none';
-                                            this.nextElementSibling.style.display='flex';
-                                        "
-                                    >
-
-                                    <div
-                                        class="news-image-placeholder"
-                                        style="display:none"
-                                    >
-
-                                        <strong>
-                                            NBA
-                                        </strong>
-
-                                        <span>
-                                            Image indisponible
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-                            `;
-
-                        }
-
-
-                        card.innerHTML = `
-
-                            ${imageHTML}
-
-                            <div class="news-content">
-
-                                <span class="news-category">
-                                    NBA
-                                </span>
-
-                                <h3>
-                                    ${escapeHTML(title)}
-                                </h3>
-
-                                ${
-                                    description
-                                    ?
-                                    `
-                                        <p>
-                                            ${escapeHTML(description)}
-                                        </p>
-                                    `
-                                    :
-                                    ""
-                                }
-
-                                ${
-                                    article.date
-                                    ?
-                                    `
-                                        <div class="news-date">
-                                            ${escapeHTML(
-                                                formatDate(
-                                                    article.date
-                                                )
-                                            )}
-                                        </div>
-                                    `
-                                    :
-                                    ""
-                                }
-
-                                <div class="news-source">
-                                    Source :
-                                    ${escapeHTML(
-                                        article.source
-                                        ||
-                                        "NBA.com"
-                                    )}
-                                </div>
-
-                                <a
-                                    class="news-link"
-                                    href="${escapeHTML(link)}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Lire l'article
-                                </a>
-
-                            </div>
-
-                        `;
-
-
-                        newsContainer.appendChild(
-                            card
-                        );
-
-                    }
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Erreur actualités :",
-                    error
-                );
-
-
-                newsStatus.textContent =
-                    "Impossible de charger les actualités.";
-
-
-                newsContainer.innerHTML = `
-
-                    <div class="news-error">
-
-                        Les actualités NBA sont
-                        temporairement indisponibles.
-
+                    <div class="news-image">
+                        ${icon}
                     </div>
 
-                `;
+                    <div class="news-content">
 
-            }
-
-        }
-
-
-        /* =====================================================
-           LOGOS DES 30 ÉQUIPES NBA
-        ===================================================== */
-
-        const teamLogos = {
-
-            "Atlanta Hawks":
-                "photos/atlanta-hawks_big_square.png",
-
-            "Boston Celtics":
-                "photos/boston-celtics_big_square.png",
-
-            "Brooklyn Nets":
-                "photos/brooklyn-nets_big_square.png",
-
-            "Charlotte Hornets":
-                "photos/charlotte-hornets_big_square.png",
-
-            "Chicago Bulls":
-                "photos/chicago-bulls_big_square.png",
-
-            "Cleveland Cavaliers":
-                "photos/cleveland-cavaliers_big_square.png",
-
-            "Detroit Pistons":
-                "photos/detroit-pistons_big_square.png",
-
-            "Indiana Pacers":
-                "photos/indiana-pacers_big_square.png",
-
-            "Miami Heat":
-                "photos/miami-heat_big_square.png",
-
-            "Milwaukee Bucks":
-                "photos/milwaukee-bucks_big_square.png",
-
-            "New York Knicks":
-                "photos/new-york-knicks_big_square.png",
-
-            "Orlando Magic":
-                "photos/orlando-magic_big_square.png",
-
-            "Philadelphia 76ers":
-                "photos/philadelphia-76ers_big_square.png",
-
-            "Toronto Raptors":
-                "photos/toronto-raptors_big_square.png",
-
-            "Washington Wizards":
-                "photos/washington-wizards_big_square.png",
-
-            "Dallas Mavericks":
-                "photos/dallas-mavericks_big_square.png",
-
-            "Denver Nuggets":
-                "photos/denver-nuggets_big_square.png",
-
-            "Golden State Warriors":
-                "photos/golden-state-warriors_big_square.png",
-
-            "Houston Rockets":
-                "photos/houston-rockets_big_square.png",
-
-            "LA Clippers":
-                "photos/la-clippers_big_square.png",
-
-            "Los Angeles Clippers":
-                "photos/la-clippers_big_square.png",
-
-            "Los Angeles Lakers":
-                "photos/los-angeles-lakers_big_square.png",
-
-            "Memphis Grizzlies":
-                "photos/memphis-grizzlies_big_square.png",
-
-            "Minnesota Timberwolves":
-                "photos/minnesota-timberwolves_big_square.png",
-
-            "New Orleans Pelicans":
-                "photos/new-orleans-pelicans_big_square.png",
-
-            "Oklahoma City Thunder":
-                "photos/oklahoma-city-thunder_big_square.png",
-
-            "Phoenix Suns":
-                "photos/phoenix-suns_big_square.png",
-
-            "Portland Trail Blazers":
-                "photos/portland-trail-blazers_big_square.png",
-
-            "Sacramento Kings":
-                "photos/sacramento-kings_big_square.png",
-
-            "San Antonio Spurs":
-                "photos/san-antonio-spurs_big_square.png",
-
-            "Utah Jazz":
-                "photos/utah-jazz_big_square.png"
-
-        };
-
-
-        /* =====================================================
-           CLASSEMENT
-        ===================================================== */
-
-        const standingsContainer =
-            document.getElementById(
-                "standingsContainer"
-            );
-
-
-        const standingsStatus =
-            document.getElementById(
-                "standingsStatus"
-            );
-
-
-        async function loadStandings() {
-
-            try {
-
-                standingsStatus.textContent =
-                    "Chargement du classement...";
-
-
-                const response =
-                    await fetch(
-                        "standings.json?t=" +
-                        Date.now(),
-                        {
-                            cache: "no-store"
-                        }
-                    );
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        "Impossible de charger standings.json"
-                    );
-
-                }
-
-
-                const data =
-                    await response.json();
-
-
-                if (
-                    !Array.isArray(data.east)
-                    ||
-                    !Array.isArray(data.west)
-                ) {
-
-                    throw new Error(
-                        "Format de standings.json incorrect"
-                    );
-
-                }
-
-
-                standingsContainer.innerHTML =
-                    "";
-
-
-                function createConference(
-                    title,
-                    teams
-                ) {
-
-                    const conference =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    conference.className =
-                        "conference-card";
-
-
-                    let rows = "";
-
-
-                    teams.forEach(
-                        function(team, index) {
-
-                            const rank =
-                                index + 1;
-
-
-                            const percentage =
-                                Number(
-                                    team.percentage
-                                );
-
-
-                            const percentageText =
-                                !isNaN(percentage)
-                                    ?
-                                    percentage.toFixed(3)
-                                    :
-                                    "-";
-
-
-                            const rankClass =
-                                rank === 1
-                                    ?
-                                    "rank-number first"
-                                    :
-                                    "rank-number";
-
-
-                            const logo =
-                                teamLogos[
-                                    team.team
-                                ];
-
-
-                            let logoHTML =
-                                "";
-
-
-                            if (logo) {
-
-                                logoHTML = `
-
-                                    <img
-                                        class="team-logo"
-                                        src="${logo}"
-                                        alt="${escapeHTML(team.team)}"
-                                        loading="lazy"
-                                    >
-
-                                `;
-
-                            }
-
-
-                            rows += `
-
-                                <tr>
-
-                                    <td>
-
-                                        <span
-                                            class="${rankClass}"
-                                        >
-                                            ${rank}
-                                        </span>
-
-                                    </td>
-
-
-                                    <td>
-
-                                        <div class="team-cell">
-
-                                            ${logoHTML}
-
-                                            <span>
-                                                ${escapeHTML(
-                                                    team.team
-                                                )}
-                                            </span>
-
-                                        </div>
-
-                                    </td>
-
-
-                                    <td class="record-wins">
-                                        ${Number(team.wins) || 0}
-                                    </td>
-
-
-                                    <td>
-                                        ${Number(team.losses) || 0}
-                                    </td>
-
-
-                                    <td class="percentage">
-                                        ${percentageText}
-                                    </td>
-
-                                </tr>
-
-                            `;
-
-                        }
-                    );
-
-
-                    conference.innerHTML = `
-
-                        <div class="conference-header">
-
-                            <h3>
-                                ${escapeHTML(title)}
-                            </h3>
-
-                            <p>
-                                Classement NBA
-                            </p>
-
+                        <div class="news-meta">
+                            ${article.source || "NBA"}
                         </div>
-
-
-                        <div class="table-wrapper">
-
-                            <table class="standings-table">
-
-                                <thead>
-
-                                    <tr>
-
-                                        <th>
-                                            #
-                                        </th>
-
-                                        <th>
-                                            Équipe
-                                        </th>
-
-                                        <th>
-                                            V
-                                        </th>
-
-                                        <th>
-                                            D
-                                        </th>
-
-                                        <th>
-                                            %
-                                        </th>
-
-                                    </tr>
-
-                                </thead>
-
-
-                                <tbody>
-
-                                    ${
-                                        rows
-                                        ||
-                                        `
-                                            <tr>
-
-                                                <td
-                                                    colspan="5"
-                                                    style="
-                                                        padding:30px;
-                                                        color:#777;
-                                                    "
-                                                >
-                                                    Aucun classement disponible
-                                                </td>
-
-                                            </tr>
-                                        `
-                                    }
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-                    `;
-
-
-                    standingsContainer.appendChild(
-                        conference
-                    );
-
-                }
-
-
-                createConference(
-                    "Conférence Est",
-                    data.east
-                );
-
-
-                createConference(
-                    "Conférence Ouest",
-                    data.west
-                );
-
-
-                standingsStatus.textContent =
-                    "Classement chargé automatiquement.";
-
-            } catch (error) {
-
-                console.error(
-                    "Erreur classement :",
-                    error
-                );
-
-
-                standingsStatus.textContent =
-                    "Impossible de charger le classement.";
-
-
-                standingsContainer.innerHTML = `
-
-                    <div class="no-game">
 
                         <h3>
-                            Classement indisponible
+                            ${article.title || "Actualité NBA"}
                         </h3>
 
                         <p>
-                            Réessayez dans quelques instants.
+                            ${article.description || "Découvrez les dernières informations du basketball."}
                         </p>
 
-                    </div>
+                        ${
+                            article.url
+                            ?
+                            `<a href="${article.url}" target="_blank" class="news-link">
+                                Lire l'article →
+                            </a>`
+                            :
+                            `<a href="actualites.html" class="news-link">
+                                Lire l'article →
+                            </a>`
+                        }
 
+                    </div>
                 `;
 
-            }
+                container.appendChild(card);
+
+            });
+
+        } catch (error) {
+
+            console.log("Actualités :", error);
 
         }
 
+    }
 
-        /* =====================================================
-           STATISTIQUES JOUEURS
-        ===================================================== */
 
-        async function loadPlayerStats() {
+    /* =====================================
+       STATISTIQUES JOUEURS
+    ===================================== */
 
-            try {
+    async function loadPlayerStats() {
 
-                const response =
-                    await fetch(
-                        "player-stats.json?t=" +
-                        Date.now(),
-                        {
-                            cache: "no-store"
-                        }
+        try {
+
+            const response = await fetch(
+                "player-stats.json?t=" + Date.now(),
+                {
+                    cache: "no-store"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("player-stats.json introuvable");
+            }
+
+            const data = await response.json();
+
+            const players = data.players || data;
+
+            if (!players) {
+                return;
+            }
+
+            const ids = {
+                wembanyama: "wembanyama",
+                lebron: "lebron",
+                curry: "curry",
+                giannis: "giannis",
+                shai: "shai"
+            };
+
+            Object.keys(ids).forEach(playerKey => {
+
+                let player = players[playerKey];
+
+                if (!player && Array.isArray(players)) {
+
+                    player = players.find(
+                        p =>
+                            p.key === playerKey ||
+                            p.slug === playerKey ||
+                            p.name?.toLowerCase().includes(playerKey)
                     );
 
+                }
 
-                if (!response.ok) {
+                if (!player) {
                     return;
                 }
 
+                const pts = player.pts ?? player.PTS ?? player.points ?? "—";
+                const reb = player.reb ?? player.REB ?? player.rebounds ?? "—";
+                const ast = player.ast ?? player.AST ?? player.assists ?? "—";
 
-                const data =
-                    await response.json();
+                const ptsElement =
+                    document.querySelector(
+                        `[data-player="${playerKey}-pts"]`
+                    );
 
+                const rebElement =
+                    document.querySelector(
+                        `[data-player="${playerKey}-reb"]`
+                    );
 
-                const players =
-                    data.players
-                    ||
-                    data;
+                const astElement =
+                    document.querySelector(
+                        `[data-player="${playerKey}-ast"]`
+                    );
 
-
-                if (
-                    !players
-                    ||
-                    typeof players !== "object"
-                ) {
-                    return;
+                if (ptsElement) {
+                    ptsElement.textContent = pts;
                 }
 
+                if (rebElement) {
+                    rebElement.textContent = reb;
+                }
 
-                playerCards.forEach(
-                    function(card) {
+                if (astElement) {
+                    astElement.textContent = ast;
+                }
 
-                        const id =
-                            card.dataset.playerId;
+            });
 
+        } catch (error) {
 
-                        const player =
-                            players[id]
-                            ||
-                            players[
-                                String(id)
-                            ];
-
-
-                        if (!player) {
-                            return;
-                        }
-
-
-                        const pts =
-                            card.querySelector(
-                                ".player-pts"
-                            );
-
-
-                        const reb =
-                            card.querySelector(
-                                ".player-reb"
-                            );
-
-
-                        const ast =
-                            card.querySelector(
-                                ".player-ast"
-                            );
-
-
-                        if (pts && player.pts != null) {
-                            pts.textContent =
-                                player.pts;
-                        }
-
-
-                        if (reb && player.reb != null) {
-                            reb.textContent =
-                                player.reb;
-                        }
-
-
-                        if (ast && player.ast != null) {
-                            ast.textContent =
-                                player.ast;
-                        }
-
-                    }
-                );
-
-            } catch (error) {
-
-                /*
-                  player-stats.json peut ne pas encore exister.
-                  Dans ce cas les cartes restent simplement
-                  avec "—".
-                */
-
-                console.log(
-                    "Statistiques joueurs non disponibles.",
-                    error
-                );
-
-            }
+            console.log("Statistiques joueurs :", error);
 
         }
 
-
-        /* =====================================================
-           LANCEMENT
-        ===================================================== */
-
-        loadNews();
-
-        loadStandings();
-
-        loadPlayerStats();
+    }
 
 
-        /*
-          Actualisation automatique.
-        */
+    /* =====================================
+       CLASSEMENT
+    ===================================== */
 
-        setInterval(
-            loadNews,
-            30 * 60 * 1000
-        );
+    async function loadStandings() {
 
+        try {
 
-        setInterval(
-            loadStandings,
-            30 * 60 * 1000
-        );
-
-
-        setInterval(
-            loadPlayerStats,
-            30 * 60 * 1000
-        );
-
-
-        /* =====================================================
-           BOUTON ACTUALISER LES NEWS
-        ===================================================== */
-
-        const refreshButton =
-            document.getElementById(
-                "manual-news-refresh"
+            const response = await fetch(
+                "standings.json?t=" + Date.now(),
+                {
+                    cache: "no-store"
+                }
             );
 
+            if (!response.ok) {
+                throw new Error("standings.json introuvable");
+            }
 
-        const refreshStatus =
-            document.getElementById(
-                "news-refresh-status"
-            );
+            const data = await response.json();
 
+            const east = document.getElementById("eastStandings");
+            const west = document.getElementById("westStandings");
 
-        const REFRESH_COOLDOWN =
-            5 * 60 * 1000;
+            if (east && Array.isArray(data.east)) {
 
+                east.innerHTML = data.east
+                    .slice(0, 5)
+                    .map(team => `
 
-        const REFRESH_KEY =
-            "basket-zone-news-last-refresh";
+                        <div class="standing-row">
 
+                            <span class="standing-rank">
+                                ${team.rank}
+                            </span>
 
-        function refreshRemaining() {
+                            <span class="standing-team">
+                                ${team.team}
+                            </span>
 
-            const last =
-                Number(
-                    localStorage.getItem(
-                        REFRESH_KEY
-                    )
-                    ||
-                    0
-                );
+                            <span class="standing-value">
+                                ${team.wins}
+                            </span>
 
+                            <span class="standing-value">
+                                ${team.losses}
+                            </span>
 
-            return Math.max(
-                0,
-                REFRESH_COOLDOWN -
-                (
-                    Date.now() -
-                    last
-                )
-            );
+                        </div>
+
+                    `)
+                    .join("");
+
+            }
+
+            if (west && Array.isArray(data.west)) {
+
+                west.innerHTML = data.west
+                    .slice(0, 5)
+                    .map(team => `
+
+                        <div class="standing-row">
+
+                            <span class="standing-rank">
+                                ${team.rank}
+                            </span>
+
+                            <span class="standing-team">
+                                ${team.team}
+                            </span>
+
+                            <span class="standing-value">
+                                ${team.wins}
+                            </span>
+
+                            <span class="standing-value">
+                                ${team.losses}
+                            </span>
+
+                        </div>
+
+                    `)
+                    .join("");
+
+            }
+
+        } catch (error) {
+
+            console.log("Classement :", error);
 
         }
 
-
-        refreshButton.addEventListener(
-            "click",
-            async function() {
-
-                const remaining =
-                    refreshRemaining();
+    }
 
 
-                if (remaining > 0) {
+    /* =====================================
+       RECHERCHE JOUEURS
+    ===================================== */
 
-                    refreshStatus.textContent =
-                        "Patiente encore " +
-                        Math.ceil(
-                            remaining / 60000
-                        ) +
-                        " min.";
+    const searchInput =
+        document.getElementById("searchInput");
 
-                    return;
+    if (searchInput) {
 
-                }
+        searchInput.addEventListener("input", function () {
 
+            const search =
+                this.value.toLowerCase().trim();
 
-                refreshButton.disabled =
-                    true;
+            const cards =
+                document.querySelectorAll(".player-card");
 
+            cards.forEach(card => {
 
-                refreshStatus.textContent =
-                    "Actualisation...";
+                const text =
+                    card.textContent.toLowerCase();
 
+                if (text.includes(search)) {
 
-                localStorage.setItem(
-                    REFRESH_KEY,
-                    String(Date.now())
-                );
+                    card.style.display = "";
 
+                } else {
 
-                try {
-
-                    await loadNews();
-
-
-                    refreshStatus.textContent =
-                        "Actualités mises à jour.";
-
-                } catch {
-
-                    refreshStatus.textContent =
-                        "Actualisation impossible.";
+                    card.style.display = "none";
 
                 }
 
+            });
 
-                setTimeout(
-                    function() {
+        });
 
-                        refreshButton.disabled =
-                            false;
+    }
 
-                    },
-                    1000
-                );
 
-            }
-        );
+    /* =====================================
+       LANCEMENT
+    ===================================== */
 
-    </script>
+    loadNews();
+    loadPlayerStats();
+    loadStandings();
+
+</script>
 
 </body>
-
 </html>
