@@ -1,365 +1,523 @@
 <!DOCTYPE html>
-
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>ℹ️ À propos - Basket Zone</title>
+  <title>À propos - Basket Zone</title>
 
-<style>
-
+  <style>
     * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #f4f4f4;
-        color: #222;
-        line-height: 1.6;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #222;
     }
 
-    /* =========================
-       HEADER
-    ========================= */
-
     header {
-        background: linear-gradient(135deg, #ff6a00, #ff8c00);
-        color: white;
-        text-align: center;
-        padding: 35px 20px;
+      background: #ff6a00;
+      color: white;
+      text-align: center;
+      padding: 28px 20px;
     }
 
     header h1 {
-        font-size: 42px;
-        margin-bottom: 10px;
+      font-size: 34px;
+      margin-bottom: 8px;
     }
 
     header p {
-        font-size: 18px;
+      font-size: 16px;
     }
 
-    /* =========================
-       MENU
-    ========================= */
-
     nav {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        background: #111;
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 5px;
-        padding: 10px;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding: 10px;
     }
 
     nav a {
-        color: white;
-        text-decoration: none;
-        padding: 10px 14px;
-        border-radius: 6px;
-        font-weight: bold;
-        transition: 0.2s;
+      color: white;
+      text-decoration: none;
+      padding: 12px 15px;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: 0.2s;
     }
 
     nav a:hover,
     nav a.active {
-        background: #ff6a00;
+      background: #ff6a00;
     }
 
-    /* =========================
-       CONTENU
-    ========================= */
-
-    main {
-        max-width: 900px;
-        margin: auto;
-        padding: 40px 20px;
+    .container {
+      width: 92%;
+      max-width: 1100px;
+      margin: 35px auto;
     }
 
-    .section-title {
-        text-align: center;
-        font-size: 32px;
-        margin-bottom: 30px;
-        color: #ff6a00;
+    .hero {
+      background: linear-gradient(
+        135deg,
+        #111,
+        #292929
+      );
+      color: white;
+      border-radius: 16px;
+      padding: 55px 40px;
+      margin-bottom: 30px;
+      text-align: center;
     }
 
-    .page-card {
-        background: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    .hero h2 {
+      font-size: 42px;
+      margin-bottom: 15px;
     }
 
-    .page-card p {
-        margin-bottom: 18px;
+    .hero h2 span {
+      color: #ff6a00;
     }
 
-    .page-card h3 {
-        margin-top: 25px;
-        margin-bottom: 12px;
-        color: #ff6a00;
+    .hero p {
+      max-width: 750px;
+      margin: auto;
+      color: #ddd;
+      line-height: 1.7;
+      font-size: 17px;
     }
 
-    /* =========================
-       FOOTER
-    ========================= */
+    .section {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+
+    .section h3 {
+      font-size: 27px;
+      margin-bottom: 15px;
+      border-left: 5px solid #ff6a00;
+      padding-left: 12px;
+    }
+
+    .section p {
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 25px;
+      border: 1px solid #eee;
+    }
+
+    .card-icon {
+      font-size: 35px;
+      margin-bottom: 12px;
+    }
+
+    .card h4 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .stat {
+      background: #111;
+      color: white;
+      text-align: center;
+      padding: 22px 10px;
+      border-radius: 10px;
+    }
+
+    .stat strong {
+      display: block;
+      color: #ff6a00;
+      font-size: 30px;
+      margin-bottom: 5px;
+    }
+
+    .stat span {
+      font-size: 13px;
+      color: #ddd;
+    }
+
+    .links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .links a {
+      text-decoration: none;
+      background: #f3f3f3;
+      color: #222;
+      padding: 16px;
+      border-radius: 9px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .links a:hover {
+      background: #ff6a00;
+      color: white;
+    }
+
+    .contact-box {
+      background: #fff4ec;
+      border-left: 5px solid #ff6a00;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .contact-box a {
+      color: #ff6a00;
+      font-weight: bold;
+      text-decoration: none;
+    }
 
     footer {
-        background: #111;
-        color: white;
-        text-align: center;
-        padding: 30px 20px;
-        margin-top: 40px;
+      margin-top: 50px;
+      background: #111;
+      color: #aaa;
+      text-align: center;
+      padding: 28px 20px;
     }
 
     footer p {
-        margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     footer a {
-        color: white;
-        text-decoration: none;
-        margin: 0 8px;
+      color: #ff6a00;
+      text-decoration: none;
     }
 
-    footer a:hover {
-        color: #ff6a00;
-    }
+    @media (max-width: 800px) {
+      .cards {
+        grid-template-columns: 1fr;
+      }
 
-    /* =========================
-       MOBILE
-    ========================= */
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero h2 {
+        font-size: 34px;
+      }
+    }
 
     @media (max-width: 600px) {
+      header h1 {
+        font-size: 28px;
+      }
 
-        header h1 {
-            font-size: 32px;
-        }
+      nav {
+        justify-content: flex-start;
+      }
 
-        header p {
-            font-size: 15px;
-        }
+      nav a {
+        font-size: 12px;
+        padding: 9px 10px;
+      }
 
-        nav {
-            position: static;
-        }
+      .container {
+        width: 94%;
+      }
 
-        nav a {
-            font-size: 13px;
-            padding: 8px 10px;
-        }
+      .hero {
+        padding: 40px 22px;
+      }
 
-        .section-title {
-            font-size: 27px;
-        }
+      .hero h2 {
+        font-size: 29px;
+      }
 
-        .page-card {
-            padding: 20px;
-        }
+      .section {
+        padding: 22px;
+      }
 
+      .section h3 {
+        font-size: 23px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .links {
+        grid-template-columns: 1fr;
+      }
     }
-
-</style>
-```
-
+  </style>
 </head>
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
+  <header>
+    <h1>🏀 Basket Zone</h1>
+    <p>Toute l'actualité du basketball au même endroit</p>
+  </header>
 
-<header>
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="actualites.html">Actualités</a>
+    <a href="matchs.html">Matchs</a>
+    <a href="joueurs.html">Joueurs</a>
+    <a href="classement.html">Classement</a>
+    <a href="apropos.html" class="active">À propos</a>
+    <a href="contact.html">Contact</a>
+    <a href="confidentialite.html">Confidentialité</a>
+  </nav>
 
-```
-<h1>🏀 Basket Zone</h1>
+  <main class="container">
 
-<p>
-    Toute l'actualité du basketball au même endroit
-</p>
-```
+    <section class="hero">
+      <h2>Bienvenue sur <span>Basket Zone</span></h2>
 
-</header>
-
-<!-- =========================
-     MENU
-========================= -->
-
-<nav>
-
-```
-<a href="index.html">
-    🏠 Accueil
-</a>
-
-<a href="actualites.html">
-    📰 Actualités
-</a>
-
-<a href="matchs.html">
-    🏀 Matchs
-</a>
-
-<a href="joueurs.html">
-    ⭐ Joueurs
-</a>
-
-<a href="classement.html">
-    🏆 Classement
-</a>
-
-<a href="apropos.html" class="active">
-    ℹ️ À propos
-</a>
-
-<a href="contact.html">
-    📞 Contact
-</a>
-```
-
-</nav>
-
-<!-- =========================
-     CONTENU
-========================= -->
-
-<main>
-
-```
-<h2 class="section-title">
-    ℹ️ À propos de Basket Zone
-</h2>
+      <p>
+        Basket Zone est un site consacré à l'actualité du basketball.
+        Notre objectif est de réunir au même endroit les informations
+        importantes sur la NBA et le monde du basket.
+      </p>
+    </section>
 
 
-<div class="page-card">
+    <section class="section">
 
-    <h3>
-        🏀 Bienvenue sur Basket Zone
-    </h3>
+      <h3>Notre objectif</h3>
+
+      <p>
+        Basket Zone a été créé pour proposer une expérience simple,
+        moderne et agréable aux passionnés de basketball.
+      </p>
+
+      <p>
+        Le site permet de retrouver rapidement les actualités,
+        les matchs, les joueurs et les classements NBA.
+      </p>
+
+      <p>
+        Nous souhaitons faire évoluer progressivement le site afin
+        de proposer toujours plus de contenu et de fonctionnalités.
+      </p>
+
+    </section>
+
+
+    <section class="section">
+
+      <h3>Ce que vous trouverez sur Basket Zone</h3>
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="card-icon">📰</div>
+
+          <h4>Actualités</h4>
+
+          <p>
+            Retrouvez les dernières informations et les principales
+            actualités du basketball.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <div class="card-icon">🏀</div>
+
+          <h4>Matchs</h4>
+
+          <p>
+            Consultez les matchs à venir et retrouvez les équipes
+            qui s'affrontent.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <div class="card-icon">⭐</div>
+
+          <h4>Joueurs</h4>
+
+          <p>
+            Découvrez les stars de la NBA ainsi que leurs statistiques
+            principales.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <div class="card-icon">🏆</div>
+
+          <h4>Classement</h4>
+
+          <p>
+            Suivez le classement des équipes de la conférence Est
+            et de la conférence Ouest.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <div class="card-icon">📊</div>
+
+          <h4>Statistiques</h4>
+
+          <p>
+            Retrouvez les statistiques importantes des joueurs
+            et des équipes.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <div class="card-icon">📱</div>
+
+          <h4>Accessible partout</h4>
+
+          <p>
+            Le site est conçu pour fonctionner sur ordinateur,
+            tablette et téléphone.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="section">
+
+      <h3>Basket Zone en quelques chiffres</h3>
+
+      <div class="stats">
+
+        <div class="stat">
+          <strong>30</strong>
+          <span>Équipes NBA</span>
+        </div>
+
+        <div class="stat">
+          <strong>2</strong>
+          <span>Conférences</span>
+        </div>
+
+        <div class="stat">
+          <strong>15</strong>
+          <span>Équipes à l'Est</span>
+        </div>
+
+        <div class="stat">
+          <strong>15</strong>
+          <span>Équipes à l'Ouest</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="section">
+
+      <h3>Explorer Basket Zone</h3>
+
+      <p>
+        Utilisez les différentes pages du site pour retrouver
+        rapidement les informations qui vous intéressent.
+      </p>
+
+      <div class="links">
+
+        <a href="actualites.html">
+          📰 Voir les actualités
+        </a>
+
+        <a href="matchs.html">
+          🏀 Voir les matchs
+        </a>
+
+        <a href="joueurs.html">
+          ⭐ Découvrir les joueurs
+        </a>
+
+        <a href="classement.html">
+          🏆 Consulter le classement
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <section class="section">
+
+      <h3>Une question ?</h3>
+
+      <p>
+        Si vous souhaitez nous contacter, vous pouvez nous envoyer
+        un message directement depuis la page Contact.
+      </p>
+
+      <div class="contact-box">
+
+        📧
+        <a href="mailto:kouassiemolo@outlook.fr">
+          kouassiemolo@outlook.fr
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer>
 
     <p>
-        <strong>Basket Zone</strong> est un site consacré
-        à l'univers du basketball.
+      © 2026 Basket Zone — Toute l'actualité du basketball
     </p>
 
     <p>
-        Notre objectif est de réunir au même endroit les
-        actualités, les matchs, les joueurs et les classements
-        afin de proposer une expérience simple et agréable aux
-        passionnés de basketball.
+      <a href="contact.html">Contact</a>
+      ·
+      <a href="confidentialite.html">Confidentialité</a>
     </p>
 
-
-    <h3>
-        📰 Les actualités
-    </h3>
-
-    <p>
-        Les actualités NBA affichées sur Basket Zone sont
-        mises à jour automatiquement grâce au système
-        d'actualisation du site.
-    </p>
-
-
-    <h3>
-        📊 Les classements
-    </h3>
-
-    <p>
-        Le classement NBA est mis à jour automatiquement
-        lorsque les nouvelles données disponibles sont
-        récupérées par le système du site.
-    </p>
-
-
-    <h3>
-        ⭐ Les joueurs
-    </h3>
-
-    <p>
-        Basket Zone présente également plusieurs joueurs NBA
-        et leurs statistiques principales, notamment les points,
-        les rebonds et les passes décisives.
-    </p>
-
-    <p>
-        Les statistiques affichées peuvent être mises à jour
-        automatiquement selon les données disponibles.
-    </p>
-
-
-    <h3>
-        🚀 L'avenir de Basket Zone
-    </h3>
-
-    <p>
-        Basket Zone est actuellement en développement.
-        De nouvelles fonctionnalités pourront être ajoutées
-        progressivement afin d'améliorer l'expérience des
-        visiteurs.
-    </p>
-
-    <p>
-        🏀 Merci de visiter Basket Zone et de suivre
-        l'actualité du basketball avec nous !
-    </p>
-
-</div>
-```
-
-</main>
-
-<!-- =========================
-     FOOTER
-========================= -->
-
-<footer>
-
-```
-<p>
-    🏀 <strong>Basket Zone</strong>
-</p>
-
-<p>
-    Toute l'actualité du basketball au même endroit.
-</p>
-
-<p>
-
-    <a href="apropos.html">
-        À propos
-    </a>
-
-    |
-
-    <a href="contact.html">
-        Contact
-    </a>
-
-    |
-
-    <a href="confidentialite.html">
-        Politique de confidentialité
-    </a>
-
-</p>
-
-<p>
-    © 2026 Basket Zone - Tous droits réservés.
-</p>
-```
-
-</footer>
+  </footer>
 
 </body>
-
 </html>
