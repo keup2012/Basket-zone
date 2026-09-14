@@ -50,7 +50,6 @@
       padding: 12px 15px;
       border-radius: 6px;
       font-weight: bold;
-      transition: 0.2s;
     }
 
     nav a:hover,
@@ -150,13 +149,6 @@
       font-weight: bold;
     }
 
-    .team-city {
-      display: block;
-      color: #888;
-      font-size: 12px;
-      margin-top: 3px;
-    }
-
     .number {
       font-weight: bold;
       text-align: center;
@@ -199,16 +191,16 @@
       padding: 25px;
     }
 
-    @media (max-width: 750px) {
+    @media (max-width: 700px) {
 
       .standings-header {
-        grid-template-columns: 40px 1fr 60px 60px 70px;
+        grid-template-columns: 40px 1fr 55px 55px 65px;
         padding: 15px 10px;
         font-size: 12px;
       }
 
       .team-row {
-        grid-template-columns: 40px 1fr 60px 60px 70px;
+        grid-template-columns: 40px 1fr 55px 55px 65px;
         padding: 8px 10px;
       }
 
@@ -223,10 +215,6 @@
 
       .team-name {
         font-size: 13px;
-      }
-
-      .team-city {
-        display: none;
       }
 
       .number {
@@ -257,22 +245,18 @@
         font-size: 26px;
       }
 
-      .conference-buttons {
-        width: 100%;
-      }
-
       .conference-buttons button {
         flex: 1;
         padding: 11px 8px;
       }
 
       .standings-header {
-        grid-template-columns: 30px 1fr 45px 45px 55px;
+        grid-template-columns: 30px 1fr 40px 40px 55px;
         font-size: 10px;
       }
 
       .team-row {
-        grid-template-columns: 30px 1fr 45px 45px 55px;
+        grid-template-columns: 30px 1fr 40px 40px 55px;
       }
 
       .team-logo {
@@ -283,368 +267,352 @@
       .team-name {
         font-size: 11px;
       }
-
-      .number {
-        font-size: 11px;
-      }
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <h1>🏀 Basket Zone</h1>
-    <p>Toute l'actualité du basketball au même endroit</p>
-  </header>
+<header>
+  <h1>🏀 Basket Zone</h1>
+  <p>Toute l'actualité du basketball au même endroit</p>
+</header>
 
-  <nav>
-    <a href="index.html">Accueil</a>
-    <a href="actualites.html">Actualités</a>
-    <a href="matchs.html">Matchs</a>
-    <a href="joueurs.html">Joueurs</a>
-    <a href="classement.html" class="active">Classement</a>
-    <a href="apropos.html">À propos</a>
-    <a href="contact.html">Contact</a>
-    <a href="confidentialite.html">Confidentialité</a>
-  </nav>
+<nav>
+  <a href="index.html">Accueil</a>
+  <a href="actualites.html">Actualités</a>
+  <a href="matchs.html">Matchs</a>
+  <a href="joueurs.html">Joueurs</a>
+  <a href="classement.html" class="active">Classement</a>
+  <a href="apropos.html">À propos</a>
+  <a href="contact.html">Contact</a>
+  <a href="confidentialite.html">Confidentialité</a>
+</nav>
 
-  <main class="container">
+<main class="container">
 
-    <div class="page-title">
-      <h2>Classement NBA</h2>
-      <p>Retrouve le classement des équipes de la conférence Est et Ouest.</p>
+  <div class="page-title">
+    <h2>Classement NBA</h2>
+    <p>
+      Saison 2026-2027 — Conférences Est et Ouest
+    </p>
+  </div>
+
+  <div class="conference-buttons">
+
+    <button id="eastButton" class="active">
+      Conférence Est
+    </button>
+
+    <button id="westButton">
+      Conférence Ouest
+    </button>
+
+  </div>
+
+  <section class="standings-box">
+
+    <div class="standings-header">
+      <div>#</div>
+      <div>Équipe</div>
+      <div>V</div>
+      <div>D</div>
+      <div>%</div>
     </div>
 
-    <div class="conference-buttons">
-      <button id="eastButton" class="active">
-        Conférence Est
-      </button>
-
-      <button id="westButton">
-        Conférence Ouest
-      </button>
-    </div>
-
-    <section class="standings-box">
-
-      <div class="standings-header">
-        <div>#</div>
-        <div>Équipe</div>
-        <div>V</div>
-        <div>D</div>
-        <div>%</div>
+    <div id="standingsList">
+      <div class="loading">
+        Chargement du classement...
       </div>
-
-      <div id="standingsList">
-        <div class="loading">
-          Chargement du classement...
-        </div>
-      </div>
-
-    </section>
-
-    <div class="info-box">
-      <strong>Classement NBA</strong><br>
-      V = victoires · D = défaites · % = pourcentage de victoires.
-      <br>
-      Les données sont chargées automatiquement depuis
-      <strong>standings.json</strong>.
     </div>
 
-  </main>
+  </section>
 
-  <footer>
-    <p>© 2026 Basket Zone — Toute l'actualité du basketball</p>
-  </footer>
+  <div class="info-box">
+    <strong>Classement NBA</strong><br>
+    V = victoires · D = défaites · % = pourcentage de victoires.
+    <br><br>
+    Dernière mise à jour :
+    <strong id="lastUpdate">—</strong>
+  </div>
 
-  <script>
+</main>
 
-    let standingsData = {
-      East: [],
-      West: []
-    };
+<footer>
+  <p>© 2026 Basket Zone — Toute l'actualité du basketball</p>
+</footer>
 
-    let currentConference = "East";
+<script>
 
-    const standingsList = document.getElementById("standingsList");
-    const eastButton = document.getElementById("eastButton");
-    const westButton = document.getElementById("westButton");
+  let standings = null;
+  let currentConference = "east";
 
+  const standingsList =
+    document.getElementById("standingsList");
 
-    /*
-      LOGOS DES ÉQUIPES
+  const eastButton =
+    document.getElementById("eastButton");
 
-      Les chemins correspondent aux fichiers présents
-      dans le dossier photos/.
-    */
+  const westButton =
+    document.getElementById("westButton");
 
-    const logos = {
-
-      "Atlanta Hawks": "photos/atlanta-hawks_big_square.png",
-      "Boston Celtics": "photos/boston-celtics_big_square.png",
-      "Brooklyn Nets": "photos/brooklyn-nets_big_square.png",
-      "Charlotte Hornets": "photos/charlotte-hornets_big_square.png",
-      "Chicago Bulls": "photos/chicago-bulls_big_square.png",
-      "Cleveland Cavaliers": "photos/cleveland-cavaliers_big_square.png",
-      "Dallas Mavericks": "photos/dallas-mavericks_big_square.png",
-      "Denver Nuggets": "photos/denver-nuggets_big_square.png",
-      "Detroit Pistons": "photos/detroit-pistons_big_square.png",
-      "Golden State Warriors": "photos/golden-state-warriors_big_square.png",
-      "Houston Rockets": "photos/houston-rockets_big_square.png",
-      "Indiana Pacers": "photos/indiana-pacers_big_square.png",
-      "LA Clippers": "photos/la-clippers_big_square.png",
-      "Los Angeles Lakers": "photos/los-angeles-lakers_big_square.png",
-      "Memphis Grizzlies": "photos/memphis-grizzlies_big_square.png",
-      "Miami Heat": "photos/miami-heat_big_square.png",
-      "Milwaukee Bucks": "photos/milwaukee-bucks_big_square.png",
-      "Minnesota Timberwolves": "photos/minnesota-timberwolves_big_square.png",
-      "New Orleans Pelicans": "photos/new-orleans-pelicans_big_square.png",
-      "New York Knicks": "photos/new-york-knicks_big_square.png",
-      "Oklahoma City Thunder": "photos/oklahoma-city-thunder_big_square.png",
-      "Orlando Magic": "photos/orlando-magic_big_square.png",
-      "Philadelphia 76ers": "photos/philadelphia-76ers_big_square.png",
-      "Phoenix Suns": "photos/phoenix-suns_big_square.png",
-      "Portland Trail Blazers": "photos/portland-trail-blazers_big_square.png",
-      "Sacramento Kings": "photos/sacramento-kings_big_square.png",
-      "San Antonio Spurs": "photos/san-antonio-spurs_big_square.png",
-      "Toronto Raptors": "photos/toronto-raptors_big_square.png",
-      "Utah Jazz": "photos/utah-jazz_big_square.png",
-      "Washington Wizards": "photos/washington-wizards_big_square.png"
-    };
+  const lastUpdate =
+    document.getElementById("lastUpdate");
 
 
-    /*
-      CHARGEMENT DU FICHIER STANDINGS.JSON
-    */
+  /*
+    LOGOS DES ÉQUIPES
+  */
 
-    fetch("standings.json")
+  const logos = {
 
-      .then(response => {
+    "Boston Celtics":
+      "photos/boston-celtics_big_square.png",
 
-        if (!response.ok) {
-          throw new Error("Impossible de charger standings.json");
-        }
+    "Brooklyn Nets":
+      "photos/brooklyn-nets_big_square.png",
 
-        return response.json();
+    "New York Knicks":
+      "photos/new-york-knicks_big_square.png",
 
-      })
+    "Philadelphia 76ers":
+      "photos/philadelphia-76ers_big_square.png",
 
-      .then(data => {
+    "Toronto Raptors":
+      "photos/toronto-raptors_big_square.png",
 
-        /*
-          Le script accepte plusieurs formats
-          possibles pour standings.json.
-        */
+    "Chicago Bulls":
+      "photos/chicago-bulls_big_square.png",
 
-        if (data.East || data.West) {
+    "Cleveland Cavaliers":
+      "photos/cleveland-cavaliers_big_square.png",
 
-          standingsData.East = data.East || [];
-          standingsData.West = data.West || [];
+    "Detroit Pistons":
+      "photos/detroit-pistons_big_square.png",
 
-        } else if (data.east || data.west) {
+    "Indiana Pacers":
+      "photos/indiana-pacers_big_square.png",
 
-          standingsData.East = data.east || [];
-          standingsData.West = data.west || [];
+    "Milwaukee Bucks":
+      "photos/milwaukee-bucks_big_square.png",
 
-        } else if (data.eastern || data.western) {
+    "Atlanta Hawks":
+      "photos/atlanta-hawks_big_square.png",
 
-          standingsData.East = data.eastern || [];
-          standingsData.West = data.western || [];
+    "Charlotte Hornets":
+      "photos/charlotte-hornets_big_square.png",
 
-        } else if (Array.isArray(data)) {
+    "Miami Heat":
+      "photos/miami-heat_big_square.png",
 
-          standingsData.East = data.filter(team =>
-            team.conference === "East" ||
-            team.conference === "Eastern"
-          );
+    "Orlando Magic":
+      "photos/orlando-magic_big_square.png",
 
-          standingsData.West = data.filter(team =>
-            team.conference === "West" ||
-            team.conference === "Western"
-          );
+    "Washington Wizards":
+      "photos/washington-wizards_big_square.png",
 
-        }
+    "Denver Nuggets":
+      "photos/denver-nuggets_big_square.png",
 
-        displayStandings();
+    "Minnesota Timberwolves":
+      "photos/minnesota-timberwolves_big_square.png",
 
-      })
+    "Oklahoma City Thunder":
+      "photos/oklahoma-city-thunder_big_square.png",
 
-      .catch(error => {
+    "Portland Trail Blazers":
+      "photos/portland-trail-blazers_big_square.png",
 
-        console.error(error);
+    "Utah Jazz":
+      "photos/utah-jazz_big_square.png",
 
-        standingsList.innerHTML = `
-          <div class="error">
-            Impossible de charger le classement.<br>
-            Vérifie que <strong>standings.json</strong> existe bien.
-          </div>
-        `;
+    "Golden State Warriors":
+      "photos/golden-state-warriors_big_square.png",
 
-      });
+    "LA Clippers":
+      "photos/la-clippers_big_square.png",
+
+    "Los Angeles Lakers":
+      "photos/los-angeles-lakers_big_square.png",
+
+    "Phoenix Suns":
+      "photos/phoenix-suns_big_square.png",
+
+    "Sacramento Kings":
+      "photos/sacramento-kings_big_square.png",
+
+    "Dallas Mavericks":
+      "photos/dallas-mavericks_big_square.png",
+
+    "Houston Rockets":
+      "photos/houston-rockets_big_square.png",
+
+    "Memphis Grizzlies":
+      "photos/memphis-grizzlies_big_square.png",
+
+    "New Orleans Pelicans":
+      "photos/new-orleans-pelicans_big_square.png",
+
+    "San Antonio Spurs":
+      "photos/san-antonio-spurs_big_square.png"
+  };
 
 
-    /*
-      AFFICHAGE DU CLASSEMENT
-    */
+  /*
+    CHARGEMENT DE standings.json
+  */
 
-    function displayStandings() {
+  fetch("standings.json")
 
-      const teams = standingsData[currentConference];
+    .then(response => {
 
-      if (!teams || teams.length === 0) {
-
-        standingsList.innerHTML = `
-          <div class="error">
-            Aucun classement disponible pour cette conférence.
-          </div>
-        `;
-
-        return;
+      if (!response.ok) {
+        throw new Error(
+          "standings.json introuvable"
+        );
       }
 
-      standingsList.innerHTML = "";
+      return response.json();
 
-      teams.forEach((team, index) => {
+    })
 
-        const name =
-          team.teamName ||
-          team.name ||
-          team.team ||
-          team.TeamName ||
-          "Équipe NBA";
+    .then(data => {
 
-        const wins =
-          team.wins ??
-          team.WINS ??
-          team.W ??
-          team.win ??
-          0;
+      standings = data;
 
-        const losses =
-          team.losses ??
-          team.LOSSES ??
-          team.L ??
-          team.loss ??
-          0;
+      if (data.updated) {
+        lastUpdate.textContent = data.updated;
+      }
 
-        let percentage =
-          team.winPct ??
-          team.winPercentage ??
-          team.PCT ??
-          team.pct;
+      displayStandings();
 
-        if (percentage === undefined) {
+    })
 
-          const total = Number(wins) + Number(losses);
+    .catch(error => {
 
-          if (total > 0) {
-            percentage = (Number(wins) / total * 100).toFixed(1) + "%";
-          } else {
-            percentage = "0%";
-          }
+      console.error(error);
 
-        } else {
+      standingsList.innerHTML = `
+        <div class="error">
+          Impossible de charger le classement.
+        </div>
+      `;
 
-          percentage = Number(percentage);
+    });
 
-          if (percentage <= 1) {
-            percentage = (percentage * 100).toFixed(1) + "%";
-          } else {
-            percentage = percentage.toFixed(1) + "%";
-          }
 
-        }
+  /*
+    AFFICHER LE CLASSEMENT
+  */
 
-        const logo =
-          logos[name] ||
-          team.logo ||
-          "photos/logo.png";
+  function displayStandings() {
 
-        const row = document.createElement("div");
-
-        row.className = "team-row";
-
-        row.innerHTML = `
-
-          <div class="rank">
-            ${index + 1}
-          </div>
-
-          <div class="team-info">
-
-            <img
-              class="team-logo"
-              src="${logo}"
-              alt="${name}"
-              onerror="this.style.display='none'"
-            >
-
-            <div>
-              <div class="team-name">
-                ${name}
-              </div>
-
-              <span class="team-city">
-                NBA
-              </span>
-            </div>
-
-          </div>
-
-          <div class="number win">
-            ${wins}
-          </div>
-
-          <div class="number loss">
-            ${losses}
-          </div>
-
-          <div class="number">
-            ${percentage}
-          </div>
-
-        `;
-
-        standingsList.appendChild(row);
-
-      });
-
+    if (!standings) {
+      return;
     }
 
+    const teams =
+      standings[currentConference];
 
-    /*
-      BOUTON CONFÉRENCE EST
-    */
+    if (!teams || teams.length === 0) {
 
-    eastButton.addEventListener("click", () => {
+      standingsList.innerHTML = `
+        <div class="error">
+          Aucun classement disponible.
+        </div>
+      `;
 
-      currentConference = "East";
+      return;
+    }
 
-      eastButton.classList.add("active");
-      westButton.classList.remove("active");
+    standingsList.innerHTML = "";
 
-      displayStandings();
+    teams.forEach(team => {
+
+      const logo =
+        logos[team.team] || "";
+
+      const row =
+        document.createElement("div");
+
+      row.className = "team-row";
+
+      row.innerHTML = `
+
+        <div class="rank">
+          ${team.rank}
+        </div>
+
+        <div class="team-info">
+
+          <img
+            class="team-logo"
+            src="${logo}"
+            alt="${team.team}"
+            onerror="this.style.display='none'"
+          >
+
+          <div class="team-name">
+            ${team.team}
+          </div>
+
+        </div>
+
+        <div class="number win">
+          ${team.wins}
+        </div>
+
+        <div class="number loss">
+          ${team.losses}
+        </div>
+
+        <div class="number">
+          ${team.percentage}
+        </div>
+
+      `;
+
+      standingsList.appendChild(row);
 
     });
 
+  }
 
-    /*
-      BOUTON CONFÉRENCE OUEST
-    */
 
-    westButton.addEventListener("click", () => {
+  /*
+    BOUTON EST
+  */
 
-      currentConference = "West";
+  eastButton.addEventListener("click", () => {
 
-      westButton.classList.add("active");
-      eastButton.classList.remove("active");
+    currentConference = "east";
 
-      displayStandings();
+    eastButton.classList.add("active");
 
-    });
+    westButton.classList.remove("active");
 
-  </script>
+    displayStandings();
+
+  });
+
+
+  /*
+    BOUTON OUEST
+  */
+
+  westButton.addEventListener("click", () => {
+
+    currentConference = "west";
+
+    westButton.classList.add("active");
+
+    eastButton.classList.remove("active");
+
+    displayStandings();
+
+  });
+
+</script>
 
 </body>
 </html>
