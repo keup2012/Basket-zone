@@ -1,660 +1,623 @@
 <!DOCTYPE html>
-
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>⭐ Joueurs - Basket Zone</title>
+  <title>Joueurs - Basket Zone</title>
 
-<style>
-
+  <style>
     * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #f4f4f4;
-        color: #222;
-        line-height: 1.6;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #222;
     }
 
-    /* =========================
-       HEADER
-    ========================= */
-
     header {
-        background: linear-gradient(135deg, #ff6a00, #ff8c00);
-        color: white;
-        text-align: center;
-        padding: 35px 20px;
+      background: #ff6a00;
+      color: white;
+      padding: 25px 20px;
+      text-align: center;
     }
 
     header h1 {
-        font-size: 42px;
-        margin-bottom: 10px;
+      font-size: 34px;
+      margin-bottom: 8px;
     }
 
     header p {
-        font-size: 18px;
+      font-size: 16px;
     }
 
-    /* =========================
-       MENU
-    ========================= */
-
     nav {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        background: #111;
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 5px;
-        padding: 10px;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding: 10px;
     }
 
     nav a {
-        color: white;
-        text-decoration: none;
-        padding: 10px 14px;
-        border-radius: 6px;
-        font-weight: bold;
-        transition: 0.2s;
+      color: white;
+      text-decoration: none;
+      padding: 12px 15px;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: 0.2s;
     }
 
     nav a:hover,
     nav a.active {
-        background: #ff6a00;
+      background: #ff6a00;
     }
 
-    /* =========================
-       CONTENU
-    ========================= */
-
-    main {
-        max-width: 1200px;
-        margin: auto;
-        padding: 40px 20px;
+    .container {
+      width: 92%;
+      max-width: 1200px;
+      margin: 30px auto;
     }
 
-    .section-title {
-        text-align: center;
-        font-size: 32px;
-        margin-bottom: 30px;
-        color: #ff6a00;
+    .page-title {
+      margin-bottom: 25px;
     }
 
-    /* =========================
-       JOUEURS
-    ========================= */
-
-    .players-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
+    .page-title h2 {
+      font-size: 32px;
+      margin-bottom: 8px;
     }
 
-    .player-card {
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-        text-align: center;
-        transition: transform 0.2s;
+    .page-title p {
+      color: #666;
     }
 
-    .player-card:hover {
-        transform: translateY(-5px);
+    .featured {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-bottom: 35px;
     }
 
-    .player-card img {
-        width: 100%;
-        height: 260px;
-        object-fit: cover;
-        display: block;
+    .featured-image {
+      min-height: 380px;
+      background: #ddd;
     }
 
-    .player-info {
-        padding: 18px;
+    .featured-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .player-info h3 {
-        margin-bottom: 8px;
+    .featured-content {
+      padding: 35px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
-    .player-team {
-        color: #ff6a00;
-        font-weight: bold;
-        margin-bottom: 12px;
+    .tag {
+      display: inline-block;
+      width: fit-content;
+      background: #ff6a00;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .featured-content h3 {
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+
+    .featured-content p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 20px;
     }
 
     .stats {
-        display: flex;
-        justify-content: space-around;
-        gap: 8px;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
     .stat {
-        background: #f1f1f1;
-        border-radius: 8px;
-        padding: 8px;
-        flex: 1;
+      background: #f1f1f1;
+      padding: 15px 20px;
+      border-radius: 10px;
+      text-align: center;
+      min-width: 100px;
     }
 
     .stat strong {
-        display: block;
-        font-size: 18px;
+      display: block;
+      font-size: 22px;
+      color: #ff6a00;
     }
 
     .stat span {
-        font-size: 12px;
-        color: #666;
+      font-size: 12px;
+      color: #666;
     }
 
-    /* =========================
-       FOOTER
-    ========================= */
+    .search-box {
+      margin-bottom: 25px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: #ff6a00;
+    }
+
+    .players-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .player-card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .player-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.13);
+    }
+
+    .player-photo {
+      height: 270px;
+      background: #e8e8e8;
+      overflow: hidden;
+    }
+
+    .player-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .player-info {
+      padding: 18px;
+    }
+
+    .player-info h3 {
+      font-size: 21px;
+      margin-bottom: 5px;
+    }
+
+    .team {
+      color: #ff6a00;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .player-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .player-stat {
+      background: #f5f5f5;
+      padding: 10px 5px;
+      text-align: center;
+      border-radius: 7px;
+    }
+
+    .player-stat strong {
+      display: block;
+      font-size: 17px;
+    }
+
+    .player-stat span {
+      font-size: 10px;
+      color: #777;
+    }
 
     footer {
-        background: #111;
-        color: white;
-        text-align: center;
-        padding: 30px 20px;
-        margin-top: 40px;
+      margin-top: 50px;
+      background: #111;
+      color: #aaa;
+      text-align: center;
+      padding: 25px;
     }
 
-    footer p {
-        margin-bottom: 10px;
-    }
+    @media (max-width: 900px) {
+      .featured {
+        grid-template-columns: 1fr;
+      }
 
-    footer a {
-        color: white;
-        text-decoration: none;
-        margin: 0 8px;
+      .players-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
-
-    footer a:hover {
-        color: #ff6a00;
-    }
-
-    /* =========================
-       MOBILE
-    ========================= */
 
     @media (max-width: 600px) {
+      header h1 {
+        font-size: 27px;
+      }
 
-        header h1 {
-            font-size: 32px;
-        }
+      nav {
+        justify-content: flex-start;
+      }
 
-        header p {
-            font-size: 15px;
-        }
+      nav a {
+        font-size: 13px;
+        padding: 9px 10px;
+      }
 
-        nav {
-            position: static;
-        }
+      .container {
+        width: 94%;
+      }
 
-        nav a {
-            font-size: 13px;
-            padding: 8px 10px;
-        }
+      .featured-content {
+        padding: 25px;
+      }
 
-        .section-title {
-            font-size: 27px;
-        }
+      .featured-content h3 {
+        font-size: 25px;
+      }
 
+      .players-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .player-photo {
+        height: 320px;
+      }
     }
-
-</style>
-```
-
+  </style>
 </head>
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
+  <header>
+    <h1>🏀 Basket Zone</h1>
+    <p>Toute l'actualité du basketball au même endroit</p>
+  </header>
 
-<header>
+  <!-- NAVIGATION ENTRE LES VRAIES PAGES -->
+  <nav>
+    <a href="index.html">Accueil</a>
+    <a href="actualites.html">Actualités</a>
+    <a href="matchs.html">Matchs</a>
+    <a href="joueurs.html" class="active">Joueurs</a>
+    <a href="classement.html">Classement</a>
+    <a href="apropos.html">À propos</a>
+    <a href="contact.html">Contact</a>
+    <a href="confidentialite.html">Confidentialité</a>
+  </nav>
 
-```
-<h1>🏀 Basket Zone</h1>
+  <main class="container">
 
-<p>
-    Toute l'actualité du basketball au même endroit
-</p>
-```
-
-</header>
-
-<!-- =========================
-     MENU
-========================= -->
-
-<nav>
-
-```
-<a href="index.html">
-    🏠 Accueil
-</a>
-
-<a href="actualites.html">
-    📰 Actualités
-</a>
-
-<a href="matchs.html">
-    🏀 Matchs
-</a>
-
-<a href="joueurs.html" class="active">
-    ⭐ Joueurs
-</a>
-
-<a href="classement.html">
-    🏆 Classement
-</a>
-
-<a href="apropos.html">
-    ℹ️ À propos
-</a>
-
-<a href="contact.html">
-    📞 Contact
-</a>
-```
-
-</nav>
-
-<!-- =========================
-     CONTENU
-========================= -->
-
-<main>
-
-```
-<h2 class="section-title">
-    ⭐ Stars NBA
-</h2>
-
-<div class="players-container">
-
-    <!-- WEMBANYAMA -->
-
-    <div class="player-card" data-player="wembanyama">
-
-        <img
-            src="wembanyama.jpg"
-            alt="Victor Wembanyama"
-        >
-
-        <div class="player-info">
-
-            <h3>Victor Wembanyama</h3>
-
-            <div class="player-team">
-                San Antonio Spurs
-            </div>
-
-            <div class="stats">
-
-                <div class="stat">
-                    <strong data-stat="pts">—</strong>
-                    <span>PTS</span>
-                </div>
-
-                <div class="stat">
-                    <strong data-stat="reb">—</strong>
-                    <span>REB</span>
-                </div>
-
-                <div class="stat">
-                    <strong data-stat="ast">—</strong>
-                    <span>AST</span>
-                </div>
-
-            </div>
-
-        </div>
-
+    <div class="page-title">
+      <h2>Les joueurs NBA</h2>
+      <p>Retrouve les stars et les meilleurs joueurs du basketball.</p>
     </div>
 
+    <section class="featured">
 
-    <!-- LEBRON -->
+      <div class="featured-image">
+        <img src="wembanyama.jpg" alt="Victor Wembanyama">
+      </div>
 
-    <div class="player-card" data-player="lebron">
+      <div class="featured-content">
 
-        <img
-            src="lebron.jpg"
-            alt="LeBron James"
-        >
+        <span class="tag">JOUEUR À SUIVRE</span>
 
-        <div class="player-info">
+        <h3>Victor Wembanyama</h3>
 
-            <h3>LeBron James</h3>
+        <p>
+          Le jeune intérieur français continue de s'imposer comme
+          l'une des grandes stars de la NBA avec les San Antonio Spurs.
+        </p>
 
-            <div class="player-team">
-                Los Angeles Lakers
-            </div>
+        <div class="stats">
+          <div class="stat">
+            <strong id="wembyPts">24.3</strong>
+            <span>PTS</span>
+          </div>
 
-            <div class="stats">
+          <div class="stat">
+            <strong id="wembyReb">11.0</strong>
+            <span>REB</span>
+          </div>
 
-                <div class="stat">
-                    <strong data-stat="pts">—</strong>
-                    <span>PTS</span>
-                </div>
-
-                <div class="stat">
-                    <strong data-stat="reb">—</strong>
-                    <span>REB</span>
-                </div>
-
-                <div class="stat">
-                    <strong data-stat="ast">—</strong>
-                    <span>AST</span>
-                </div>
-
-            </div>
-
+          <div class="stat">
+            <strong id="wembyAst">3.8</strong>
+            <span>AST</span>
+          </div>
         </div>
 
+      </div>
+
+    </section>
+
+    <div class="search-box">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="🔎 Rechercher un joueur..."
+      >
     </div>
 
+    <section class="players-grid" id="playersGrid">
 
-    <!-- CURRY -->
-
-    <div class="player-card" data-player="curry">
-
-        <img
-            src="curry.jpg"
-            alt="Stephen Curry"
-        >
-
-        <div class="player-info">
-
-            <h3>Stephen Curry</h3>
-
-            <div class="player-team">
-                Golden State Warriors
-            </div>
-
-            <div class="stats">
-
-                <div class="stat">
-                    <strong data-stat="pts">—</strong>
-                    <span>PTS</span>
-                </div>
-
-                <div class="stat">
-                    <strong data-stat="reb">—</strong>
-                    <span>REB</span>
-                </div>
-
-                <div class="stat">
-                    <strong data-stat="ast">—</strong>
-                    <span>AST</span>
-                </div>
-
-            </div>
-
+      <article class="player-card" data-player="wembanyama">
+        <div class="player-photo">
+          <img src="wembanyama.jpg" alt="Victor Wembanyama">
         </div>
 
-    </div>
-
-
-    <!-- GIANNIS -->
-
-    <div class="player-card" data-player="giannis">
-
-        <img
-            src="giannis.jpg"
-            alt="Giannis Antetokounmpo"
-        >
-
         <div class="player-info">
+          <h3>Victor Wembanyama</h3>
+          <div class="team">San Antonio Spurs</div>
 
-            <h3>Giannis Antetokounmpo</h3>
-
-            <div class="player-team">
-                Milwaukee Bucks
+          <div class="player-stats">
+            <div class="player-stat">
+              <strong id="wembanyama-pts">24.3</strong>
+              <span>PTS</span>
             </div>
 
-            <div class="stats">
-
-                <div class="stat">
-                    <strong data-stat="pts">—</strong>
-                    <span>PTS</span>
-                </div>
-
-                <div class="stat">
-                    <strong data-stat="reb">—</strong>
-                    <span>REB</span>
-                </div>
-
-                <div class="stat">
-                    <strong data-stat="ast">—</strong>
-                    <span>AST</span>
-                </div>
-
+            <div class="player-stat">
+              <strong id="wembanyama-reb">11.0</strong>
+              <span>REB</span>
             </div>
 
+            <div class="player-stat">
+              <strong id="wembanyama-ast">3.8</strong>
+              <span>AST</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+
+      <article class="player-card" data-player="lebron">
+        <div class="player-photo">
+          <img src="lebron.jpg" alt="LeBron James">
         </div>
 
-    </div>
-
-
-    <!-- SHAI -->
-
-    <div class="player-card" data-player="shai">
-
-        <img
-            src="shai.jpg"
-            alt="Shai Gilgeous-Alexander"
-        >
-
         <div class="player-info">
+          <h3>LeBron James</h3>
+          <div class="team">Philadelphia 76ers</div>
 
-            <h3>Shai Gilgeous-Alexander</h3>
-
-            <div class="player-team">
-                Oklahoma City Thunder
+          <div class="player-stats">
+            <div class="player-stat">
+              <strong id="lebron-pts">—</strong>
+              <span>PTS</span>
             </div>
 
-            <div class="stats">
-
-                <div class="stat">
-                    <strong data-stat="pts">—</strong>
-                    <span>PTS</span>
-                </div>
-
-                <div class="stat">
-                    <strong data-stat="reb">—</strong>
-                    <span>REB</span>
-                </div>
-
-                <div class="stat">
-                    <strong data-stat="ast">—</strong>
-                    <span>AST</span>
-                </div>
-
+            <div class="player-stat">
+              <strong id="lebron-reb">—</strong>
+              <span>REB</span>
             </div>
 
+            <div class="player-stat">
+              <strong id="lebron-ast">—</strong>
+              <span>AST</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+
+      <article class="player-card" data-player="curry">
+        <div class="player-photo">
+          <img src="curry.jpg" alt="Stephen Curry">
         </div>
 
-    </div>
+        <div class="player-info">
+          <h3>Stephen Curry</h3>
+          <div class="team">Golden State Warriors</div>
 
-</div>
-```
+          <div class="player-stats">
+            <div class="player-stat">
+              <strong id="curry-pts">—</strong>
+              <span>PTS</span>
+            </div>
 
-</main>
+            <div class="player-stat">
+              <strong id="curry-reb">—</strong>
+              <span>REB</span>
+            </div>
 
-<!-- =========================
-     FOOTER
-========================= -->
+            <div class="player-stat">
+              <strong id="curry-ast">—</strong>
+              <span>AST</span>
+            </div>
+          </div>
+        </div>
+      </article>
 
-<footer>
 
-```
-<p>
-    🏀 <strong>Basket Zone</strong>
-</p>
+      <article class="player-card" data-player="giannis">
+        <div class="player-photo">
+          <img src="giannis.jpg" alt="Giannis Antetokounmpo">
+        </div>
 
-<p>
-    Toute l'actualité du basketball au même endroit.
-</p>
+        <div class="player-info">
+          <h3>Giannis Antetokounmpo</h3>
+          <div class="team">Miami Heat</div>
 
-<p>
+          <div class="player-stats">
+            <div class="player-stat">
+              <strong id="giannis-pts">—</strong>
+              <span>PTS</span>
+            </div>
 
-    <a href="apropos.html">
-        À propos
-    </a>
+            <div class="player-stat">
+              <strong id="giannis-reb">—</strong>
+              <span>REB</span>
+            </div>
 
-    |
+            <div class="player-stat">
+              <strong id="giannis-ast">—</strong>
+              <span>AST</span>
+            </div>
+          </div>
+        </div>
+      </article>
 
-    <a href="contact.html">
-        Contact
-    </a>
 
-    |
+      <article class="player-card" data-player="shai">
+        <div class="player-photo">
+          <img src="shai.jpg" alt="Shai Gilgeous-Alexander">
+        </div>
 
-    <a href="confidentialite.html">
-        Politique de confidentialité
-    </a>
+        <div class="player-info">
+          <h3>Shai Gilgeous-Alexander</h3>
+          <div class="team">Oklahoma City Thunder</div>
 
-</p>
+          <div class="player-stats">
+            <div class="player-stat">
+              <strong id="shai-pts">—</strong>
+              <span>PTS</span>
+            </div>
 
-<p>
-    © 2026 Basket Zone - Tous droits réservés.
-</p>
-```
+            <div class="player-stat">
+              <strong id="shai-reb">—</strong>
+              <span>REB</span>
+            </div>
 
-</footer>
+            <div class="player-stat">
+              <strong id="shai-ast">—</strong>
+              <span>AST</span>
+            </div>
+          </div>
+        </div>
+      </article>
 
-<!-- =========================
-     JAVASCRIPT
-========================= -->
+    </section>
 
-<script>
+  </main>
 
-    async function loadPlayerStats() {
+  <footer>
+    <p>© 2026 Basket Zone — Toute l'actualité du basketball</p>
+  </footer>
 
-        try {
 
-            const response =
-                await fetch(
-                    "player-stats.json?t=" + Date.now()
-                );
+  <script>
 
-            if (!response.ok) {
-                throw new Error(
-                    "Impossible de charger player-stats.json"
-                );
-            }
+    /* RECHERCHE DES JOUEURS */
 
-            const data =
-                await response.json();
+    const searchInput = document.getElementById("searchInput");
+    const playerCards = document.querySelectorAll(".player-card");
 
-            const playersData =
-                data.players || {};
+    searchInput.addEventListener("input", function () {
 
-            document
-                .querySelectorAll(".player-card[data-player]")
-                .forEach(function (card) {
+      const search = this.value.toLowerCase();
 
-                    const playerId =
-                        card.dataset.player;
+      playerCards.forEach(card => {
 
-                    const player =
-                        playersData[playerId];
+        const name = card.innerText.toLowerCase();
 
-                    if (!player) {
-                        return;
-                    }
-
-                    const ptsElement =
-                        card.querySelector(
-                            '[data-stat="pts"]'
-                        );
-
-                    const rebElement =
-                        card.querySelector(
-                            '[data-stat="reb"]'
-                        );
-
-                    const astElement =
-                        card.querySelector(
-                            '[data-stat="ast"]'
-                        );
-
-                    if (ptsElement) {
-
-                        ptsElement.textContent =
-                            player.pts ??
-                            "—";
-
-                    }
-
-                    if (rebElement) {
-
-                        rebElement.textContent =
-                            player.reb ??
-                            "—";
-
-                    }
-
-                    if (astElement) {
-
-                        astElement.textContent =
-                            player.ast ??
-                            "—";
-
-                    }
-
-                });
-
-            console.log(
-                "✅ Statistiques des joueurs chargées."
-            );
-
-        } catch (error) {
-
-            console.error(
-                "❌ Erreur statistiques joueurs :",
-                error
-            );
-
+        if (name.includes(search)) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
         }
 
-    }
+      });
+
+    });
 
 
-    /* =========================
-       CHARGEMENT INITIAL
-    ========================= */
+    /* CHARGEMENT DES STATISTIQUES */
 
-    loadPlayerStats();
+    fetch("player-stats.json")
+      .then(response => {
 
+        if (!response.ok) {
+          throw new Error("Impossible de charger les statistiques");
+        }
 
-    /* =========================
-       ACTUALISATION
-       TOUTES LES 5 MINUTES
-    ========================= */
+        return response.json();
 
-    setInterval(
-        loadPlayerStats,
-        5 * 60 * 1000
-    );
+      })
 
-</script>
+      .then(data => {
+
+        const players = data.players || data;
+
+        players.forEach(player => {
+
+          const id = player.id || player.slug;
+
+          const pts = player.PTS ?? player.pts ?? "—";
+          const reb = player.REB ?? player.reb ?? "—";
+          const ast = player.AST ?? player.ast ?? "—";
+
+          if (id === "1641705" || id === 1641705 || id === "wembanyama") {
+
+            document.getElementById("wembanyama-pts").textContent = pts;
+            document.getElementById("wembanyama-reb").textContent = reb;
+            document.getElementById("wembanyama-ast").textContent = ast;
+
+            document.getElementById("wembyPts").textContent = pts;
+            document.getElementById("wembyReb").textContent = reb;
+            document.getElementById("wembyAst").textContent = ast;
+
+          }
+
+          if (id === "2544" || id === 2544 || id === "lebron") {
+            document.getElementById("lebron-pts").textContent = pts;
+            document.getElementById("lebron-reb").textContent = reb;
+            document.getElementById("lebron-ast").textContent = ast;
+          }
+
+          if (id === "201939" || id === 201939 || id === "curry") {
+            document.getElementById("curry-pts").textContent = pts;
+            document.getElementById("curry-reb").textContent = reb;
+            document.getElementById("curry-ast").textContent = ast;
+          }
+
+          if (id === "203507" || id === 203507 || id === "giannis") {
+            document.getElementById("giannis-pts").textContent = pts;
+            document.getElementById("giannis-reb").textContent = reb;
+            document.getElementById("giannis-ast").textContent = ast;
+          }
+
+          if (id === "1628983" || id === 1628983 || id === "shai") {
+            document.getElementById("shai-pts").textContent = pts;
+            document.getElementById("shai-reb").textContent = reb;
+            document.getElementById("shai-ast").textContent = ast;
+          }
+
+        });
+
+      })
+
+      .catch(error => {
+        console.log("Statistiques non disponibles :", error);
+      });
+
+  </script>
 
 </body>
-
 </html>
