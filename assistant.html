@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Coach - Basket Zone</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f5f7;
+            color: #171717;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            border-bottom: 4px solid #ff6a00;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: #ff6a00;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 7px;
+        }
+
+        nav a {
+            color: #ddd;
+            text-decoration: none;
+            padding: 9px 11px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            background: #222;
+            color: #ff6a00;
+        }
+
+        nav a.active {
+            background: #ff6a00;
+            color: white;
+        }
+
+        .hero {
+            background:
+                linear-gradient(135deg, rgba(17,17,17,0.98), rgba(35,35,35,0.94)),
+                radial-gradient(circle at right, #ff6a00, transparent 40%);
+            color: white;
+            padding: 75px 25px;
+        }
+
+        .hero-container {
+            max-width: 1100px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,106,0,0.15);
+            border: 1px solid rgba(255,106,0,0.5);
+            color: #ff8a3d;
+            padding: 7px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 span {
+            color: #ff6a00;
+        }
+
+        .hero p {
+            max-width: 760px;
+            margin: auto;
+            color: #d7d7d7;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            margin-bottom: 22px;
+        }
+
+        .section-title h2 {
+            font-size: 30px;
+            margin-bottom: 6px;
+        }
+
+        .section-title p {
+            color: #666;
+        }
+
+        .coach-layout {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            border: 1px solid #e6e6e6;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #111;
+            color: white;
+            padding: 18px 20px;
+        }
+
+        .card-header h3 {
+            font-size: 20px;
+        }
+
+        .card-header p {
+            color: #aaa;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .card-body {
+            padding: 22px;
+        }
+
+        .photo-zone {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .photo-preview {
+            width: 155px;
+            height: 155px;
+            border-radius: 50%;
+            margin: auto;
+            background: #f0f0f0;
+            border: 5px solid #ff6a00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .photo-text {
+            margin-top: 12px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .file-label {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: #ff6a00;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .file-label:hover {
+            background: #e85d00;
+        }
+
+        #photoInput {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d7d7d7;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #ff6a00;
+            box-shadow: 0 0 0 3px rgba(255,106,0,0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .stats-input {
+            background: #f7f7f7;
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid #e7e7e7;
+        }
+
+        .stats-input label {
+            font-size: 11px;
+            color: #777;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .stats-input input {
+            background: white;
+        }
+
+        .analyze-button {
+            width: 100%;
+            margin-top: 8px;
+            border: none;
+            background: #ff6a00;
+            color: white;
+            padding: 14px;
+            border-radius: 9px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .analyze-button:hover {
+            background: #e85d00;
+            transform: translateY(-1px);
+        }
+
+        .privacy-note {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f7f7f7;
+            border-radius: 8px;
+            font-size: 11px;
+            color: #777;
+        }
+
+        .result-placeholder {
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #777;
+            padding: 30px;
+        }
+
+        .result-placeholder .icon {
+            font-size: 50px;
+            margin-bottom: 12px;
+        }
+
+        #results {
+            display: none;
+        }
+
+        .player-summary {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #111, #252525);
+            color: white;
+            border-radius: 14px;
+            margin-bottom: 22px;
+        }
+
+        .result-photo {
+            width: 105px;
+            height: 105px;
+            border-radius: 50%;
+            border: 3px solid #ff6a00;
+            object-fit: cover;
+            background: #333;
+        }
+
+        .player-summary h2 {
+            font-size: 26px;
+            margin-bottom: 3px;
+        }
+
+        .player-summary .position {
+            color: #ff7b22;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .player-summary p {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .analysis-box {
+            padding: 18px;
+            border-radius: 12px;
+            background: #f8f8f8;
+            border-left: 4px solid #ff6a00;
+        }
+
+        .analysis-box h4 {
+            margin-bottom: 7px;
+            font-size: 16px;
+        }
+
+        .analysis-box p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .stat-result-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .stat-result {
+            text-align: center;
+            padding: 15px 8px;
+            background: #f7f7f7;
+            border-radius: 10px;
+        }
+
+        .stat-result strong {
+            display: block;
+            font-size: 22px;
+            color: #111;
+        }
+
+        .stat-result span {
+            font-size: 11px;
+            color: #777;
+            text-transform: uppercase;
+        }
+
+        .training-section {
+            margin-top: 30px;
+        }
+
+        .training-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .training-title h2 {
+            font-size: 25px;
+        }
+
+        .training-badge {
+            background: #111;
+            color: white;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .training-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .training-card {
+            background: white;
+            border: 1px solid #e4e4e4;
+            border-radius: 13px;
+            padding: 20px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+        }
+
+        .training-card .number {
+            width: 32px;
+            height: 32px;
+            background: #ff6a00;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .training-card h3 {
+            margin-bottom: 7px;
+            font-size: 17px;
+        }
+
+        .training-card p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .training-card .duration {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 11px;
+            background: #f1f1f1;
+            padding: 5px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .goals {
+            margin-top: 30px;
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .goal {
+            background: white;
+            padding: 20px;
+            border-radius: 13px;
+            border: 1px solid #e4e4e4;
+        }
+
+        .goal h3 {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .goal p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .progress {
+            height: 7px;
+            background: #e7e7e7;
+            border-radius: 10px;
+            margin-top: 13px;
+            overflow: hidden;
+        }
+
+        .progress span {
+            display: block;
+            height: 100%;
+            background: #ff6a00;
+            border-radius: 10px;
+        }
+
+        .notice {
+            margin-top: 30px;
+            background: #fff7f0;
+            border: 1px solid #ffd4b8;
+            padding: 18px;
+            border-radius: 12px;
+            color: #75401f;
+            font-size: 13px;
+        }
+
+        footer {
+            background: #111;
+            color: #aaa;
+            text-align: center;
+            padding: 35px 20px;
+            margin-top: 60px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        footer a {
+            color: #ff6a00;
+            text-decoration: none;
+        }
+
+        @media (max-width: 1000px) {
+            .coach-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .training-grid,
+            .goals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 750px) {
+            .header-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .analysis-grid,
+            .stat-result-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .training-grid,
+            .goals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .player-summary {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .result-photo {
+                margin: auto;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-grid,
+            .stat-result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav a {
+                font-size: 12px;
+                padding: 7px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-container">
+
+        <div class="logo">
+            🏀 <span>Basket</span> Zone
+        </div>
+
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="actualites.html">Actualités</a>
+            <a href="matchs.html">Matchs</a>
+            <a href="joueurs.html">Joueurs</a>
+            <a href="classement.html">Classement</a>
+            <a href="assistant.html" class="active">AI Coach</a>
+            <a href="apropos.html">À propos</a>
+            <a href="contact.html">Contact</a>
+            <a href="confidentialite.html">Confidentialité</a>
+        </nav>
+
+    </div>
+</header>
+
+
+<section class="hero">
+
+    <div class="hero-container">
+
+        <div class="hero-badge">BASKET ZONE AI COACH</div>
+
+        <h1>
+            Ton <span>coach basket</span> personnalisé
+        </h1>
+
+        <p>
+            Crée ton profil de joueur, renseigne tes statistiques et découvre
+            une analyse personnalisée ainsi qu'un programme d'entraînement
+            adapté à ton poste.
+        </p>
+
+    </div>
+
+</section>
+
+
+<main class="container">
+
+    <div class="section-title">
+        <h2>Créer mon profil joueur</h2>
+        <p>
+            Renseigne quelques informations pour obtenir ton analyse.
+        </p>
+    </div>
+
+
+    <div class="coach-layout">
+
+        <!-- FORMULAIRE -->
+
+        <section class="card">
+
+            <div class="card-header">
+                <h3>Profil du joueur</h3>
+                <p>Informations utilisées pour personnaliser l'analyse</p>
+            </div>
+
+            <div class="card-body">
+
+                <div class="photo-zone">
+
+                    <div class="photo-preview" id="photoPreview">
+                        <span id="photoPlaceholder">Photo</span>
+                        <img id="previewImage" alt="Photo du joueur">
+                    </div>
+
+                    <div class="photo-text">
+                        Ajoute une photo pour personnaliser ton profil.
+                    </div>
+
+                    <label class="file-label" for="photoInput">
+                        Ajouter une photo
+                    </label>
+
+                    <input
+                        type="file"
+                        id="photoInput"
+                        accept="image/*"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+                    <label for="playerName">Nom ou pseudo</label>
+                    <input
+                        type="text"
+                        id="playerName"
+                        placeholder="Ex : Kylian"
+                    >
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="age">Âge</label>
+                        <input
+                            type="number"
+                            id="age"
+                            min="10"
+                            max="50"
+                            placeholder="Ex : 14"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="height">Taille (cm)</label>
+                        <input
+                            type="number"
+                            id="height"
+                            min="120"
+                            max="250"
+                            placeholder="Ex : 175"
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="position">Poste</label>
+
+                    <select id="position">
+
+                        <option value="">Choisir un poste</option>
+                        <option value="Meneur">Meneur</option>
+                        <option value="Arrière">Arrière</option>
+                        <option value="Ailier">Ailier</option>
+                        <option value="Ailier fort">Ailier fort</option>
+                        <option value="Pivot">Pivot</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="level">Niveau</label>
+
+                    <select id="level">
+
+                        <option value="">Choisir ton niveau</option>
+                        <option value="Débutant">Débutant</option>
+                        <option value="Intermédiaire">Intermédiaire</option>
+                        <option value="Confirmé">Confirmé</option>
+                        <option value="Compétition">Compétition</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Statistiques</label>
+
+                    <div class="stats-grid">
+
+                        <div class="stats-input">
+                            <label>Points</label>
+                            <input
+                                type="number"
+                                id="points"
+                                step="0.1"
+                                min="0"
+                                placeholder="PTS"
+                            >
+                        </div>
+
+                        <div class="stats-input">
+                            <label>Rebonds</label>
+                            <input
+                                type="number"
+                                id="rebounds"
+                                step="0.1"
+                                min="0"
+                                placeholder="REB"
+                            >
+                        </div>
+
+                        <div class="stats-input">
+                            <label>Passes</label>
+                            <input
+                                type="number"
+                                id="assists"
+                                step="0.1"
+                                min="0"
+                                placeholder="AST"
+                            >
+                        </div>
+
+                        <div class="stats-input">
+                            <label>Tir %</label>
+                            <input
+                                type="number"
+                                id="shooting"
+                                step="0.1"
+                                min="0"
+                                max="100"
+                                placeholder="%"
+                            >
+                        </div>
+
+                        <div class="stats-input">
+                            <label>Détente</label>
+                            <input
+                                type="number"
+                                id="vertical"
+                                min="0"
+                                placeholder="cm"
+                            >
+                        </div>
+
+                        <div class="stats-input">
+                            <label>Matchs</label>
+                            <input
+                                type="number"
+                                id="games"
+                                min="0"
+                                placeholder="MJ"
+                            >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="analyze-button"
+                    onclick="analyzePlayer()"
+                >
+                    Analyser mon profil
+                </button>
+
+
+                <div class="privacy-note">
+                    Les informations saisies servent ici à construire ton
+                    profil sportif. La photo est utilisée comme image de profil
+                    et n'est pas analysée pour identifier une personne.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESULTATS -->
+
+        <section class="card">
+
+            <div class="card-header">
+                <h3>Analyse du AI Coach</h3>
+                <p>Ton profil basket personnalisé</p>
+            </div>
+
+
+            <div id="emptyResult" class="result-placeholder">
+
+                <div>
+                    <div class="icon">🏀</div>
+
+                    <h3>Ton analyse apparaîtra ici</h3>
+
+                    <p>
+                        Complète ton profil puis clique sur
+                        « Analyser mon profil ».
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div id="results">
+
+                <div class="card-body">
+
+                    <div class="player-summary">
+
+                        <img
+                            id="resultPhoto"
+                            class="result-photo"
+                            src=""
+                            alt="Photo du joueur"
+                        >
+
+                        <div>
+
+                            <h2 id="resultName">
+                                Joueur
+                            </h2>
+
+                            <div
+                                class="position"
+                                id="resultPosition"
+                            >
+                                Poste
+                            </div>
+
+                            <p id="resultDescription">
+                                Analyse du profil.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-result-grid">
+
+                        <div class="stat-result">
+                            <strong id="resultPoints">-</strong>
+                            <span>Points</span>
+                        </div>
+
+                        <div class="stat-result">
+                            <strong id="resultRebounds">-</strong>
+                            <span>Rebonds</span>
+                        </div>
+
+                        <div class="stat-result">
+                            <strong id="resultAssists">-</strong>
+                            <span>Passes</span>
+                        </div>
+
+                        <div class="stat-result">
+                            <strong id="resultVertical">-</strong>
+                            <span>Détente</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="analysis-grid">
+
+                        <div class="analysis-box">
+
+                            <h4>Point fort</h4>
+
+                            <p id="strength">
+                                Analyse de ton principal point fort.
+                            </p>
+
+                        </div>
+
+
+                        <div class="analysis-box">
+
+                            <h4>À améliorer</h4>
+
+                            <p id="weakness">
+                                Analyse de ton principal axe de progression.
+                            </p>
+
+                        </div>
+
+
+                        <div class="analysis-box">
+
+                            <h4>Conseil du coach</h4>
+
+                            <p id="coachAdvice">
+                                Conseil personnalisé.
+                            </p>
+
+                        </div>
+
+
+                        <div class="analysis-box">
+
+                            <h4>Objectif</h4>
+
+                            <p id="mainGoal">
+                                Objectif personnalisé.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="training-section">
+
+                        <div class="training-title">
+
+                            <h2>
+                                Programme d'entraînement
+                            </h2>
+
+                            <span class="training-badge">
+                                PERSONNALISÉ
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="training-grid"
+                            id="trainingGrid"
+                        >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="goals">
+
+                        <div class="training-title">
+
+                            <h2>
+                                Objectifs de progression
+                            </h2>
+
+                        </div>
+
+
+                        <div
+                            class="goals-grid"
+                            id="goalsGrid"
+                        >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="notice">
+
+                        <strong>Conseil :</strong>
+                        progresse progressivement et adapte toujours
+                        l'intensité des exercices à ton niveau. Pour les
+                        exercices physiques exigeants, demande conseil à ton
+                        entraîneur et arrête-toi en cas de douleur.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    <p>
+        <strong>Basket Zone</strong> — Toute l'actualité du basketball
+        au même endroit.
+    </p>
+
+    <p style="margin-top:8px;">
+        AI Coach — outil de personnalisation sportive
+    </p>
+
+    <p style="margin-top:12px;">
+        <a href="contact.html">Contact</a>
+        ·
+        <a href="confidentialite.html">Confidentialité</a>
+    </p>
+
+</footer>
+
+
+<script>
+
+    let selectedPhoto = "";
+
+
+    /* PHOTO */
+
+    document
+        .getElementById("photoInput")
+        .addEventListener("change", function(event) {
+
+            const file = event.target.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+
+                selectedPhoto = e.target.result;
+
+                const previewImage =
+                    document.getElementById("previewImage");
+
+                const placeholder =
+                    document.getElementById("photoPlaceholder");
+
+                previewImage.src = selectedPhoto;
+                previewImage.style.display = "block";
+                placeholder.style.display = "none";
+
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+
+    /* ANALYSE */
+
+    function analyzePlayer() {
+
+        const name =
+            document.getElementById("playerName").value.trim()
+            || "Joueur Basket Zone";
+
+        const age =
+            Number(document.getElementById("age").value) || 0;
+
+        const height =
+            Number(document.getElementById("height").value) || 0;
+
+        const position =
+            document.getElementById("position").value;
+
+        const level =
+            document.getElementById("level").value;
+
+        const points =
+            Number(document.getElementById("points").value) || 0;
+
+        const rebounds =
+            Number(document.getElementById("rebounds").value) || 0;
+
+        const assists =
+            Number(document.getElementById("assists").value) || 0;
+
+        const shooting =
+            Number(document.getElementById("shooting").value) || 0;
+
+        const vertical =
+            Number(document.getElementById("vertical").value) || 0;
+
+
+        if (!position) {
+
+            alert("Choisis ton poste avant de lancer l'analyse.");
+
+            return;
+
+        }
+
+
+        document.getElementById("emptyResult").style.display = "none";
+
+        document.getElementById("results").style.display = "block";
+
+
+        /* PHOTO */
+
+        const resultPhoto =
+            document.getElementById("resultPhoto");
+
+        if (selectedPhoto) {
+
+            resultPhoto.src = selectedPhoto;
+
+        } else {
+
+            resultPhoto.src =
+                "data:image/svg+xml;charset=UTF-8," +
+                encodeURIComponent(
+                    `<svg xmlns="http://www.w3.org/2000/svg"
+                    width="200"
+                    height="200"
+                    viewBox="0 0 200 200">
+                    <rect width="200" height="200" fill="#222"/>
+                    <text x="100" y="110"
+                    text-anchor="middle"
+                    fill="#ff6a00"
+                    font-size="70">🏀</text>
+                    </svg>`
+                );
+
+        }
+
+
+        /* IDENTITÉ */
+
+        document.getElementById("resultName").textContent = name;
+
+        document.getElementById("resultPosition").textContent =
+            position + (level ? " • " + level : "");
+
+        let description =
+            "Profil analysé à partir des informations renseignées.";
+
+        if (age && height) {
+
+            description =
+                `${name} mesure ${height} cm et évolue au poste de ${position.toLowerCase()}.`;
+
+        }
+
+        document.getElementById("resultDescription").textContent =
+            description;
+
+
+        /* STATS */
+
+        document.getElementById("resultPoints").textContent =
+            points ? points : "-";
+
+        document.getElementById("resultRebounds").textContent =
+            rebounds ? rebounds : "-";
+
+        document.getElementById("resultAssists").textContent =
+            assists ? assists : "-";
+
+        document.getElementById("resultVertical").textContent =
+            vertical ? vertical + " cm" : "-";
+
+
+        /* ANALYSE SELON LE POSTE */
+
+        let strength = "";
+        let weakness = "";
+        let advice = "";
+        let goal = "";
+
+        let training = [];
+
+
+        if (position === "Meneur") {
+
+            strength =
+                assists >= 4
+                ? "Ta création et ta capacité à faire jouer tes coéquipiers sont des atouts importants."
+                : "Ton profil peut devenir très intéressant en développant ta vision et ta maîtrise du ballon.";
+
+            weakness =
+                shooting < 35
+                ? "Travaille davantage la régularité de ton tir extérieur."
+                : "Continue à travailler ton tir après dribble et tes changements de rythme.";
+
+            advice =
+                "Travaille la lecture du jeu, le dribble sous pression et les changements de direction.";
+
+            goal =
+                "Devenir plus régulier dans la création et la prise de décision.";
+
+            training = [
+
+                [
+                    "Dribble",
+                    "Enchaîne crossovers, changements de main et changements de direction.",
+                    "15 min"
+                ],
+
+                [
+                    "Création",
+                    "Travaille le pick-and-roll et les passes après fixation.",
+                    "15 min"
+                ],
+
+                [
+                    "Tir",
+                    "Tirs après dribble et pull-up depuis les zones intermédiaires.",
+                    "20 min"
+                ]
+
+            ];
+
+        }
+
+
+        else if (position === "Arrière") {
+
+            strength =
+                shooting >= 40
+                ? "Ton tir est une arme importante pour ton profil d'arrière."
+                : "Ton potentiel offensif peut devenir intéressant avec davantage de régularité au tir.";
+
+            weakness =
+                assists < 2
+                ? "Travaille la création pour tes coéquipiers après pénétration."
+                : "Travaille encore la lecture des aides défensives.";
+
+            advice =
+                "Développe ton tir extérieur, tes déplacements sans ballon et ta finition.";
+
+            goal =
+                "Devenir une menace offensive régulière.";
+
+            training = [
+
+                [
+                    "Tir extérieur",
+                    "Travaille les tirs en réception après déplacement.",
+                    "20 min"
+                ],
+
+                [
+                    "Finition",
+                    "Paniers main droite, main gauche et finitions avec contact léger.",
+                    "15 min"
+                ],
+
+                [
+                    "Déplacements",
+                    "Cuts, changements de direction et sorties d'écran.",
+                    "15 min"
+                ]
+
+            ];
+
+        }
+
+
+        else if (position === "Ailier") {
+
+            strength =
+                points >= 10
+                ? "Ta production offensive est un élément intéressant de ton profil."
+                : "Ton profil polyvalent peut progresser rapidement en travaillant plusieurs secteurs.";
+
+            weakness =
+                rebounds < 4
+                ? "Travaille davantage le placement au rebond."
+                : "Continue à développer ta défense et ta régularité offensive.";
+
+            advice =
+                "Cherche à devenir polyvalent : tir, finition, défense et rebond.";
+
+            goal =
+                "Être capable d'aider l'équipe dans plusieurs secteurs.";
+
+            training = [
+
+                [
+                    "Tir",
+                    "Travaille les tirs en réception et après une attaque du cercle.",
+                    "20 min"
+                ],
+
+                [
+                    "Finition",
+                    "Travaille les finitions près du cercle avec différentes appuis.",
+                    "15 min"
+                ],
+
+                [
+                    "Défense",
+                    "Déplacements latéraux et travail de position défensive.",
+                    "15 min"
+                ]
+
+            ];
+
+        }
+
+
+        else if (position === "Ailier fort") {
+
+            strength =
+                rebounds >= 6
+                ? "Ton activité au rebond est un vrai point fort."
+                : "Ton profil peut devenir très complet en développant le rebond et le jeu intérieur.";
+
+            weakness =
+                shooting < 35
+                ? "Travaille ton tir extérieur pour pouvoir écarter la défense."
+                : "Continue à développer ton jeu intérieur et ton tir.";
+
+            advice =
+                "Travaille le rebond, la finition près du cercle et le tir intermédiaire.";
+
+            goal =
+                "Devenir un joueur intérieur capable également de tirer.";
+
+            training = [
+
+                [
+                    "Rebond",
+                    "Travaille le placement, le box-out et la récupération du ballon.",
+                    "20 min"
+                ],
+
+                [
+                    "Jeu intérieur",
+                    "Travaille les appuis et les finitions près du cercle.",
+                    "15 min"
+                ],
+
+                [
+                    "Tir",
+                    "Tirs intermédiaires et tirs ouverts après réception.",
+                    "15 min"
+                ]
+
+            ];
+
+        }
+
+
+        else {
+
+            strength =
+                rebounds >= 7
+                ? "Ton activité au rebond est un gros point fort."
+                : "Le développement du rebond peut rapidement renforcer ton profil de pivot.";
+
+            weakness =
+                "Travaille la finition près du cercle et le placement défensif.";
+
+            advice =
+                "Travaille le rebond, les appuis, la finition et la défense intérieure.";
+
+            goal =
+                "Devenir une présence importante dans la raquette.";
+
+            training = [
+
+                [
+                    "Rebond",
+                    "Travaille le box-out et la récupération du rebond.",
+                    "20 min"
+                ],
+
+                [
+                    "Finition",
+                    "Travaille les finitions près du cercle et les appuis.",
+                    "15 min"
+                ],
+
+                [
+                    "Défense",
+                    "Travaille le placement et la protection du cercle.",
+                    "15 min"
+                ]
+
+            ];
+
+        }
+
+
+        document.getElementById("strength").textContent =
+            strength;
+
+        document.getElementById("weakness").textContent =
+            weakness;
+
+        document.getElementById("coachAdvice").textContent =
+            advice;
+
+        document.getElementById("mainGoal").textContent =
+            goal;
+
+
+        /* ENTRAÎNEMENT */
+
+        const trainingGrid =
+            document.getElementById("trainingGrid");
+
+        trainingGrid.innerHTML = "";
+
+
+        training.forEach((item, index) => {
+
+            const card =
+                document.createElement("div");
+
+            card.className = "training-card";
+
+            card.innerHTML = `
+                <div class="number">${index + 1}</div>
+                <h3>${item[0]}</h3>
+                <p>${item[1]}</p>
+                <span class="duration">${item[2]}</span>
+            `;
+
+            trainingGrid.appendChild(card);
+
+        });
+
+
+        /* OBJECTIFS */
+
+        const goalsGrid =
+            document.getElementById("goalsGrid");
+
+        goalsGrid.innerHTML = "";
+
+
+        let goals = [];
+
+
+        if (position === "Meneur") {
+
+            goals = [
+                ["Création", "Améliorer la qualité des passes et décisions.", "70%"],
+                ["Dribble", "Être plus à l'aise sous pression.", "65%"],
+                ["Tir", "Gagner en régularité après dribble.", "60%"]
+            ];
+
+        } else if (position === "Arrière") {
+
+            goals = [
+                ["Tir", "Améliorer la régularité extérieure.", "70%"],
+                ["Finition", "Être plus efficace près du cercle.", "60%"],
+                ["Défense", "Améliorer les déplacements défensifs.", "65%"]
+            ];
+
+        } else if (position === "Ailier") {
+
+            goals = [
+                ["Polyvalence", "Être utile dans plusieurs secteurs.", "70%"],
+                ["Rebond", "Augmenter l'activité au rebond.", "60%"],
+                ["Défense", "Devenir plus régulier défensivement.", "65%"]
+            ];
+
+        } else if (position === "Ailier fort") {
+
+            goals = [
+                ["Rebond", "Améliorer le placement au rebond.", "75%"],
+                ["Jeu intérieur", "Développer les appuis et finitions.", "65%"],
+                ["Tir", "Gagner en régularité à mi-distance.", "60%"]
+            ];
+
+        } else {
+
+            goals = [
+                ["Rebond", "Devenir plus dominant dans la raquette.", "75%"],
+                ["Finition", "Améliorer l'efficacité près du cercle.", "65%"],
+                ["Défense", "Mieux protéger la raquette.", "70%"]
+            ];
+
+        }
+
+
+        goals.forEach(goalItem => {
+
+            const goalElement =
+                document.createElement("div");
+
+            goalElement.className = "goal";
+
+            goalElement.innerHTML = `
+                <h3>${goalItem[0]}</h3>
+                <p>${goalItem[1]}</p>
+                <div class="progress">
+                    <span style="width:${goalItem[2]}"></span>
+                </div>
+            `;
+
+            goalsGrid.appendChild(goalElement);
+
+        });
+
+
+        /* SCROLL */
+
+        document
+            .getElementById("results")
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+    }
+
+</script>
+
+</body>
+</html>
