@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Confidentialité | Basket Zone</title>
+
+    <meta
+        name="description"
+        content="Politique de confidentialité de Basket Zone."
+    >
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f5f7;
+            color: #171717;
+            line-height: 1.7;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: #111;
+            color: white;
+        }
+
+        .top-bar {
+            max-width: 1250px;
+            margin: auto;
+            padding: 22px 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-basket {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #ff6a00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .logo-text h1 {
+            font-size: 29px;
+            font-weight: 800;
+        }
+
+        .logo-text p {
+            color: #bcbcbc;
+            font-size: 13px;
+        }
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        nav {
+            background: #090909;
+            border-top: 1px solid #303030;
+            border-bottom: 1px solid #303030;
+        }
+
+        .nav-container {
+            max-width: 1250px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            overflow-x: auto;
+        }
+
+        nav a {
+            color: #d8d8d8;
+            padding: 17px 14px;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            color: white;
+            background: #1d1d1d;
+            border-bottom-color: #ff6a00;
+        }
+
+        nav a.active {
+            color: white;
+            background: #181818;
+            border-bottom-color: #ff6a00;
+        }
+
+        /* =========================
+           PAGE HEADER
+        ========================= */
+
+        .page-header {
+            background: linear-gradient(135deg, #171717, #2b2b2b);
+            color: white;
+            padding: 55px 20px;
+        }
+
+        .page-header-content {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .page-label {
+            display: inline-block;
+            background: #ff6a00;
+            padding: 6px 11px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .page-header h2 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #cfcfcf;
+            max-width: 700px;
+        }
+
+        /* =========================
+           CONTENU
+        ========================= */
+
+        main {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px 60px;
+        }
+
+        .privacy-card {
+            background: white;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9e9e9;
+        }
+
+        .update {
+            background: #fff4ec;
+            border-left: 4px solid #ff6a00;
+            padding: 13px 16px;
+            margin-bottom: 30px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .privacy-section {
+            margin-bottom: 32px;
+        }
+
+        .privacy-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .privacy-section h3 {
+            font-size: 21px;
+            margin-bottom: 10px;
+            color: #151515;
+        }
+
+        .privacy-section h3::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: #ff6a00;
+            margin-right: 9px;
+            vertical-align: -2px;
+            border-radius: 3px;
+        }
+
+        .privacy-section p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .privacy-section ul {
+            padding-left: 22px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .privacy-section li {
+            margin-bottom: 7px;
+        }
+
+        .privacy-section strong {
+            color: #222;
+        }
+
+        .contact-box {
+            margin-top: 12px;
+            background: #f6f6f6;
+            border-radius: 8px;
+            padding: 18px;
+        }
+
+        .contact-box a {
+            color: #ff6a00;
+            font-weight: 700;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #0b0b0b;
+            color: white;
+        }
+
+        .footer-container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 35px 20px 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 30px;
+            padding-bottom: 25px;
+        }
+
+        .footer-column h3 {
+            font-size: 15px;
+            margin-bottom: 13px;
+        }
+
+        .footer-column p,
+        .footer-column a {
+            color: #999;
+            font-size: 13px;
+        }
+
+        .footer-column a {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .footer-column a:hover {
+            color: #ff6a00;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #292929;
+            padding-top: 18px;
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .top-bar {
+                padding: 16px;
+            }
+
+            .logo-basket {
+                width: 45px;
+                height: 45px;
+                font-size: 23px;
+            }
+
+            .logo-text h1 {
+                font-size: 23px;
+            }
+
+            .nav-container {
+                padding: 0 5px;
+            }
+
+            nav a {
+                padding: 14px 11px;
+                font-size: 12px;
+            }
+
+            .page-header {
+                padding: 40px 20px;
+            }
+
+            .page-header h2 {
+                font-size: 30px;
+            }
+
+            main {
+                margin-top: 20px;
+                padding: 0 14px 40px;
+            }
+
+            .privacy-card {
+                padding: 23px;
+            }
+
+            .privacy-section h3 {
+                font-size: 19px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header>
+
+        <div class="top-bar">
+
+            <a href="index.html" class="logo-area">
+
+                <div class="logo-basket">
+                    🏀
+                </div>
+
+                <div class="logo-text">
+
+                    <h1>Basket Zone</h1>
+
+                    <p>
+                        Toute l'actualité du basketball au même endroit
+                    </p>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <nav>
+
+            <div class="nav-container">
+
+                <a href="index.html">
+                    Accueil
+                </a>
+
+                <a href="actualites.html">
+                    Actualités
+                </a>
+
+                <a href="matchs.html">
+                    Matchs
+                </a>
+
+                <a href="joueurs.html">
+                    Joueurs
+                </a>
+
+                <a href="classement.html">
+                    Classement
+                </a>
+
+                <a href="apropos.html">
+                    À propos
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a
+                    href="confidentialite.html"
+                    class="active"
+                >
+                    Confidentialité
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================
+         TITRE
+    ========================= -->
+
+    <section class="page-header">
+
+        <div class="page-header-content">
+
+            <span class="page-label">
+                Informations
+            </span>
+
+            <h2>
+                Politique de confidentialité
+            </h2>
+
+            <p>
+                Découvrez comment Basket Zone protège les informations
+                de ses visiteurs et comment les données peuvent être
+                utilisées sur le site.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CONTENU
+    ========================= -->
+
+    <main>
+
+        <div class="privacy-card">
+
+            <div class="update">
+
+                <strong>Dernière mise à jour :</strong>
+                14 septembre 2026
+
+            </div>
+
+
+            <!-- INTRODUCTION -->
+
+            <section class="privacy-section">
+
+                <h3>
+                    1. Introduction
+                </h3>
+
+                <p>
+                    Bienvenue sur Basket Zone. Cette politique de
+                    confidentialité explique de manière simple quelles
+                    informations peuvent être collectées lorsque vous
+                    utilisez notre site et comment elles peuvent être
+                    utilisées.
+                </p>
+
+                <p>
+                    Basket Zone a pour objectif de proposer un site
+                    consacré à l'actualité du basketball, notamment
+                    la NBA, les matchs, les joueurs et les classements.
+                </p>
+
+            </section>
+
+
+            <!-- DONNÉES -->
+
+            <section class="privacy-section">
+
+                <h3>
+                    2. Données personnelles
+                </h3>
+
+                <p>
+                    Basket Zone ne demande pas la création d'un compte
+                    personnel pour consulter les pages du site.
+                </p>
+
+                <p>
+                    Lorsque vous utilisez certaines fonctionnalités,
+                    comme le formulaire de contact, vous pouvez choisir
+                    de communiquer des informations telles que :
+                </p>
+
+                <ul>
+
+                    <li>
+                        votre nom ou prénom ;
+                    </li>
+
+                    <li>
+                        votre adresse e-mail ;
+                    </li>
+
+                    <li>
+                        les informations que vous écrivez dans votre message.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- CONTACT -->
+
+            <section class="privacy-section">
+
+                <h3>
+                    3. Formulaire de contact
+                </h3>
+
+                <p>
+                    Les informations envoyées par l'intermédiaire
+                    du formulaire de contact sont utilisées uniquement
+                    pour pouvoir répondre à votre demande.
+                </p>
+
+                <p>
+                    Nous vous recommandons de ne pas transmettre
+                    d'informations sensibles ou confidentielles
+                    dans un message envoyé à Basket Zone.
+                </p>
+
+            </section>
+
+
+            <!-- COOKIES -->
+
+            <section class="privacy-section">
+
+                <h3>
+                    4. Cookies
+                </h3>
+
+                <p>
+                    Basket Zone peut utiliser des fonctionnalités
+                    techniques nécessaires au bon fonctionnement
+                    du site.
+                </p>
+
+                <p>
+                    À ce jour, Basket Zone ne demande pas aux visiteurs
+                    de créer un compte et ne met pas en place de système
+                    permettant de suivre volontairement chaque visiteur
+                    à travers le site.
+                </p>
+
+            </section>
+
+
+            <!-- ACTUALITÉS -->
+
+            <section class="privacy-section">
+
+                <h3>
+                    5. Contenu provenant de sources externes
+                </h3>
+
+                <p>
+                    Certaines informations présentées sur Basket Zone,
+                    notamment les actualités et les statistiques,
+                    peuvent provenir de sources publiques ou de services
+                    externes.
+                </p>
+
+                <p>
+                    Basket Zone peut également proposer des liens vers
+                    des sites externes. Lorsque vous quittez Basket Zone
+                    pour consulter un autre site, la politique de
+                    confidentialité de ce site peut s'appliquer.
+                </p>
+
+            </section>
+
+
+            <!-- SÉCURITÉ -->
+
+            <section class="privacy-section">
+
+                <h3>
+                    6. Sécurité
+                </h3>
+
+                <p>
+                    Nous cherchons à protéger les informations qui
+                    peuvent nous être communiquées et à limiter leur
+                    utilisation à ce qui est nécessaire au fonctionnement
+                    du site ou à la réponse aux demandes des visiteurs.
+                </p>
+
+            </section>
+
+
+            <!-- DROITS -->
+
+            <section class="privacy-section">
+
+                <h3>
+                    7. Vos droits
+                </h3>
+
+                <p>
+                    Si vous nous avez communiqué des informations
+                    personnelles, vous pouvez nous contacter afin de
+                    demander des informations concernant leur utilisation
+                    ou leur suppression, dans la mesure où cela est
+                    applicable.
+                </p>
+
+                <div class="contact-box">
+
+                    <strong>
+                        Pour toute demande concernant vos données :
+                    </strong>
+
+                    <br>
+
+                    <a href="mailto:kouassiemolo@outlook.fr">
+                        kouassiemolo@outlook.fr
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- MODIFICATIONS -->
+
+            <section class="privacy-section">
+
+                <h3>
+                    8. Modification de cette politique
+                </h3>
+
+                <p>
+                    Cette politique de confidentialité peut être
+                    modifiée si le fonctionnement de Basket Zone évolue.
+                    La date de dernière mise à jour sera alors modifiée
+                    en conséquence.
+                </p>
+
+            </section>
+
+
+            <!-- CONTACT FINAL -->
+
+            <section class="privacy-section">
+
+                <h3>
+                    9. Nous contacter
+                </h3>
+
+                <p>
+                    Pour toute question concernant cette politique
+                    de confidentialité ou le fonctionnement du site,
+                    vous pouvez contacter Basket Zone.
+                </p>
+
+                <div class="contact-box">
+
+                    <strong>
+                        Basket Zone
+                    </strong>
+
+                    <br>
+
+                    E-mail :
+                    <a href="mailto:kouassiemolo@outlook.fr">
+                        kouassiemolo@outlook.fr
+                    </a>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <div class="footer-container">
+
+            <div class="footer-grid">
+
+                <div class="footer-column">
+
+                    <h3>
+                        Basket Zone
+                    </h3>
+
+                    <p>
+                        Toute l'actualité du basketball au même endroit.
+                        NBA, matchs, joueurs et classements.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>
+                        Navigation
+                    </h3>
+
+                    <a href="index.html">
+                        Accueil
+                    </a>
+
+                    <a href="actualites.html">
+                        Actualités
+                    </a>
+
+                    <a href="matchs.html">
+                        Matchs
+                    </a>
+
+                    <a href="joueurs.html">
+                        Joueurs
+                    </a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>
+                        Basketball
+                    </h3>
+
+                    <a href="classement.html">
+                        Classement NBA
+                    </a>
+
+                    <a href="matchs.html">
+                        Prochains matchs
+                    </a>
+
+                    <a href="joueurs.html">
+                        Stars NBA
+                    </a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>
+                        Informations
+                    </h3>
+
+                    <a href="apropos.html">
+                        À propos
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                    <a href="confidentialite.html">
+                        Confidentialité
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                © 2026 Basket Zone — Tous droits réservés.
+
+            </div>
+
+        </div>
+
+    </footer>
+
+</body>
+</html>
