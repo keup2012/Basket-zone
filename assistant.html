@@ -60,13 +60,12 @@
             font-weight: bold;
             font-size: 14px;
             border-radius: 7px 7px 0 0;
-            transition: 0.2s;
+            transition: .2s;
         }
 
         nav a:hover,
         nav a.active {
             background: #ff6a00;
-            color: white;
         }
 
         .hero {
@@ -81,6 +80,17 @@
         .hero-content {
             max-width: 900px;
             margin: auto;
+        }
+
+        .coach-badge {
+            display: inline-block;
+            margin-bottom: 18px;
+            padding: 8px 15px;
+            border: 1px solid #ff6a00;
+            color: #ff6a00;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 13px;
         }
 
         .hero h1 {
@@ -98,17 +108,6 @@
             color: #ddd;
             font-size: 18px;
             line-height: 1.6;
-        }
-
-        .coach-badge {
-            display: inline-block;
-            margin-bottom: 18px;
-            padding: 8px 15px;
-            border: 1px solid #ff6a00;
-            color: #ff6a00;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 13px;
         }
 
         main {
@@ -212,7 +211,6 @@
             justify-content: center;
             align-items: center;
             margin: 0 auto 15px;
-            color: #777;
             font-size: 45px;
         }
 
@@ -337,6 +335,94 @@
         .stat-box span {
             font-size: 12px;
             color: #666;
+        }
+
+        /* NOTES */
+
+        .rating-section {
+            margin-top: 25px;
+            background: #111;
+            color: white;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .rating-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .rating-header h3 {
+            color: white;
+            margin: 0;
+        }
+
+        .overall-rating {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background: #ff6a00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .overall-rating strong {
+            font-size: 27px;
+            line-height: 1;
+        }
+
+        .overall-rating span {
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .rating-item {
+            margin-bottom: 14px;
+        }
+
+        .rating-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .rating-number {
+            color: #ff6a00;
+            font-weight: bold;
+        }
+
+        .rating-bar {
+            height: 9px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .rating-fill {
+            height: 100%;
+            width: 0;
+            background: #ff6a00;
+            border-radius: 10px;
+            transition: width .7s ease;
+        }
+
+        .level-badge {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 13px;
+            border-radius: 20px;
+            background: #222;
+            color: #ff6a00;
+            border: 1px solid #ff6a00;
+            font-size: 12px;
+            font-weight: bold;
         }
 
         .analysis-grid {
@@ -587,6 +673,10 @@
             .photo-buttons {
                 grid-template-columns: 1fr;
             }
+
+            .rating-header {
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
@@ -594,9 +684,12 @@
 <body>
 
 <header>
+
     <div class="header-content">
         <div class="logo-title">🏀 Basket Zone</div>
-        <div class="subtitle">Toute l'actualité du basketball au même endroit</div>
+        <div class="subtitle">
+            Toute l'actualité du basketball au même endroit
+        </div>
     </div>
 
     <nav>
@@ -610,30 +703,46 @@
         <a href="contact.html">Contact</a>
         <a href="confidentialite.html">Confidentialité</a>
     </nav>
+
 </header>
 
 <section class="hero">
-    <div class="hero-content">
-        <div class="coach-badge">BASKET ZONE • AI COACH</div>
 
-        <h1>Ton coach <span>basket</span> personnalisé</h1>
+    <div class="hero-content">
+
+        <div class="coach-badge">
+            BASKET ZONE • AI COACH
+        </div>
+
+        <h1>
+            Ton coach <span>basket</span> personnalisé
+        </h1>
 
         <p>
-            Entre ton profil, tes statistiques et ton poste.
-            Basket Zone te propose une analyse de ton jeu et un programme
+            Renseigne ton profil, tes statistiques et ton poste.
+            Basket Zone calcule tes notes et te propose un programme
             d'entraînement adapté à ton profil.
         </p>
+
     </div>
+
 </section>
 
 <main>
 
     <div class="section-title">
+
         <h2>Crée ton profil joueur</h2>
-        <p>Plus tu renseignes d'informations, plus les conseils seront précis.</p>
+
+        <p>
+            Renseigne tes informations pour obtenir ton analyse.
+        </p>
+
     </div>
 
     <div class="coach-layout">
+
+        <!-- FORMULAIRE -->
 
         <div class="card">
 
@@ -641,55 +750,79 @@
 
             <div class="photo-box">
 
-                <img id="photoPreview" class="photo-preview" alt="Photo du joueur">
+                <img
+                    id="photoPreview"
+                    class="photo-preview"
+                    alt="Photo du joueur"
+                >
 
-                <div id="photoPlaceholder" class="photo-placeholder">
+                <div
+                    id="photoPlaceholder"
+                    class="photo-placeholder"
+                >
                     🏀
                 </div>
 
                 <div class="photo-buttons">
 
                     <label class="photo-label camera">
+
                         Prendre une photo
+
                         <input
                             type="file"
                             id="cameraInput"
                             accept="image/*"
                             capture="user"
                         >
+
                     </label>
 
                     <label class="photo-label">
+
                         Choisir une photo
+
                         <input
                             type="file"
                             id="photoInput"
                             accept="image/*"
                         >
+
                     </label>
 
                 </div>
 
                 <div class="photo-info">
-                    Sur téléphone, « Prendre une photo » peut ouvrir directement
-                    l'appareil photo. Sur ordinateur, tu peux sélectionner une image.
+
+                    Sur téléphone, « Prendre une photo » peut ouvrir
+                    directement l'appareil photo.
+
                 </div>
 
             </div>
 
             <div class="form-group">
-                <label for="playerName">Nom ou pseudo</label>
+
+                <label for="playerName">
+                    Nom ou pseudo
+                </label>
+
                 <input
                     type="text"
                     id="playerName"
                     placeholder="Ex : Kévin"
                 >
+
             </div>
 
             <div class="two-columns">
 
                 <div class="form-group">
-                    <label for="age">Âge</label>
+
+                    <label for="age">
+                        Âge
+                    </label>
+
                     <input
                         type="number"
                         id="age"
@@ -697,10 +830,15 @@
                         max="60"
                         placeholder="14"
                     >
+
                 </div>
 
                 <div class="form-group">
-                    <label for="height">Taille</label>
+
+                    <label for="height">
+                        Taille (cm)
+                    </label>
+
                     <input
                         type="number"
                         id="height"
@@ -708,104 +846,248 @@
                         max="250"
                         placeholder="180"
                     >
+
                 </div>
 
             </div>
 
             <div class="form-group">
-                <label for="position">Poste</label>
+
+                <label for="position">
+                    Poste
+                </label>
 
                 <select id="position">
-                    <option value="">Sélectionner un poste</option>
-                    <option value="Meneur">Meneur</option>
-                    <option value="Arrière">Arrière</option>
-                    <option value="Ailier">Ailier</option>
-                    <option value="Ailier fort">Ailier fort</option>
-                    <option value="Pivot">Pivot</option>
+
+                    <option value="">
+                        Sélectionner un poste
+                    </option>
+
+                    <option value="Meneur">
+                        Meneur
+                    </option>
+
+                    <option value="Arrière">
+                        Arrière
+                    </option>
+
+                    <option value="Ailier">
+                        Ailier
+                    </option>
+
+                    <option value="Ailier fort">
+                        Ailier fort
+                    </option>
+
+                    <option value="Pivot">
+                        Pivot
+                    </option>
+
                 </select>
+
             </div>
 
             <div class="form-group">
-                <label for="level">Niveau</label>
+
+                <label for="level">
+                    Niveau
+                </label>
 
                 <select id="level">
-                    <option value="">Sélectionner un niveau</option>
-                    <option value="Débutant">Débutant</option>
-                    <option value="Intermédiaire">Intermédiaire</option>
-                    <option value="Confirmé">Confirmé</option>
-                    <option value="Compétition">Compétition</option>
+
+                    <option value="">
+                        Sélectionner un niveau
+                    </option>
+
+                    <option value="Débutant">
+                        Débutant
+                    </option>
+
+                    <option value="Intermédiaire">
+                        Intermédiaire
+                    </option>
+
+                    <option value="Confirmé">
+                        Confirmé
+                    </option>
+
+                    <option value="Compétition">
+                        Compétition
+                    </option>
+
                 </select>
+
             </div>
 
-            <h3 style="margin-top:25px;">Statistiques</h3>
+            <h3 style="margin-top:25px;">
+                Statistiques
+            </h3>
 
             <div class="two-columns">
 
                 <div class="form-group">
-                    <label for="points">Points / match</label>
-                    <input type="number" id="points" min="0" step="0.1" placeholder="12">
+
+                    <label for="points">
+                        Points / match
+                    </label>
+
+                    <input
+                        type="number"
+                        id="points"
+                        min="0"
+                        step="0.1"
+                        placeholder="12"
+                    >
+
                 </div>
 
                 <div class="form-group">
-                    <label for="rebounds">Rebonds / match</label>
-                    <input type="number" id="rebounds" min="0" step="0.1" placeholder="5">
+
+                    <label for="rebounds">
+                        Rebonds / match
+                    </label>
+
+                    <input
+                        type="number"
+                        id="rebounds"
+                        min="0"
+                        step="0.1"
+                        placeholder="5"
+                    >
+
                 </div>
 
                 <div class="form-group">
-                    <label for="assists">Passes / match</label>
-                    <input type="number" id="assists" min="0" step="0.1" placeholder="4">
+
+                    <label for="assists">
+                        Passes / match
+                    </label>
+
+                    <input
+                        type="number"
+                        id="assists"
+                        min="0"
+                        step="0.1"
+                        placeholder="4"
+                    >
+
                 </div>
 
                 <div class="form-group">
-                    <label for="shooting">Adresse (%)</label>
-                    <input type="number" id="shooting" min="0" max="100" step="0.1" placeholder="45">
+
+                    <label for="shooting">
+                        Adresse (%)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="shooting"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        placeholder="45"
+                    >
+
                 </div>
 
                 <div class="form-group">
-                    <label for="vertical">Détente verticale (cm)</label>
-                    <input type="number" id="vertical" min="0" max="150" placeholder="50">
+
+                    <label for="vertical">
+                        Détente verticale (cm)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="vertical"
+                        min="0"
+                        max="150"
+                        placeholder="50"
+                    >
+
                 </div>
 
                 <div class="form-group">
-                    <label for="games">Matchs joués</label>
-                    <input type="number" id="games" min="0" placeholder="10">
+
+                    <label for="games">
+                        Matchs joués
+                    </label>
+
+                    <input
+                        type="number"
+                        id="games"
+                        min="0"
+                        placeholder="10"
+                    >
+
                 </div>
 
             </div>
 
-            <button class="generate-btn" id="generateCoach">
+            <button
+                class="generate-btn"
+                id="generateCoach"
+            >
                 Générer mon analyse
             </button>
 
             <div class="privacy-note">
-                Ta photo sert uniquement à afficher ton profil sur cette page.
-                Basket Zone ne cherche pas à identifier les personnes présentes
-                sur les photos.
+
+                La photo sert uniquement à afficher ton profil.
+                Elle n'est pas utilisée pour identifier une personne.
+
             </div>
 
         </div>
 
-        <div class="card result-card" id="resultCard">
+
+        <!-- RESULTAT -->
+
+        <div
+            class="card result-card"
+            id="resultCard"
+        >
 
             <div class="player-header">
 
-                <img id="resultPhoto" class="result-photo" alt="Photo du joueur">
+                <img
+                    id="resultPhoto"
+                    class="result-photo"
+                    alt="Photo du joueur"
+                >
 
-                <div id="resultAvatar" class="result-avatar">
+                <div
+                    id="resultAvatar"
+                    class="result-avatar"
+                >
                     BZ
                 </div>
 
                 <div>
-                    <h2 id="resultName">Ton profil</h2>
-                    <div class="player-position" id="resultPosition">
+
+                    <h2 id="resultName">
+                        Ton profil
+                    </h2>
+
+                    <div
+                        class="player-position"
+                        id="resultPosition"
+                    >
                         Joueur
                     </div>
-                    <div id="resultLevel" style="color:#777; margin-top:5px;">
+
+                    <div
+                        id="resultLevel"
+                        style="color:#777;margin-top:5px;"
+                    >
                         Niveau
                     </div>
+
                 </div>
 
             </div>
+
+
+            <!-- STATISTIQUES -->
 
             <div class="stats-grid">
 
@@ -841,94 +1123,329 @@
 
             </div>
 
+
+            <!-- NOTES -->
+
+            <div class="rating-section">
+
+                <div class="rating-header">
+
+                    <h3>
+                        Évaluation du joueur
+                    </h3>
+
+                    <div class="overall-rating">
+
+                        <strong id="overallRating">
+                            0
+                        </strong>
+
+                        <span>
+                            / 100
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="rating-item">
+
+                    <div class="rating-top">
+                        <span>Tir</span>
+                        <span
+                            class="rating-number"
+                            id="shootingRating"
+                        >
+                            0
+                        </span>
+                    </div>
+
+                    <div class="rating-bar">
+                        <div
+                            class="rating-fill"
+                            id="shootingRatingBar"
+                        ></div>
+                    </div>
+
+                </div>
+
+
+                <div class="rating-item">
+
+                    <div class="rating-top">
+                        <span>Dribble</span>
+                        <span
+                            class="rating-number"
+                            id="dribblingRating"
+                        >
+                            0
+                        </span>
+                    </div>
+
+                    <div class="rating-bar">
+                        <div
+                            class="rating-fill"
+                            id="dribblingRatingBar"
+                        ></div>
+                    </div>
+
+                </div>
+
+
+                <div class="rating-item">
+
+                    <div class="rating-top">
+                        <span>Défense</span>
+                        <span
+                            class="rating-number"
+                            id="defenseRating"
+                        >
+                            0
+                        </span>
+                    </div>
+
+                    <div class="rating-bar">
+                        <div
+                            class="rating-fill"
+                            id="defenseRatingBar"
+                        ></div>
+                    </div>
+
+                </div>
+
+
+                <div class="rating-item">
+
+                    <div class="rating-top">
+                        <span>Physique</span>
+                        <span
+                            class="rating-number"
+                            id="physicalRating"
+                        >
+                            0
+                        </span>
+                    </div>
+
+                    <div class="rating-bar">
+                        <div
+                            class="rating-fill"
+                            id="physicalRatingBar"
+                        ></div>
+                    </div>
+
+                </div>
+
+
+                <div class="rating-item">
+
+                    <div class="rating-top">
+                        <span>Rebond</span>
+                        <span
+                            class="rating-number"
+                            id="reboundRating"
+                        >
+                            0
+                        </span>
+                    </div>
+
+                    <div class="rating-bar">
+                        <div
+                            class="rating-fill"
+                            id="reboundRatingBar"
+                        ></div>
+                    </div>
+
+                </div>
+
+
+                <div class="rating-item">
+
+                    <div class="rating-top">
+                        <span>Passe / vision</span>
+                        <span
+                            class="rating-number"
+                            id="passingRating"
+                        >
+                            0
+                        </span>
+                    </div>
+
+                    <div class="rating-bar">
+                        <div
+                            class="rating-fill"
+                            id="passingRatingBar"
+                        ></div>
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="level-badge"
+                    id="calculatedLevel"
+                >
+                    Niveau à déterminer
+                </div>
+
+            </div>
+
+
+            <!-- ANALYSE -->
+
             <div class="analysis-grid">
 
                 <div class="analysis-box strength">
-                    <h4>Point fort</h4>
+
+                    <h4>
+                        Point fort
+                    </h4>
+
                     <p id="strengthText"></p>
+
                 </div>
 
                 <div class="analysis-box weakness">
-                    <h4>À améliorer</h4>
+
+                    <h4>
+                        À améliorer
+                    </h4>
+
                     <p id="weaknessText"></p>
+
                 </div>
 
             </div>
 
-            <div class="goal">
-                <h3>Conseil du coach</h3>
-                <p id="coachAdvice"></p>
-            </div>
 
             <div class="goal">
-                <h3>Objectif recommandé</h3>
-                <p id="goalText"></p>
+
+                <h3>
+                    Conseil du coach
+                </h3>
+
+                <p id="coachAdvice"></p>
+
             </div>
+
+
+            <div class="goal">
+
+                <h3>
+                    Objectif recommandé
+                </h3>
+
+                <p id="goalText"></p>
+
+            </div>
+
+
+            <!-- ENTRAINEMENT -->
 
             <div class="training-section">
 
-                <h3>Programme d'entraînement</h3>
-                <p style="color:#666; margin-top:6px;">
+                <h3>
+                    Programme d'entraînement
+                </h3>
+
+                <p style="color:#666;margin-top:6px;">
                     Programme adapté automatiquement à ton poste.
                 </p>
 
-                <div class="training-list" id="trainingList"></div>
+                <div
+                    class="training-list"
+                    id="trainingList"
+                ></div>
 
             </div>
 
+
+            <!-- PROGRESSION -->
+
             <div class="progress-section">
 
-                <h3 style="margin-bottom:18px;">Axes de progression</h3>
+                <h3 style="margin-bottom:18px;">
+                    Axes de progression
+                </h3>
 
                 <div class="progress-item">
+
                     <div class="progress-top">
                         <span>Technique</span>
                         <span id="techniqueValue">0%</span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" id="techniqueBar"></div>
+                        <div
+                            class="progress-fill"
+                            id="techniqueBar"
+                        ></div>
                     </div>
+
                 </div>
 
+
                 <div class="progress-item">
+
                     <div class="progress-top">
                         <span>Physique</span>
                         <span id="physicalValue">0%</span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" id="physicalBar"></div>
+                        <div
+                            class="progress-fill"
+                            id="physicalBar"
+                        ></div>
                     </div>
+
                 </div>
 
+
                 <div class="progress-item">
+
                     <div class="progress-top">
                         <span>Adresse</span>
                         <span id="shootingValue">0%</span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" id="shootingBar"></div>
+                        <div
+                            class="progress-fill"
+                            id="shootingBar"
+                        ></div>
                     </div>
+
                 </div>
 
+
                 <div class="progress-item">
+
                     <div class="progress-top">
                         <span>Impact collectif</span>
                         <span id="teamValue">0%</span>
                     </div>
 
                     <div class="progress-bar">
-                        <div class="progress-fill" id="teamBar"></div>
+                        <div
+                            class="progress-fill"
+                            id="teamBar"
+                        ></div>
                     </div>
+
                 </div>
 
             </div>
 
         </div>
 
-        <div class="card empty-state" id="emptyState">
+
+        <!-- ETAT VIDE -->
+
+        <div
+            class="card empty-state"
+            id="emptyState"
+        >
 
             <div class="empty-state-content">
 
@@ -936,12 +1453,14 @@
                     🏀
                 </div>
 
-                <h3>Ton analyse apparaîtra ici</h3>
+                <h3>
+                    Ton analyse apparaîtra ici
+                </h3>
 
                 <p>
-                    Renseigne ton profil à gauche puis clique sur
-                    « Générer mon analyse » pour obtenir tes conseils
-                    personnalisés.
+                    Renseigne ton profil puis clique sur
+                    « Générer mon analyse » pour obtenir tes
+                    statistiques et tes notes sur 100.
                 </p>
 
             </div>
@@ -952,34 +1471,50 @@
 
 </main>
 
+
 <footer>
 
     <p>
-        <strong>Basket Zone</strong> — Toute l'actualité du basketball au même endroit.
+        <strong>Basket Zone</strong> —
+        Toute l'actualité du basketball au même endroit.
     </p>
 
     <p style="margin-top:12px;">
+
         <a href="index.html">Accueil</a>
         <a href="actualites.html">Actualités</a>
         <a href="matchs.html">Matchs</a>
         <a href="joueurs.html">Joueurs</a>
         <a href="classement.html">Classement</a>
         <a href="assistant.html">AI Coach</a>
+
     </p>
 
-    <p style="margin-top:15px; font-size:12px;">
+    <p style="margin-top:15px;font-size:12px;">
         © 2026 Basket Zone
     </p>
 
 </footer>
 
+
 <script>
 
-    const photoInput = document.getElementById("photoInput");
-    const cameraInput = document.getElementById("cameraInput");
+    /* =========================
+       PHOTOS
+    ========================= */
 
-    const photoPreview = document.getElementById("photoPreview");
-    const photoPlaceholder = document.getElementById("photoPlaceholder");
+    const photoInput =
+        document.getElementById("photoInput");
+
+    const cameraInput =
+        document.getElementById("cameraInput");
+
+    const photoPreview =
+        document.getElementById("photoPreview");
+
+    const photoPlaceholder =
+        document.getElementById("photoPlaceholder");
+
 
     function handlePhoto(file) {
 
@@ -988,93 +1523,293 @@
         }
 
         if (!file.type.startsWith("image/")) {
+
             alert("Veuillez sélectionner une image.");
+
             return;
         }
 
-        const reader = new FileReader();
+        const reader =
+            new FileReader();
 
-        reader.onload = function(event) {
+        reader.onload =
+            function(event) {
 
-            photoPreview.src = event.target.result;
-            photoPreview.style.display = "block";
-            photoPlaceholder.style.display = "none";
+                photoPreview.src =
+                    event.target.result;
 
-            document.getElementById("resultPhoto").src = event.target.result;
-            document.getElementById("resultPhoto").style.display = "block";
-            document.getElementById("resultAvatar").style.display = "none";
+                photoPreview.style.display =
+                    "block";
 
-        };
+                photoPlaceholder.style.display =
+                    "none";
+
+                document.getElementById("resultPhoto").src =
+                    event.target.result;
+
+                document.getElementById("resultPhoto").style.display =
+                    "block";
+
+                document.getElementById("resultAvatar").style.display =
+                    "none";
+            };
 
         reader.readAsDataURL(file);
     }
 
-    photoInput.addEventListener("change", function() {
-        handlePhoto(this.files[0]);
-    });
 
-    cameraInput.addEventListener("change", function() {
-        handlePhoto(this.files[0]);
-    });
+    photoInput.addEventListener(
+        "change",
+        function() {
+            handlePhoto(this.files[0]);
+        }
+    );
 
+
+    cameraInput.addEventListener(
+        "change",
+        function() {
+            handlePhoto(this.files[0]);
+        }
+    );
+
+
+    /* =========================
+       PROGRAMMES
+    ========================= */
 
     const trainingPrograms = {
 
         "Meneur": [
-            ["Dribble main faible", "Travaille le contrôle du ballon avec ta main gauche et ta main droite.", "10 min"],
-            ["Changements de direction", "Crossovers, changements de rythme et changements de direction.", "10 min"],
-            ["Pick & roll", "Travaille tes décisions après un écran : passe, tir ou pénétration.", "10 min"],
-            ["Tirs après dribble", "Enchaîne dribble, arrêt et tir à mi-distance ou à trois points.", "10 min"],
-            ["Lancers francs", "Travaille ta régularité avec une routine identique.", "5 min"]
+
+            [
+                "Dribble main faible",
+                "Travaille le contrôle du ballon avec tes deux mains.",
+                "10 min"
+            ],
+
+            [
+                "Changements de direction",
+                "Crossovers, changements de rythme et changements de direction.",
+                "10 min"
+            ],
+
+            [
+                "Pick & roll",
+                "Travaille tes décisions après un écran.",
+                "10 min"
+            ],
+
+            [
+                "Tirs après dribble",
+                "Enchaîne dribble, arrêt et tir.",
+                "10 min"
+            ],
+
+            [
+                "Lancers francs",
+                "Travaille une routine régulière.",
+                "5 min"
+            ]
+
         ],
+
 
         "Arrière": [
-            ["Tirs à trois points", "Travaille la réception et le tir rapide avec une bonne mécanique.", "15 min"],
-            ["Sorties d'écran", "Travaille tes déplacements autour des écrans.", "10 min"],
-            ["Finition main faible", "Termine près du cercle avec les deux mains.", "10 min"],
-            ["Tir après dribble", "Pull-up après un ou deux dribbles.", "10 min"],
-            ["Défense extérieure", "Travaille les déplacements latéraux et la position défensive.", "10 min"]
+
+            [
+                "Tirs à trois points",
+                "Travaille la réception et le tir rapide.",
+                "15 min"
+            ],
+
+            [
+                "Sorties d'écran",
+                "Travaille tes déplacements autour des écrans.",
+                "10 min"
+            ],
+
+            [
+                "Finition main faible",
+                "Termine près du cercle avec les deux mains.",
+                "10 min"
+            ],
+
+            [
+                "Tir après dribble",
+                "Travaille le pull-up après un ou deux dribbles.",
+                "10 min"
+            ],
+
+            [
+                "Défense extérieure",
+                "Travaille tes déplacements latéraux.",
+                "10 min"
+            ]
+
         ],
+
 
         "Ailier": [
-            ["Tir en sortie d'écran", "Travaille les tirs après déplacement sans ballon.", "10 min"],
-            ["Finition au cercle", "Eurostep, changement de main et finitions avec contact.", "10 min"],
-            ["Attaque close-out", "Réagis rapidement à un défenseur qui arrive.", "10 min"],
-            ["Défense extérieure", "Travaille tes appuis et tes déplacements latéraux.", "10 min"],
-            ["Tir à trois points", "Cherche une mécanique stable et régulière.", "10 min"]
+
+            [
+                "Tir en sortie d'écran",
+                "Travaille les tirs après déplacement.",
+                "10 min"
+            ],
+
+            [
+                "Finition au cercle",
+                "Eurostep et finitions avec les deux mains.",
+                "10 min"
+            ],
+
+            [
+                "Attaque close-out",
+                "Réagis rapidement à un défenseur.",
+                "10 min"
+            ],
+
+            [
+                "Défense extérieure",
+                "Travaille tes appuis défensifs.",
+                "10 min"
+            ],
+
+            [
+                "Tir à trois points",
+                "Développe une mécanique stable.",
+                "10 min"
+            ]
+
         ],
+
 
         "Ailier fort": [
-            ["Rebond", "Travaille le box-out et la récupération du rebond.", "10 min"],
-            ["Jeu dos au panier", "Travaille les appuis et les finitions proches du cercle.", "10 min"],
-            ["Tir extérieur", "Développe ton tir face au panier.", "10 min"],
-            ["Défense intérieure", "Travaille ton placement et ton aide défensive.", "10 min"],
-            ["Explosivité", "Sauts, accélérations courtes et changements de direction.", "10 min"]
+
+            [
+                "Rebond",
+                "Travaille le box-out et le timing.",
+                "10 min"
+            ],
+
+            [
+                "Jeu dos au panier",
+                "Travaille tes appuis et tes finitions.",
+                "10 min"
+            ],
+
+            [
+                "Tir extérieur",
+                "Développe ton tir face au panier.",
+                "10 min"
+            ],
+
+            [
+                "Défense intérieure",
+                "Travaille ton placement défensif.",
+                "10 min"
+            ],
+
+            [
+                "Explosivité",
+                "Sauts et accélérations courtes.",
+                "10 min"
+            ]
+
         ],
 
+
         "Pivot": [
-            ["Rebond défensif", "Travaille le box-out et le timing du saut.", "10 min"],
-            ["Finition proche du cercle", "Travaille les finitions avec les deux mains.", "10 min"],
-            ["Mouvements au poste", "Travaille les appuis et les mouvements dos au panier.", "10 min"],
-            ["Protection du cercle", "Travaille le placement défensif sans faire faute.", "10 min"],
-            ["Mobilité", "Travaille tes déplacements et ton explosivité.", "10 min"]
+
+            [
+                "Rebond défensif",
+                "Travaille le box-out et le timing du saut.",
+                "10 min"
+            ],
+
+            [
+                "Finition proche du cercle",
+                "Travaille les finitions avec les deux mains.",
+                "10 min"
+            ],
+
+            [
+                "Mouvements au poste",
+                "Travaille tes appuis dos au panier.",
+                "10 min"
+            ],
+
+            [
+                "Protection du cercle",
+                "Travaille ton placement défensif.",
+                "10 min"
+            ],
+
+            [
+                "Mobilité",
+                "Travaille tes déplacements et ton explosivité.",
+                "10 min"
+            ]
+
         ]
 
     };
 
 
+    /* =========================
+       OUTILS
+    ========================= */
+
     function getNumber(id) {
 
-        const value = parseFloat(document.getElementById(id).value);
+        const value =
+            parseFloat(
+                document.getElementById(id).value
+            );
 
-        return Number.isFinite(value) ? value : 0;
+        return Number.isFinite(value)
+            ? value
+            : 0;
     }
 
+
+    function clamp(value, min, max) {
+
+        return Math.max(
+            min,
+            Math.min(max, value)
+        );
+
+    }
+
+
+    function setRating(id, barId, value) {
+
+        const score =
+            Math.round(
+                clamp(value, 0, 100)
+            );
+
+        document.getElementById(id).textContent =
+            score;
+
+        document.getElementById(barId).style.width =
+            score + "%";
+
+        return score;
+    }
+
+
+    /* =========================
+       GENERATION DE L'ANALYSE
+    ========================= */
 
     function generateAnalysis() {
 
         const name =
-            document.getElementById("playerName").value.trim() || "Joueur";
+            document.getElementById("playerName")
+            .value.trim() || "Joueur";
 
         const age =
             getNumber("age");
@@ -1083,10 +1818,12 @@
             getNumber("height");
 
         const position =
-            document.getElementById("position").value || "Meneur";
+            document.getElementById("position")
+            .value || "Meneur";
 
         const level =
-            document.getElementById("level").value || "Débutant";
+            document.getElementById("level")
+            .value || "Débutant";
 
         const points =
             getNumber("points");
@@ -1107,30 +1844,228 @@
             getNumber("games");
 
 
-        document.getElementById("resultName").textContent = name;
-        document.getElementById("resultPosition").textContent = position;
-        document.getElementById("resultLevel").textContent =
-            age > 0 ? `${level} • ${age} ans • ${height > 0 ? height + " cm" : "taille non renseignée"}` : level;
+        /* =========================
+           AFFICHAGE PROFIL
+        ========================= */
+
+        document.getElementById("resultName")
+            .textContent = name;
+
+        document.getElementById("resultPosition")
+            .textContent = position;
+
+        document.getElementById("resultLevel")
+            .textContent =
+            age > 0
+                ? `${level} • ${age} ans • ${height > 0 ? height + " cm" : "taille non renseignée"}`
+                : level;
 
 
-        document.getElementById("resultPoints").textContent =
-            points.toFixed(1);
+        document.getElementById("resultPoints")
+            .textContent = points.toFixed(1);
 
-        document.getElementById("resultRebounds").textContent =
-            rebounds.toFixed(1);
+        document.getElementById("resultRebounds")
+            .textContent = rebounds.toFixed(1);
 
-        document.getElementById("resultAssists").textContent =
-            assists.toFixed(1);
+        document.getElementById("resultAssists")
+            .textContent = assists.toFixed(1);
 
-        document.getElementById("resultShooting").textContent =
-            shooting + "%";
+        document.getElementById("resultShooting")
+            .textContent = shooting + "%";
 
-        document.getElementById("resultVertical").textContent =
-            vertical + " cm";
+        document.getElementById("resultVertical")
+            .textContent = vertical + " cm";
 
-        document.getElementById("resultGames").textContent =
-            games;
+        document.getElementById("resultGames")
+            .textContent = games;
 
+
+        /* =========================
+           CALCUL DES NOTES
+        ========================= */
+
+        /*
+           Les notes sont des estimations
+           basées uniquement sur les données
+           renseignées par le joueur.
+        */
+
+        let shootingScore =
+            shooting;
+
+        shootingScore =
+            clamp(shootingScore, 0, 100);
+
+
+        let dribblingScore =
+            45 +
+            assists * 5 +
+            points * 1.2;
+
+        if (position === "Meneur") {
+            dribblingScore += 8;
+        }
+
+        dribblingScore =
+            clamp(dribblingScore, 0, 100);
+
+
+        let defenseScore =
+            40 +
+            rebounds * 4 +
+            vertical * 0.25;
+
+        if (
+            position === "Ailier" ||
+            position === "Ailier fort" ||
+            position === "Pivot"
+        ) {
+            defenseScore += 7;
+        }
+
+        defenseScore =
+            clamp(defenseScore, 0, 100);
+
+
+        let physicalScore =
+            40 +
+            vertical * 0.55 +
+            rebounds * 2;
+
+        if (height >= 190) {
+            physicalScore += 5;
+        }
+
+        physicalScore =
+            clamp(physicalScore, 0, 100);
+
+
+        let reboundScore =
+            35 +
+            rebounds * 7 +
+            vertical * 0.15;
+
+        if (
+            position === "Ailier fort" ||
+            position === "Pivot"
+        ) {
+            reboundScore += 10;
+        }
+
+        reboundScore =
+            clamp(reboundScore, 0, 100);
+
+
+        let passingScore =
+            40 +
+            assists * 9;
+
+        if (position === "Meneur") {
+            passingScore += 10;
+        }
+
+        passingScore =
+            clamp(passingScore, 0, 100);
+
+
+        /*
+           Note globale :
+           moyenne pondérée des différentes qualités.
+        */
+
+        let overallScore =
+            shootingScore * 0.20 +
+            dribblingScore * 0.17 +
+            defenseScore * 0.16 +
+            physicalScore * 0.16 +
+            reboundScore * 0.14 +
+            passingScore * 0.17;
+
+        overallScore =
+            Math.round(
+                clamp(overallScore, 0, 100)
+            );
+
+
+        /* =========================
+           AFFICHAGE DES NOTES
+        ========================= */
+
+        setRating(
+            "shootingRating",
+            "shootingRatingBar",
+            shootingScore
+        );
+
+        setRating(
+            "dribblingRating",
+            "dribblingRatingBar",
+            dribblingScore
+        );
+
+        setRating(
+            "defenseRating",
+            "defenseRatingBar",
+            defenseScore
+        );
+
+        setRating(
+            "physicalRating",
+            "physicalRatingBar",
+            physicalScore
+        );
+
+        setRating(
+            "reboundRating",
+            "reboundRatingBar",
+            reboundScore
+        );
+
+        setRating(
+            "passingRating",
+            "passingRatingBar",
+            passingScore
+        );
+
+        document.getElementById("overallRating")
+            .textContent = overallScore;
+
+
+        /* =========================
+           NIVEAU CALCULÉ
+        ========================= */
+
+        let calculatedLevel;
+
+        if (overallScore < 40) {
+
+            calculatedLevel =
+                "Niveau estimé : Débutant";
+
+        } else if (overallScore < 60) {
+
+            calculatedLevel =
+                "Niveau estimé : Intermédiaire";
+
+        } else if (overallScore < 80) {
+
+            calculatedLevel =
+                "Niveau estimé : Confirmé";
+
+        } else {
+
+            calculatedLevel =
+                "Niveau estimé : Compétition";
+
+        }
+
+        document.getElementById("calculatedLevel")
+            .textContent = calculatedLevel;
+
+
+        /* =========================
+           ANALYSE
+        ========================= */
 
         let strength = "";
         let weakness = "";
@@ -1138,87 +2073,133 @@
         let goal = "";
 
 
-        if (shooting >= 45) {
+        const ratings = [
 
-            strength = "Ton adresse est un vrai point positif. Continue à travailler la régularité et les tirs en situation de match.";
+            {
+                name: "ton tir",
+                value: shootingScore
+            },
 
-        } else if (assists >= 4) {
+            {
+                name: "ton dribble",
+                value: dribblingScore
+            },
 
-            strength = "Ta création pour les autres joueurs est intéressante. Tu sembles avoir une bonne vision du jeu.";
+            {
+                name: "ta défense",
+                value: defenseScore
+            },
 
-        } else if (rebounds >= 7) {
+            {
+                name: "ton physique",
+                value: physicalScore
+            },
 
-            strength = "Ton activité au rebond est un gros point fort. Continue à travailler le placement et le timing.";
+            {
+                name: "ton rebond",
+                value: reboundScore
+            },
 
-        } else if (vertical >= 55) {
+            {
+                name: "ta passe et ta vision",
+                value: passingScore
+            }
 
-            strength = "Ta détente verticale est intéressante. Elle peut devenir une vraie arme pour les rebonds et la finition.";
-
-        } else {
-
-            strength = "Ton principal point fort doit encore être identifié avec davantage de statistiques et de matchs.";
-        }
+        ];
 
 
-        if (shooting < 40) {
+        ratings.sort(
+            (a, b) => b.value - a.value
+        );
 
-            weakness = "Travaille en priorité ton adresse et ta mécanique de tir. Commence proche du panier avant d'augmenter progressivement la distance.";
 
-        } else if (assists < 2 && position === "Meneur") {
+        strength =
+            "Ton principal point fort actuellement est " +
+            ratings[0].name +
+            ", avec une note estimée de " +
+            Math.round(ratings[0].value) +
+            "/100.";
 
-            weakness = "Travaille ta lecture du jeu et ta capacité à créer des occasions pour tes coéquipiers.";
 
-        } else if (rebounds < 3 && (position === "Ailier fort" || position === "Pivot")) {
+        const weakest =
+            [...ratings]
+                .sort(
+                    (a, b) => a.value - b.value
+                )[0];
 
-            weakness = "Le rebond doit devenir une priorité. Travaille le box-out et ton placement avant le saut.";
 
-        } else if (vertical < 40) {
-
-            weakness = "Travaille ton explosivité avec des exercices adaptés et une bonne technique de saut.";
-
-        } else {
-
-            weakness = "Continue à développer ton jeu complet : technique, physique, adresse et lecture du jeu.";
-        }
+        weakness =
+            "Le secteur à travailler en priorité est " +
+            weakest.name +
+            ", avec une note estimée de " +
+            Math.round(weakest.value) +
+            "/100.";
 
 
         if (position === "Meneur") {
 
-            advice = "En tant que meneur, cherche à contrôler le rythme du match. Travaille ton dribble, ta vision et ta capacité à prendre la bonne décision.";
+            advice =
+                "En tant que meneur, travaille surtout ta maîtrise du ballon, " +
+                "ta vision du jeu et ta capacité à prendre rapidement la bonne décision.";
 
-            goal = "Améliorer la création pour toi-même et tes coéquipiers tout en réduisant les pertes de balle.";
+            goal =
+                "Devenir un meneur capable de contrôler le rythme, créer pour ses " +
+                "coéquipiers et prendre ses tirs lorsqu'il est ouvert.";
 
         } else if (position === "Arrière") {
 
-            advice = "Ton objectif doit être de devenir une menace extérieure tout en étant capable d'attaquer le cercle.";
+            advice =
+                "Ton profil doit devenir une menace permanente au tir tout en " +
+                "étant capable d'attaquer le cercle et de défendre sur les extérieurs.";
 
-            goal = "Développer un tir fiable et une finition efficace autour du cercle.";
+            goal =
+                "Développer un tir fiable, une bonne finition et une défense extérieure solide.";
 
         } else if (position === "Ailier") {
 
-            advice = "Travaille ta polyvalence. Un bon ailier doit pouvoir défendre, tirer, attaquer le cercle et jouer sans ballon.";
+            advice =
+                "Un ailier doit être polyvalent. Travaille ton tir, ta finition, " +
+                "ta défense et ton jeu sans ballon.";
 
-            goal = "Devenir un joueur capable d'avoir un impact dans plusieurs secteurs du jeu.";
+            goal =
+                "Devenir capable d'avoir un impact dans plusieurs secteurs du jeu.";
 
         } else if (position === "Ailier fort") {
 
-            advice = "Travaille ton jeu intérieur tout en développant suffisamment ton tir extérieur pour écarter le terrain.";
+            advice =
+                "Travaille ton rebond et ton jeu intérieur tout en développant " +
+                "ton tir extérieur pour pouvoir écarter le terrain.";
 
-            goal = "Devenir plus dominant au rebond et plus polyvalent offensivement.";
+            goal =
+                "Devenir plus dominant au rebond et plus polyvalent offensivement.";
 
         } else {
 
-            advice = "Le poste de pivot demande de la présence physique, du placement et une bonne finition près du cercle.";
+            advice =
+                "Le pivot doit être solide au rebond, efficace près du cercle " +
+                "et capable de protéger le panier.";
 
-            goal = "Devenir une référence au rebond, en défense et dans la finition intérieure.";
+            goal =
+                "Devenir une référence au rebond, en défense et dans la finition intérieure.";
         }
 
 
-        document.getElementById("strengthText").textContent = strength;
-        document.getElementById("weaknessText").textContent = weakness;
-        document.getElementById("coachAdvice").textContent = advice;
-        document.getElementById("goalText").textContent = goal;
+        document.getElementById("strengthText")
+            .textContent = strength;
 
+        document.getElementById("weaknessText")
+            .textContent = weakness;
+
+        document.getElementById("coachAdvice")
+            .textContent = advice;
+
+        document.getElementById("goalText")
+            .textContent = goal;
+
+
+        /* =========================
+           PROGRAMME
+        ========================= */
 
         const trainingList =
             document.getElementById("trainingList");
@@ -1227,96 +2208,136 @@
 
 
         const program =
-            trainingPrograms[position] || trainingPrograms["Meneur"];
+            trainingPrograms[position] ||
+            trainingPrograms["Meneur"];
 
 
-        program.forEach(function(exercise, index) {
+        program.forEach(
+            function(exercise, index) {
 
-            const element =
-                document.createElement("div");
+                const element =
+                    document.createElement("div");
 
-            element.className = "exercise";
+                element.className =
+                    "exercise";
 
-            element.innerHTML = `
-                <div class="exercise-number">${index + 1}</div>
+                element.innerHTML = `
 
-                <div>
-                    <h4>${exercise[0]}</h4>
-                    <p>${exercise[1]}</p>
-                </div>
+                    <div class="exercise-number">
+                        ${index + 1}
+                    </div>
 
-                <div class="duration">${exercise[2]}</div>
-            `;
+                    <div>
 
-            trainingList.appendChild(element);
+                        <h4>
+                            ${exercise[0]}
+                        </h4>
 
-        });
+                        <p>
+                            ${exercise[1]}
+                        </p>
 
+                    </div>
 
-        let technique =
-            Math.min(100, 45 + (assists * 6) + (points * 1.5));
+                    <div class="duration">
+                        ${exercise[2]}
+                    </div>
 
-        let physical =
-            Math.min(100, 40 + (rebounds * 5) + (vertical * 0.35));
+                `;
 
-        let shootingScore =
-            Math.min(100, shooting);
+                trainingList.appendChild(element);
 
-        let team =
-            Math.min(100, 40 + (assists * 8) + (rebounds * 3));
-
-
-        technique = Math.round(technique);
-        physical = Math.round(physical);
-        shootingScore = Math.round(shootingScore);
-        team = Math.round(team);
+            }
+        );
 
 
-        document.getElementById("techniqueValue").textContent =
-            technique + "%";
+        /* =========================
+           BARRES DE PROGRESSION
+        ========================= */
 
-        document.getElementById("physicalValue").textContent =
-            physical + "%";
-
-        document.getElementById("shootingValue").textContent =
-            shootingScore + "%";
-
-        document.getElementById("teamValue").textContent =
-            team + "%";
-
-
-        document.getElementById("techniqueBar").style.width =
-            technique + "%";
-
-        document.getElementById("physicalBar").style.width =
-            physical + "%";
-
-        document.getElementById("shootingBar").style.width =
-            shootingScore + "%";
-
-        document.getElementById("teamBar").style.width =
-            team + "%";
+        const technique =
+            Math.round(
+                clamp(
+                    (dribblingScore + passingScore) / 2,
+                    0,
+                    100
+                )
+            );
 
 
-        document.getElementById("emptyState").style.display =
-            "none";
+        const physical =
+            Math.round(
+                clamp(
+                    physicalScore,
+                    0,
+                    100
+                )
+            );
 
-        document.getElementById("resultCard").style.display =
-            "block";
+
+        const team =
+            Math.round(
+                clamp(
+                    (passingScore + defenseScore + reboundScore) / 3,
+                    0,
+                    100
+                )
+            );
 
 
-        document.getElementById("resultCard").scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+        document.getElementById("techniqueValue")
+            .textContent = technique + "%";
+
+        document.getElementById("physicalValue")
+            .textContent = physical + "%";
+
+        document.getElementById("shootingValue")
+            .textContent = Math.round(shootingScore) + "%";
+
+        document.getElementById("teamValue")
+            .textContent = team + "%";
+
+
+        document.getElementById("techniqueBar")
+            .style.width = technique + "%";
+
+        document.getElementById("physicalBar")
+            .style.width = physical + "%";
+
+        document.getElementById("shootingBar")
+            .style.width =
+            Math.round(shootingScore) + "%";
+
+        document.getElementById("teamBar")
+            .style.width = team + "%";
+
+
+        /* =========================
+           AFFICHAGE RESULTAT
+        ========================= */
+
+        document.getElementById("emptyState")
+            .style.display = "none";
+
+        document.getElementById("resultCard")
+            .style.display = "block";
+
+
+        document.getElementById("resultCard")
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
 
     }
 
 
     document
         .getElementById("generateCoach")
-        .addEventListener("click", generateAnalysis);
-
+        .addEventListener(
+            "click",
+            generateAnalysis
+        );
 
 </script>
 
