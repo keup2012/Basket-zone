@@ -1,8 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Contact - Basket Zone</title>
 
     <style>
@@ -19,13 +21,15 @@
             line-height: 1.6;
         }
 
+        /* HEADER */
+
         header {
             background: #111;
             color: white;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
         }
 
         .topbar {
@@ -39,15 +43,18 @@
         }
 
         .logo {
-            font-size: 27px;
-            font-weight: 900;
             color: white;
             text-decoration: none;
+            font-size: 27px;
+            font-weight: 900;
+            white-space: nowrap;
         }
 
         .logo span {
             color: #ff6a00;
         }
+
+        /* MENU */
 
         nav {
             display: flex;
@@ -72,12 +79,19 @@
             color: white;
         }
 
+        /* HERO */
+
         .hero {
             background:
-                linear-gradient(120deg, rgba(0,0,0,0.92), rgba(25,25,25,0.78)),
+                linear-gradient(
+                    120deg,
+                    rgba(0, 0, 0, 0.94),
+                    rgba(25, 25, 25, 0.78)
+                ),
                 linear-gradient(120deg, #ff6a00, #111);
+
             color: white;
-            padding: 70px 20px;
+            padding: 75px 20px;
         }
 
         .hero-content {
@@ -98,10 +112,12 @@
         }
 
         .hero p {
-            max-width: 700px;
+            max-width: 720px;
             color: #ddd;
             font-size: 18px;
         }
+
+        /* CONTENU */
 
         .container {
             max-width: 1100px;
@@ -120,7 +136,7 @@
             background: white;
             border-radius: 14px;
             padding: 30px;
-            box-shadow: 0 5px 22px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 22px rgba(0, 0, 0, 0.08);
         }
 
         .card h2 {
@@ -142,6 +158,8 @@
             color: #555;
             margin-bottom: 20px;
         }
+
+        /* COORDONNÉES */
 
         .contact-item {
             border-bottom: 1px solid #eee;
@@ -168,6 +186,18 @@
         .contact-item a:hover {
             text-decoration: underline;
         }
+
+        .notice {
+            margin-top: 15px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            background: #fff3e9;
+            border-left: 4px solid #ff6a00;
+            color: #555;
+            font-size: 14px;
+        }
+
+        /* FORMULAIRE */
 
         form {
             display: grid;
@@ -199,7 +229,7 @@
         select:focus {
             border-color: #ff6a00;
             background: white;
-            box-shadow: 0 0 0 3px rgba(255,106,0,0.1);
+            box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.1);
         }
 
         textarea {
@@ -224,15 +254,7 @@
             transform: translateY(-1px);
         }
 
-        .notice {
-            margin-top: 15px;
-            padding: 12px 15px;
-            border-radius: 8px;
-            background: #fff3e9;
-            border-left: 4px solid #ff6a00;
-            color: #555;
-            font-size: 14px;
-        }
+        /* FAQ */
 
         .faq {
             margin-top: 25px;
@@ -245,7 +267,7 @@
             background: white;
             padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
         }
 
         .faq-item h3 {
@@ -257,6 +279,8 @@
             color: #666;
             font-size: 14px;
         }
+
+        /* FOOTER */
 
         footer {
             background: #111;
@@ -293,6 +317,8 @@
         .footer-links a:hover {
             color: #ff6a00;
         }
+
+        /* MOBILE */
 
         @media (max-width: 850px) {
             .topbar {
@@ -367,13 +393,17 @@
 
 <section class="hero">
     <div class="hero-content">
+
         <small>Basket Zone</small>
+
         <h1>Contactez-nous</h1>
+
         <p>
             Une question, une suggestion ou une remarque concernant
             Basket Zone ? Retrouvez ici les informations nécessaires
             pour nous contacter.
         </p>
+
     </div>
 </section>
 
@@ -381,7 +411,10 @@
 
     <div class="contact-layout">
 
+        <!-- COORDONNÉES -->
+
         <section class="card">
+
             <h2>Nos coordonnées</h2>
 
             <p>
@@ -391,6 +424,7 @@
 
             <div class="contact-item">
                 <strong>Email</strong>
+
                 <a href="mailto:kouassiemolo@outlook.fr">
                     kouassiemolo@outlook.fr
                 </a>
@@ -398,6 +432,7 @@
 
             <div class="contact-item">
                 <strong>Site internet</strong>
+
                 <a href="index.html">
                     Basket Zone
                 </a>
@@ -405,26 +440,36 @@
 
             <div class="contact-item">
                 <strong>Type de projet</strong>
-                <span>Site indépendant consacré au basketball</span>
+
+                <span>
+                    Site indépendant consacré au basketball
+                </span>
             </div>
 
             <div class="notice">
                 Pour une demande importante, merci de préciser clairement
                 l'objet de votre message afin de faciliter son traitement.
             </div>
+
         </section>
 
+        <!-- FORMULAIRE -->
+
         <section class="card">
+
             <h2>Envoyer un message</h2>
 
             <p>
                 Remplissez le formulaire ci-dessous. Votre logiciel de
-                messagerie s'ouvrira pour envoyer le message.
+                messagerie s'ouvrira pour préparer l'envoi du message.
             </p>
 
             <form id="contactForm">
 
-                <label for="name">Nom</label>
+                <label for="name">
+                    Nom
+                </label>
+
                 <input
                     type="text"
                     id="name"
@@ -432,7 +477,10 @@
                     required
                 >
 
-                <label for="email">Adresse e-mail</label>
+                <label for="email">
+                    Adresse e-mail
+                </label>
+
                 <input
                     type="email"
                     id="email"
@@ -440,24 +488,38 @@
                     required
                 >
 
-                <label for="subject">Sujet</label>
+                <label for="subject">
+                    Sujet
+                </label>
+
                 <select id="subject" required>
-                    <option value="">Choisir un sujet</option>
+
+                    <option value="">
+                        Choisir un sujet
+                    </option>
+
                     <option value="Question concernant Basket Zone">
                         Question concernant le site
                     </option>
+
                     <option value="Suggestion pour Basket Zone">
                         Suggestion
                     </option>
+
                     <option value="Erreur sur le site Basket Zone">
                         Signaler une erreur
                     </option>
+
                     <option value="Autre demande concernant Basket Zone">
                         Autre demande
                     </option>
+
                 </select>
 
-                <label for="message">Message</label>
+                <label for="message">
+                    Message
+                </label>
+
                 <textarea
                     id="message"
                     placeholder="Écrivez votre message..."
@@ -469,26 +531,39 @@
                 </button>
 
             </form>
+
         </section>
 
     </div>
 
+    <!-- FAQ -->
+
     <section class="faq">
 
         <div class="faq-item">
-            <h3>Une erreur sur une information ?</h3>
+
+            <h3>
+                Une erreur sur une information ?
+            </h3>
+
             <p>
                 Si vous remarquez une information incorrecte sur une page,
                 vous pouvez nous contacter afin de nous la signaler.
             </p>
+
         </div>
 
         <div class="faq-item">
-            <h3>Une idée pour le site ?</h3>
+
+            <h3>
+                Une idée pour le site ?
+            </h3>
+
             <p>
                 Les suggestions sont les bienvenues pour améliorer
                 l'expérience des visiteurs de Basket Zone.
             </p>
+
         </div>
 
     </section>
@@ -496,44 +571,70 @@
 </main>
 
 <footer>
+
     <div class="footer-content">
 
         <div>
             <strong>Basket Zone</strong><br>
-            <span>L'actualité du basketball au même endroit.</span>
+
+            <span>
+                L'actualité du basketball au même endroit.
+            </span>
         </div>
 
         <div class="footer-links">
-            <a href="apropos.html">À propos</a>
-            <a href="contact.html">Contact</a>
-            <a href="confidentialite.html">Confidentialité</a>
+
+            <a href="apropos.html">
+                À propos
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            <a href="confidentialite.html">
+                Confidentialité
+            </a>
+
         </div>
 
     </div>
+
 </footer>
 
 <script>
-    document.getElementById("contactForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+    document
+        .getElementById("contactForm")
+        .addEventListener("submit", function(event) {
 
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const subject = document.getElementById("subject").value;
-        const message = document.getElementById("message").value.trim();
+            event.preventDefault();
 
-        const body =
-            "Nom : " + name + "\n" +
-            "E-mail : " + email + "\n\n" +
-            message;
+            const name =
+                document.getElementById("name").value.trim();
 
-        const mailto =
-            "mailto:kouassiemolo@outlook.fr" +
-            "?subject=" + encodeURIComponent(subject) +
-            "&body=" + encodeURIComponent(body);
+            const email =
+                document.getElementById("email").value.trim();
 
-        window.location.href = mailto;
-    });
+            const subject =
+                document.getElementById("subject").value;
+
+            const message =
+                document.getElementById("message").value.trim();
+
+            const body =
+                "Nom : " + name + "\n" +
+                "E-mail : " + email + "\n\n" +
+                message;
+
+            const mailto =
+                "mailto:kouassiemolo@outlook.fr" +
+                "?subject=" + encodeURIComponent(subject) +
+                "&body=" + encodeURIComponent(body);
+
+            window.location.href = mailto;
+        });
 </script>
 
 </body>
 </html>
+```
