@@ -1,330 +1,539 @@
 <!DOCTYPE html>
-
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Basket Zone</title>
 
-```
-<title>📞 Contact - Basket Zone</title>
-
-<style>
-
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #f4f4f4;
-        color: #222;
-        line-height: 1.6;
-    }
-
-    /* =========================
-       HEADER
-    ========================= */
-
-    header {
-        background: linear-gradient(135deg, #ff6a00, #ff8c00);
-        color: white;
-        text-align: center;
-        padding: 35px 20px;
-    }
-
-    header h1 {
-        font-size: 42px;
-        margin-bottom: 10px;
-    }
-
-    header p {
-        font-size: 18px;
-    }
-
-    /* =========================
-       MENU
-    ========================= */
-
-    nav {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        background: #111;
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 5px;
-        padding: 10px;
-    }
-
-    nav a {
-        color: white;
-        text-decoration: none;
-        padding: 10px 14px;
-        border-radius: 6px;
-        font-weight: bold;
-        transition: 0.2s;
-    }
-
-    nav a:hover,
-    nav a.active {
-        background: #ff6a00;
-    }
-
-    /* =========================
-       CONTENU
-    ========================= */
-
-    main {
-        max-width: 900px;
-        margin: auto;
-        padding: 40px 20px;
-    }
-
-    .section-title {
-        text-align: center;
-        font-size: 32px;
-        margin-bottom: 30px;
-        color: #ff6a00;
-    }
-
-    .contact-card {
-        background: white;
-        padding: 35px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    }
-
-    .contact-card p {
-        margin-bottom: 20px;
-        font-size: 17px;
-    }
-
-    .contact-email {
-        display: block;
-        background: #f4f4f4;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        margin: 25px 0;
-    }
-
-    .contact-email a {
-        color: #ff6a00;
-        font-weight: bold;
-        text-decoration: none;
-        font-size: 18px;
-    }
-
-    .contact-email a:hover {
-        text-decoration: underline;
-    }
-
-    /* =========================
-       FOOTER
-    ========================= */
-
-    footer {
-        background: #111;
-        color: white;
-        text-align: center;
-        padding: 30px 20px;
-        margin-top: 40px;
-    }
-
-    footer p {
-        margin-bottom: 10px;
-    }
-
-    footer a {
-        color: white;
-        text-decoration: none;
-        margin: 0 8px;
-    }
-
-    footer a:hover {
-        color: #ff6a00;
-    }
-
-    /* =========================
-       MOBILE
-    ========================= */
-
-    @media (max-width: 600px) {
-
-        header h1 {
-            font-size: 32px;
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        header p {
-            font-size: 15px;
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f4f4;
+            color: #171717;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+        }
+
+        .topbar {
+            max-width: 1200px;
+            margin: auto;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 900;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #ff6a00;
         }
 
         nav {
-            position: static;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
         }
 
         nav a {
-            font-size: 13px;
-            padding: 8px 10px;
+            color: #ddd;
+            text-decoration: none;
+            padding: 9px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s;
         }
 
-        .section-title {
-            font-size: 27px;
+        nav a:hover,
+        nav a.active {
+            background: #ff6a00;
+            color: white;
         }
 
-        .contact-card {
-            padding: 25px 20px;
+        .hero {
+            background:
+                linear-gradient(120deg, rgba(0,0,0,0.92), rgba(25,25,25,0.78)),
+                linear-gradient(120deg, #ff6a00, #111);
+            color: white;
+            padding: 70px 20px;
         }
 
-    }
+        .hero-content {
+            max-width: 1100px;
+            margin: auto;
+        }
 
-</style>
-```
+        .hero small {
+            color: #ff6a00;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
 
+        .hero h1 {
+            font-size: 52px;
+            margin: 10px 0;
+        }
+
+        .hero p {
+            max-width: 700px;
+            color: #ddd;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 5px 22px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            font-size: 25px;
+            margin-bottom: 12px;
+        }
+
+        .card h2::after {
+            content: "";
+            display: block;
+            width: 45px;
+            height: 4px;
+            background: #ff6a00;
+            margin-top: 8px;
+            border-radius: 5px;
+        }
+
+        .card p {
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            border-bottom: 1px solid #eee;
+            padding: 17px 0;
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+
+        .contact-item strong {
+            display: block;
+            color: #111;
+            margin-bottom: 5px;
+        }
+
+        .contact-item a {
+            color: #ff6a00;
+            font-weight: 700;
+            text-decoration: none;
+            word-break: break-word;
+        }
+
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            display: grid;
+            gap: 17px;
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: -9px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 13px 14px;
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+            background: #fafafa;
+            transition: 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #ff6a00;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255,106,0,0.1);
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 14px 20px;
+            background: #ff6a00;
+            color: white;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #e85e00;
+            transform: translateY(-1px);
+        }
+
+        .notice {
+            margin-top: 15px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            background: #fff3e9;
+            border-left: 4px solid #ff6a00;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .faq {
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .faq-item {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+        }
+
+        .faq-item h3 {
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .faq-item p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        footer {
+            background: #111;
+            color: #aaa;
+            margin-top: 60px;
+            padding: 35px 20px;
+        }
+
+        .footer-content {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-content strong {
+            color: white;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: #ff6a00;
+        }
+
+        @media (max-width: 850px) {
+            .topbar {
+                flex-direction: column;
+            }
+
+            nav {
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .contact-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .faq {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 500px) {
+            nav a {
+                font-size: 13px;
+                padding: 8px 9px;
+            }
+
+            .hero {
+                padding: 50px 20px;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .card {
+                padding: 22px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-```
-<!-- =========================
-     HEADER
-========================= -->
-
 <header>
+    <div class="topbar">
 
-    <h1>🏀 Basket Zone</h1>
+        <a href="index.html" class="logo">
+            Basket <span>Zone</span>
+        </a>
 
-    <p>
-        Toute l'actualité du basketball au même endroit
-    </p>
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="actualites.html">Actualités</a>
+            <a href="matchs.html">Matchs</a>
+            <a href="joueurs.html">Joueurs</a>
+            <a href="classement.html">Classement</a>
+            <a href="apropos.html">À propos</a>
+            <a href="contact.html" class="active">Contact</a>
+            <a href="confidentialite.html">Confidentialité</a>
+        </nav>
 
+    </div>
 </header>
 
-
-<!-- =========================
-     MENU
-========================= -->
-
-<nav>
-
-    <a href="index.html">
-        🏠 Accueil
-    </a>
-
-    <a href="actualites.html">
-        📰 Actualités
-    </a>
-
-    <a href="matchs.html">
-        🏀 Matchs
-    </a>
-
-    <a href="joueurs.html">
-        ⭐ Joueurs
-    </a>
-
-    <a href="classement.html">
-        🏆 Classement
-    </a>
-
-    <a href="apropos.html">
-        ℹ️ À propos
-    </a>
-
-    <a href="contact.html" class="active">
-        📞 Contact
-    </a>
-
-</nav>
-
-
-<!-- =========================
-     CONTENU
-========================= -->
-
-<main>
-
-    <h2 class="section-title">
-        📞 Contact
-    </h2>
-
-    <div class="contact-card">
-
+<section class="hero">
+    <div class="hero-content">
+        <small>Basket Zone</small>
+        <h1>Contactez-nous</h1>
         <p>
-            Une question, une suggestion ou un problème
-            concernant Basket Zone ?
+            Une question, une suggestion ou une remarque concernant
+            Basket Zone ? Retrouvez ici les informations nécessaires
+            pour nous contacter.
         </p>
+    </div>
+</section>
 
-        <p>
-            Vous pouvez nous contacter directement par email.
-        </p>
+<main class="container">
 
-        <div class="contact-email">
+    <div class="contact-layout">
 
-            📩
+        <section class="card">
+            <h2>Nos coordonnées</h2>
 
-            <a href="mailto:kouassiemolo@outlook.fr">
-                kouassiemolo@outlook.fr
-            </a>
+            <p>
+                Vous pouvez utiliser cette adresse pour toute question
+                concernant le site, son contenu ou son fonctionnement.
+            </p>
 
-        </div>
+            <div class="contact-item">
+                <strong>Email</strong>
+                <a href="mailto:kouassiemolo@outlook.fr">
+                    kouassiemolo@outlook.fr
+                </a>
+            </div>
 
-        <p>
-            Nous sommes à votre écoute pour améliorer
-            Basket Zone et proposer une meilleure expérience
-            aux passionnés de basketball. 🏀
-        </p>
+            <div class="contact-item">
+                <strong>Site internet</strong>
+                <a href="index.html">
+                    Basket Zone
+                </a>
+            </div>
+
+            <div class="contact-item">
+                <strong>Type de projet</strong>
+                <span>Site indépendant consacré au basketball</span>
+            </div>
+
+            <div class="notice">
+                Pour une demande importante, merci de préciser clairement
+                l'objet de votre message afin de faciliter son traitement.
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Envoyer un message</h2>
+
+            <p>
+                Remplissez le formulaire ci-dessous. Votre logiciel de
+                messagerie s'ouvrira pour envoyer le message.
+            </p>
+
+            <form id="contactForm">
+
+                <label for="name">Nom</label>
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Votre nom"
+                    required
+                >
+
+                <label for="email">Adresse e-mail</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="votre@email.com"
+                    required
+                >
+
+                <label for="subject">Sujet</label>
+                <select id="subject" required>
+                    <option value="">Choisir un sujet</option>
+                    <option value="Question concernant Basket Zone">
+                        Question concernant le site
+                    </option>
+                    <option value="Suggestion pour Basket Zone">
+                        Suggestion
+                    </option>
+                    <option value="Erreur sur le site Basket Zone">
+                        Signaler une erreur
+                    </option>
+                    <option value="Autre demande concernant Basket Zone">
+                        Autre demande
+                    </option>
+                </select>
+
+                <label for="message">Message</label>
+                <textarea
+                    id="message"
+                    placeholder="Écrivez votre message..."
+                    required
+                ></textarea>
+
+                <button type="submit">
+                    Envoyer le message
+                </button>
+
+            </form>
+        </section>
 
     </div>
 
+    <section class="faq">
+
+        <div class="faq-item">
+            <h3>Une erreur sur une information ?</h3>
+            <p>
+                Si vous remarquez une information incorrecte sur une page,
+                vous pouvez nous contacter afin de nous la signaler.
+            </p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Une idée pour le site ?</h3>
+            <p>
+                Les suggestions sont les bienvenues pour améliorer
+                l'expérience des visiteurs de Basket Zone.
+            </p>
+        </div>
+
+    </section>
+
 </main>
 
-
-<!-- =========================
-     FOOTER
-========================= -->
-
 <footer>
+    <div class="footer-content">
 
-    <p>
-        🏀 <strong>Basket Zone</strong>
-    </p>
+        <div>
+            <strong>Basket Zone</strong><br>
+            <span>L'actualité du basketball au même endroit.</span>
+        </div>
 
-    <p>
-        Toute l'actualité du basketball au même endroit.
-    </p>
+        <div class="footer-links">
+            <a href="apropos.html">À propos</a>
+            <a href="contact.html">Contact</a>
+            <a href="confidentialite.html">Confidentialité</a>
+        </div>
 
-    <p>
-
-        <a href="apropos.html">
-            À propos
-        </a>
-
-        |
-
-        <a href="contact.html">
-            Contact
-        </a>
-
-        |
-
-        <a href="confidentialite.html">
-            Politique de confidentialité
-        </a>
-
-    </p>
-
-    <p>
-        © 2026 Basket Zone - Tous droits réservés.
-    </p>
-
+    </div>
 </footer>
-```
+
+<script>
+    document.getElementById("contactForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const subject = document.getElementById("subject").value;
+        const message = document.getElementById("message").value.trim();
+
+        const body =
+            "Nom : " + name + "\n" +
+            "E-mail : " + email + "\n\n" +
+            message;
+
+        const mailto =
+            "mailto:kouassiemolo@outlook.fr" +
+            "?subject=" + encodeURIComponent(subject) +
+            "&body=" + encodeURIComponent(body);
+
+        window.location.href = mailto;
+    });
+</script>
 
 </body>
-
 </html>
