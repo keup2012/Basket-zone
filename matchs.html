@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Matchs NBA - Basket Zone</title>
+    <title>Matchs NBA | Basket Zone</title>
+
+    <meta
+        name="description"
+        content="Calendrier et prochains matchs de basketball sur Basket Zone."
+    >
 
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -19,324 +24,480 @@
             color: #171717;
         }
 
-        /* HEADER */
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
 
         header {
-            background: linear-gradient(135deg, #ff6a00, #ff8c00);
+            background: #111;
             color: white;
-            text-align: center;
-            padding: 28px 20px;
         }
 
-        header h1 {
-            font-size: 42px;
-            margin-bottom: 8px;
+        .top-bar {
+            max-width: 1250px;
+            margin: auto;
+            padding: 22px 20px;
+            display: flex;
+            align-items: center;
         }
 
-        header p {
-            font-size: 17px;
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        /* NAVIGATION */
+        .logo-basket {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #ff6a00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .logo-text h1 {
+            font-size: 29px;
+            font-weight: 800;
+        }
+
+        .logo-text p {
+            color: #bcbcbc;
+            font-size: 13px;
+        }
+
+        /* =========================
+           NAVIGATION
+        ========================= */
 
         nav {
-            background: #111;
+            background: #090909;
+            border-top: 1px solid #303030;
+            border-bottom: 1px solid #303030;
+        }
+
+        .nav-container {
+            max-width: 1250px;
+            margin: auto;
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 4px;
-            padding: 8px 10px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            padding: 0 15px;
+            overflow-x: auto;
         }
 
         nav a {
-            color: white;
-            text-decoration: none;
-            padding: 11px 15px;
-            border-radius: 6px;
-            font-weight: bold;
+            color: #d8d8d8;
+            padding: 17px 14px;
             font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
         }
 
-        nav a:hover,
+        nav a:hover {
+            color: white;
+            background: #1d1d1d;
+            border-bottom-color: #ff6a00;
+        }
+
         nav a.active {
+            color: white;
+            background: #181818;
+            border-bottom-color: #ff6a00;
+        }
+
+        /* =========================
+           PAGE HEADER
+        ========================= */
+
+        .page-header {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0,0,0,0.9),
+                    rgba(0,0,0,0.55)
+                ),
+                linear-gradient(
+                    135deg,
+                    #ff6a00,
+                    #222
+                );
+            color: white;
+            padding: 50px 20px;
+        }
+
+        .page-header-content {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .page-label {
+            display: inline-block;
             background: #ff6a00;
+            padding: 6px 11px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 12px;
         }
 
-        /* CONTENU */
-
-        .container {
-            width: min(1150px, 94%);
-            margin: 35px auto;
+        .page-header h2 {
+            font-size: 42px;
+            line-height: 1.1;
+            margin-bottom: 10px;
         }
 
-        .page-title {
-            margin-bottom: 28px;
+        .page-header p {
+            color: #d3d3d3;
+            max-width: 700px;
         }
 
-        .page-title h2 {
-            font-size: 32px;
-            margin-bottom: 5px;
+        /* =========================
+           CONTENU
+        ========================= */
+
+        main {
+            max-width: 1250px;
+            margin: auto;
+            padding: 35px 20px 60px;
         }
 
-        .page-title p {
-            color: #666;
-        }
-
-        .orange-line {
-            width: 70px;
-            height: 5px;
-            background: #ff6a00;
-            border-radius: 10px;
-            margin-top: 10px;
-        }
-
-        /* FILTRE */
+        /* =========================
+           FILTRES
+        ========================= */
 
         .filters {
             display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 8px;
             flex-wrap: wrap;
+            margin-bottom: 30px;
         }
 
-        .filter-button {
+        .filter {
             border: 1px solid #ddd;
             background: white;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: bold;
+            padding: 10px 17px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 700;
             cursor: pointer;
+            transition: 0.2s;
         }
 
-        .filter-button.active,
-        .filter-button:hover {
+        .filter:hover,
+        .filter.active {
             background: #ff6a00;
-            color: white;
             border-color: #ff6a00;
-        }
-
-        /* SECTION */
-
-        .league-section {
-            margin-bottom: 42px;
-        }
-
-        .league-title {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #111;
             color: white;
-            padding: 15px 20px;
-            border-radius: 10px 10px 0 0;
         }
 
-        .league-title h3 {
-            font-size: 20px;
-        }
+        /* =========================
+           TITRE
+        ========================= */
 
-        .league-title span {
-            color: #ff8c00;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        /* MATCH */
-
-        .matches {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .match-card {
-            background: white;
-            border-radius: 0 0 10px 10px;
-            padding: 22px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.07);
-            border-bottom: 1px solid #eee;
-        }
-
-        .match-card + .match-card {
-            border-radius: 10px;
-        }
-
-        .match-info {
+        .section-title {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: #777;
-            font-size: 13px;
             margin-bottom: 18px;
         }
 
-        .competition {
-            font-weight: bold;
-            color: #ff6a00;
+        .section-title h2 {
+            font-size: 25px;
         }
 
-        .match-main {
-            display: grid;
-            grid-template-columns: 1fr 150px 1fr;
+        .section-title h2::before {
+            content: "";
+            display: inline-block;
+            width: 5px;
+            height: 25px;
+            background: #ff6a00;
+            border-radius: 3px;
+            margin-right: 9px;
+            vertical-align: -4px;
+        }
+
+        .season {
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* =========================
+           DATE
+        ========================= */
+
+        .date-block {
+            margin-bottom: 30px;
+        }
+
+        .date-header {
+            display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .date-header strong {
+            font-size: 15px;
+        }
+
+        .date-line {
+            height: 1px;
+            background: #ddd;
+            flex: 1;
+        }
+
+        /* =========================
+           MATCH CARD
+        ========================= */
+
+        .games {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .game-card {
+            background: white;
+            border: 1px solid #e4e4e4;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 13px rgba(0,0,0,0.06);
+            transition: 0.2s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.1);
+        }
+
+        .game-top {
+            padding: 12px 16px;
+            background: #fafafa;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .competition {
+            font-size: 11px;
+            color: #ff6a00;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .game-status {
+            font-size: 11px;
+            color: #777;
+        }
+
+        .game-body {
+            padding: 24px 20px;
+        }
+
+        .teams {
+            display: grid;
+            grid-template-columns: 1fr 90px 1fr;
+            align-items: center;
+            gap: 12px;
         }
 
         .team {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
-        }
-
-        .team.home {
-            justify-content: flex-end;
-            text-align: right;
-        }
-
-        .team.away {
-            justify-content: flex-start;
+            text-align: center;
+            gap: 10px;
         }
 
         .team img {
-            width: 65px;
-            height: 65px;
+            width: 75px;
+            height: 75px;
             object-fit: contain;
         }
 
         .team-name {
-            font-size: 18px;
-            font-weight: bold;
+            font-weight: 800;
+            font-size: 14px;
+            line-height: 1.2;
         }
 
         .team-city {
-            font-size: 12px;
             color: #888;
-            margin-top: 3px;
-        }
-
-        .score {
-            text-align: center;
-        }
-
-        .score-time {
-            font-size: 23px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .status {
-            display: inline-block;
-            background: #eee;
-            color: #555;
-            padding: 4px 9px;
-            border-radius: 5px;
             font-size: 11px;
-            font-weight: bold;
         }
 
-        .status.upcoming {
-            background: #fff1e8;
-            color: #e85e00;
-        }
-
-        .status.live {
-            background: #e53935;
-            color: white;
-        }
-
-        .status.finished {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        /* DÉTAILS */
-
-        .match-details {
-            border-top: 1px solid #eee;
-            margin-top: 18px;
-            padding-top: 12px;
+        .game-time {
             text-align: center;
-            font-size: 12px;
+        }
+
+        .time {
+            font-size: 23px;
+            font-weight: 900;
+        }
+
+        .timezone {
+            font-size: 10px;
             color: #888;
+            margin-top: 2px;
         }
 
-        /* EMPTY */
+        .vs {
+            margin-top: 5px;
+            font-size: 11px;
+            color: #999;
+            font-weight: 700;
+        }
 
-        .empty {
-            background: white;
-            padding: 35px;
-            text-align: center;
-            border-radius: 10px;
+        .game-bottom {
+            border-top: 1px solid #eee;
+            padding: 13px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .arena {
+            font-size: 11px;
             color: #777;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
         }
 
-        /* FOOTER */
+        .details {
+            color: #ff6a00;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* =========================
+           INFO
+        ========================= */
+
+        .info-box {
+            margin-top: 35px;
+            background: #111;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .info-box h3 {
+            margin-bottom: 7px;
+            font-size: 18px;
+        }
+
+        .info-box p {
+            color: #bbb;
+            font-size: 13px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
 
         footer {
-            margin-top: 50px;
-            background: #111;
-            color: #aaa;
-            padding: 30px 20px;
-            text-align: center;
-        }
-
-        footer strong {
+            background: #0b0b0b;
             color: white;
         }
 
-        footer a {
-            color: #aaa;
-            text-decoration: none;
-            margin: 0 7px;
+        .footer-container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 35px 20px 20px;
         }
 
-        footer a:hover {
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 30px;
+            padding-bottom: 25px;
+        }
+
+        .footer-column h3 {
+            font-size: 15px;
+            margin-bottom: 13px;
+        }
+
+        .footer-column p,
+        .footer-column a {
+            color: #999;
+            font-size: 13px;
+        }
+
+        .footer-column a {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .footer-column a:hover {
             color: #ff6a00;
         }
 
-        /* MOBILE */
+        .footer-bottom {
+            border-top: 1px solid #292929;
+            padding-top: 18px;
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+        }
 
-        @media (max-width: 700px) {
+        /* =========================
+           MOBILE
+        ========================= */
 
-            header h1 {
-                font-size: 32px;
+        @media (max-width: 850px) {
+
+            .games {
+                grid-template-columns: 1fr;
             }
 
-            nav {
-                position: static;
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .top-bar {
+                padding: 16px;
+            }
+
+            .logo-basket {
+                width: 45px;
+                height: 45px;
+                font-size: 23px;
+            }
+
+            .logo-text h1 {
+                font-size: 23px;
             }
 
             nav a {
-                font-size: 13px;
-                padding: 9px 10px;
+                padding: 14px 11px;
+                font-size: 12px;
             }
 
-            .container {
-                width: 92%;
-                margin-top: 25px;
+            .page-header {
+                padding: 40px 20px;
             }
 
-            .page-title h2 {
-                font-size: 27px;
+            .page-header h2 {
+                font-size: 30px;
             }
 
-            .match-main {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 15px;
+            main {
+                padding: 25px 14px 45px;
             }
 
-            .team,
-            .team.home,
-            .team.away {
-                justify-content: center;
-                text-align: center;
-                flex-direction: column;
+            .teams {
+                grid-template-columns: 1fr 70px 1fr;
             }
 
             .team img {
@@ -344,9 +505,16 @@
                 height: 60px;
             }
 
-            .match-info {
-                flex-direction: column;
-                gap: 5px;
+            .team-name {
+                font-size: 12px;
+            }
+
+            .time {
+                font-size: 19px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -354,311 +522,783 @@
 
 <body>
 
-    <!-- HEADER -->
+<!-- =========================
+     HEADER
+========================= -->
 
-    <header>
-        <h1>🏀 Basket Zone</h1>
-        <p>Toute l'actualité du basketball au même endroit</p>
-    </header>
+<header>
 
-    <!-- NAVIGATION -->
+    <div class="top-bar">
 
-    <nav>
-        <a href="index.html">Accueil</a>
-        <a href="actualites.html">Actualités</a>
-        <a href="matchs.html" class="active">Matchs</a>
-        <a href="joueurs.html">Joueurs</a>
-        <a href="classement.html">Classement</a>
-        <a href="apropos.html">À propos</a>
-        <a href="contact.html">Contact</a>
-        <a href="confidentialite.html">Confidentialité</a>
-    </nav>
+        <a href="index.html" class="logo-area">
 
-    <!-- CONTENU -->
-
-    <main class="container">
-
-        <div class="page-title">
-            <h2>Matchs</h2>
-            <p>Retrouve les prochains matchs et les résultats du basketball.</p>
-            <div class="orange-line"></div>
-        </div>
-
-        <!-- FILTRES -->
-
-        <div class="filters">
-            <button class="filter-button active" data-filter="all">
-                Tous
-            </button>
-
-            <button class="filter-button" data-filter="nba">
-                NBA
-            </button>
-
-            <button class="filter-button" data-filter="euroleague">
-                EuroLeague
-            </button>
-
-            <button class="filter-button" data-filter="betclic">
-                Betclic Élite
-            </button>
-        </div>
-
-        <!-- NBA -->
-
-        <section class="league-section" data-league="nba">
-
-            <div class="league-title">
-                <h3>NBA</h3>
-                <span>SAISON 2026-2027</span>
+            <div class="logo-basket">
+                🏀
             </div>
 
-            <div class="matches">
+            <div class="logo-text">
 
-                <!-- MATCH 1 -->
+                <h1>Basket Zone</h1>
 
-                <article class="match-card">
+                <p>
+                    Toute l'actualité du basketball au même endroit
+                </p>
 
-                    <div class="match-info">
-                        <span class="competition">
-                            NBA — Saison régulière
-                        </span>
+            </div>
 
-                        <span>
-                            Mardi 20 octobre 2026
-                        </span>
-                    </div>
+        </a>
 
-                    <div class="match-main">
+    </div>
 
-                        <div class="team home">
 
-                            <div>
-                                <div class="team-name">
-                                    New York Knicks
-                                </div>
+    <nav>
 
-                                <div class="team-city">
-                                    New York
-                                </div>
-                            </div>
+        <div class="nav-container">
+
+            <a href="index.html">
+                Accueil
+            </a>
+
+            <a href="actualites.html">
+                Actualités
+            </a>
+
+            <a
+                href="matchs.html"
+                class="active"
+            >
+                Matchs
+            </a>
+
+            <a href="joueurs.html">
+                Joueurs
+            </a>
+
+            <a href="classement.html">
+                Classement
+            </a>
+
+            <a href="apropos.html">
+                À propos
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            <a href="confidentialite.html">
+                Confidentialité
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================
+     TITRE
+========================= -->
+
+<section class="page-header">
+
+    <div class="page-header-content">
+
+        <span class="page-label">
+            Calendrier
+        </span>
+
+        <h2>
+            Matchs
+        </h2>
+
+        <p>
+            Retrouvez les prochains matchs NBA et les principales
+            rencontres de basketball suivies par Basket Zone.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CONTENU
+========================= -->
+
+<main>
+
+    <!-- FILTRES -->
+
+    <div class="filters">
+
+        <button
+            class="filter active"
+            data-filter="all"
+        >
+            Tous
+        </button>
+
+        <button
+            class="filter"
+            data-filter="NBA"
+        >
+            NBA
+        </button>
+
+        <button
+            class="filter"
+            data-filter="EuroLeague"
+        >
+            EuroLeague
+        </button>
+
+        <button
+            class="filter"
+            data-filter="Betclic"
+        >
+            Betclic Élite
+        </button>
+
+    </div>
+
+
+    <!-- NBA -->
+
+    <section class="date-block">
+
+        <div class="section-title">
+
+            <h2>
+                Prochains matchs NBA
+            </h2>
+
+            <span class="season">
+                Saison 2026-2027
+            </span>
+
+        </div>
+
+
+        <div class="date-header">
+
+            <strong>
+                Mardi 20 octobre 2026
+            </strong>
+
+            <div class="date-line"></div>
+
+        </div>
+
+
+        <div class="games">
+
+
+            <!-- KNICKS - 76ERS -->
+
+            <article
+                class="game-card"
+                data-competition="NBA"
+            >
+
+                <div class="game-top">
+
+                    <span class="competition">
+                        NBA
+                    </span>
+
+                    <span class="game-status">
+                        Saison régulière
+                    </span>
+
+                </div>
+
+
+                <div class="game-body">
+
+                    <div class="teams">
+
+                        <div class="team">
 
                             <img
                                 src="photos/new-york-knicks_big_square.png"
-                                alt="Logo New York Knicks"
+                                alt="New York Knicks"
                             >
+
+                            <span class="team-name">
+                                New York Knicks
+                            </span>
+
+                            <span class="team-city">
+                                New York
+                            </span>
 
                         </div>
 
-                        <div class="score">
 
-                            <div class="score-time">
+                        <div class="game-time">
+
+                            <div class="time">
                                 19:30
                             </div>
 
-                            <span class="status upcoming">
-                                À VENIR
-                            </span>
+                            <div class="timezone">
+                                Heure locale
+                            </div>
+
+                            <div class="vs">
+                                VS
+                            </div>
 
                         </div>
 
-                        <div class="team away">
+
+                        <div class="team">
 
                             <img
                                 src="photos/philadelphia-76ers_big_square.png"
-                                alt="Logo Philadelphia 76ers"
+                                alt="Philadelphia 76ers"
                             >
 
-                            <div>
-                                <div class="team-name">
-                                    Philadelphia 76ers
-                                </div>
+                            <span class="team-name">
+                                Philadelphia 76ers
+                            </span>
 
-                                <div class="team-city">
-                                    Philadelphia
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="match-details">
-                        Madison Square Garden · New York
-                    </div>
-
-                </article>
-
-                <!-- MATCH 2 -->
-
-                <article class="match-card">
-
-                    <div class="match-info">
-                        <span class="competition">
-                            NBA — Saison régulière
-                        </span>
-
-                        <span>
-                            Mardi 20 octobre 2026
-                        </span>
-                    </div>
-
-                    <div class="match-main">
-
-                        <div class="team home">
-
-                            <div>
-                                <div class="team-name">
-                                    San Antonio Spurs
-                                </div>
-
-                                <div class="team-city">
-                                    San Antonio
-                                </div>
-                            </div>
-
-                            <img
-                                src="photos/san-antonio-spurs_big_square.png"
-                                alt="Logo San Antonio Spurs"
-                            >
-
-                        </div>
-
-                        <div class="score">
-
-                            <div class="score-time">
-                                20:00
-                            </div>
-
-                            <span class="status upcoming">
-                                À VENIR
+                            <span class="team-city">
+                                Philadelphie
                             </span>
 
                         </div>
 
-                        <div class="team away">
+                    </div>
+
+                </div>
+
+
+                <div class="game-bottom">
+
+                    <span class="arena">
+                        Madison Square Garden
+                    </span>
+
+                    <a
+                        href="#"
+                        class="details"
+                    >
+                        Détails →
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- SPURS - THUNDER -->
+
+            <article
+                class="game-card"
+                data-competition="NBA"
+            >
+
+                <div class="game-top">
+
+                    <span class="competition">
+                        NBA
+                    </span>
+
+                    <span class="game-status">
+                        Saison régulière
+                    </span>
+
+                </div>
+
+
+                <div class="game-body">
+
+                    <div class="teams">
+
+                        <div class="team">
+
+                            <img
+                                src="photos/san-antonio-spurs_big_square.png"
+                                alt="San Antonio Spurs"
+                            >
+
+                            <span class="team-name">
+                                San Antonio Spurs
+                            </span>
+
+                            <span class="team-city">
+                                San Antonio
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-time">
+
+                            <div class="time">
+                                21:00
+                            </div>
+
+                            <div class="timezone">
+                                Heure locale
+                            </div>
+
+                            <div class="vs">
+                                VS
+                            </div>
+
+                        </div>
+
+
+                        <div class="team">
 
                             <img
                                 src="photos/oklahoma-city-thunder_big_square.png"
-                                alt="Logo Oklahoma City Thunder"
+                                alt="Oklahoma City Thunder"
                             >
 
-                            <div>
-                                <div class="team-name">
-                                    Oklahoma City Thunder
-                                </div>
+                            <span class="team-name">
+                                Oklahoma City Thunder
+                            </span>
 
-                                <div class="team-city">
-                                    Oklahoma City
-                                </div>
-                            </div>
+                            <span class="team-city">
+                                Oklahoma City
+                            </span>
 
                         </div>
 
                     </div>
 
-                    <div class="match-details">
-                        Frost Bank Center · San Antonio
+                </div>
+
+
+                <div class="game-bottom">
+
+                    <span class="arena">
+                        Frost Bank Center
+                    </span>
+
+                    <a
+                        href="#"
+                        class="details"
+                    >
+                        Détails →
+                    </a>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- EUROPE -->
+
+    <section class="date-block">
+
+        <div class="date-header">
+
+            <strong>
+                Autres compétitions
+            </strong>
+
+            <div class="date-line"></div>
+
+        </div>
+
+
+        <div class="games">
+
+            <article
+                class="game-card"
+                data-competition="EuroLeague"
+            >
+
+                <div class="game-top">
+
+                    <span class="competition">
+                        EuroLeague
+                    </span>
+
+                    <span class="game-status">
+                        Calendrier
+                    </span>
+
+                </div>
+
+
+                <div class="game-body">
+
+                    <div class="teams">
+
+                        <div class="team">
+
+                            <div style="
+                                width:75px;
+                                height:75px;
+                                border-radius:50%;
+                                background:#111;
+                                color:white;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                font-size:30px;
+                                font-weight:900;
+                            ">
+                                EU
+                            </div>
+
+                            <span class="team-name">
+                                Équipe à venir
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-time">
+
+                            <div class="time">
+                                —
+                            </div>
+
+                            <div class="vs">
+                                VS
+                            </div>
+
+                        </div>
+
+
+                        <div class="team">
+
+                            <div style="
+                                width:75px;
+                                height:75px;
+                                border-radius:50%;
+                                background:#ff6a00;
+                                color:white;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                font-size:30px;
+                                font-weight:900;
+                            ">
+                                EU
+                            </div>
+
+                            <span class="team-name">
+                                Équipe à venir
+                            </span>
+
+                        </div>
+
                     </div>
 
-                </article>
+                </div>
 
-            </div>
 
-        </section>
+                <div class="game-bottom">
 
-        <!-- EUROLEAGUE -->
+                    <span class="arena">
+                        Informations à venir
+                    </span>
 
-        <section class="league-section" data-league="euroleague">
+                    <span class="details">
+                        Bientôt
+                    </span>
 
-            <div class="league-title">
-                <h3>EuroLeague</h3>
-                <span>2026-2027</span>
-            </div>
+                </div>
 
-            <div class="empty">
-                Les prochains matchs d'EuroLeague seront bientôt disponibles.
-            </div>
+            </article>
 
-        </section>
 
-        <!-- BETCLIC -->
+            <article
+                class="game-card"
+                data-competition="Betclic"
+            >
 
-        <section class="league-section" data-league="betclic">
+                <div class="game-top">
 
-            <div class="league-title">
-                <h3>Betclic Élite</h3>
-                <span>SAISON 2026-2027</span>
-            </div>
+                    <span class="competition">
+                        Betclic Élite
+                    </span>
 
-            <div class="empty">
-                Les prochains matchs de Betclic Élite seront bientôt disponibles.
-            </div>
+                    <span class="game-status">
+                        Calendrier
+                    </span>
 
-        </section>
+                </div>
 
-    </main>
 
-    <!-- FOOTER -->
+                <div class="game-body">
 
-    <footer>
+                    <div class="teams">
+
+                        <div class="team">
+
+                            <div style="
+                                width:75px;
+                                height:75px;
+                                border-radius:50%;
+                                background:#111;
+                                color:white;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                font-size:25px;
+                                font-weight:900;
+                            ">
+                                FR
+                            </div>
+
+                            <span class="team-name">
+                                Équipe à venir
+                            </span>
+
+                        </div>
+
+
+                        <div class="game-time">
+
+                            <div class="time">
+                                —
+                            </div>
+
+                            <div class="vs">
+                                VS
+                            </div>
+
+                        </div>
+
+
+                        <div class="team">
+
+                            <div style="
+                                width:75px;
+                                height:75px;
+                                border-radius:50%;
+                                background:#ff6a00;
+                                color:white;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                font-size:25px;
+                                font-weight:900;
+                            ">
+                                FR
+                            </div>
+
+                            <span class="team-name">
+                                Équipe à venir
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="game-bottom">
+
+                    <span class="arena">
+                        France
+                    </span>
+
+                    <span class="details">
+                        Bientôt
+                    </span>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- INFO -->
+
+    <div class="info-box">
+
+        <h3>
+            Calendrier Basket Zone
+        </h3>
 
         <p>
-            <strong>Basket Zone</strong> — Toute l'actualité du basketball
+            Les informations affichées sur cette page sont organisées
+            pour présenter clairement les prochaines rencontres.
+            Les résultats et horaires pourront être mis à jour
+            automatiquement lorsque les données seront disponibles.
         </p>
 
-        <p style="margin-top: 10px;">
-            <a href="index.html">Accueil</a>
-            <a href="actualites.html">Actualités</a>
-            <a href="matchs.html">Matchs</a>
-            <a href="joueurs.html">Joueurs</a>
-            <a href="classement.html">Classement</a>
-            <a href="contact.html">Contact</a>
-        </p>
+    </div>
 
-        <p style="margin-top: 15px; font-size: 12px;">
-            © 2026 Basket Zone
-        </p>
+</main>
 
-    </footer>
 
-    <!-- JAVASCRIPT -->
+<!-- =========================
+     FOOTER
+========================= -->
 
-    <script>
+<footer>
 
-        const buttons = document.querySelectorAll(".filter-button");
-        const sections = document.querySelectorAll(".league-section");
+    <div class="footer-container">
 
-        buttons.forEach(button => {
+        <div class="footer-grid">
 
-            button.addEventListener("click", () => {
+            <div class="footer-column">
 
-                buttons.forEach(btn => {
-                    btn.classList.remove("active");
-                });
+                <h3>
+                    Basket Zone
+                </h3>
 
-                button.classList.add("active");
+                <p>
+                    Toute l'actualité du basketball au même endroit.
+                    NBA, matchs, joueurs et classements.
+                </p>
 
-                const filter = button.dataset.filter;
+            </div>
 
-                sections.forEach(section => {
 
-                    if (
-                        filter === "all" ||
-                        section.dataset.league === filter
-                    ) {
-                        section.style.display = "block";
-                    } else {
-                        section.style.display = "none";
-                    }
+            <div class="footer-column">
 
-                });
+                <h3>
+                    Navigation
+                </h3>
+
+                <a href="index.html">
+                    Accueil
+                </a>
+
+                <a href="actualites.html">
+                    Actualités
+                </a>
+
+                <a href="matchs.html">
+                    Matchs
+                </a>
+
+                <a href="joueurs.html">
+                    Joueurs
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Basketball
+                </h3>
+
+                <a href="classement.html">
+                    Classement NBA
+                </a>
+
+                <a href="matchs.html">
+                    Calendrier
+                </a>
+
+                <a href="joueurs.html">
+                    Joueurs
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Informations
+                </h3>
+
+                <a href="apropos.html">
+                    À propos
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a href="confidentialite.html">
+                    Confidentialité
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 Basket Zone — Tous droits réservés.
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+    const filters =
+        document.querySelectorAll(".filter");
+
+    const games =
+        document.querySelectorAll(".game-card");
+
+
+    filters.forEach(filter => {
+
+        filter.addEventListener("click", () => {
+
+            filters.forEach(item => {
+                item.classList.remove("active");
+            });
+
+            filter.classList.add("active");
+
+            const selected =
+                filter.dataset.filter;
+
+
+            games.forEach(game => {
+
+                const competition =
+                    game.dataset.competition;
+
+
+                if (
+                    selected === "all" ||
+                    competition === selected
+                ) {
+
+                    game.style.display = "";
+
+                } else {
+
+                    game.style.display = "none";
+
+                }
 
             });
 
         });
 
-    </script>
+    });
+
+</script>
 
 </body>
 </html>
