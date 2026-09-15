@@ -192,6 +192,9 @@ let currentTab = "messages";
 
 async function init() {
     const loading = document.getElementById("loadingScreen");
+    const loginScreen = document.getElementById("loginScreen");
+    const loginError = document.getElementById("loginError");
+    const setupScreen = document.getElementById("setupScreen");
 
     try {
         const token = BasketZoneAPI.getAdminToken();
@@ -211,23 +214,26 @@ async function init() {
 
         loading.style.display = "none";
 
-        if (status && status.error) {
-            document.getElementById("loginScreen").style.display = "block";
-            document.getElementById("loginError").innerHTML =
-                `<div class="error-msg">${esc(status.error)}</div>`;
-            return;
-        }
-
         if (status && status.hasAdmins) {
-            document.getElementById("loginScreen").style.display = "block";
+            loginScreen.style.display = "block";
+        } else if (status && !status.error) {
+            setupScreen.style.display = "block";
         } else {
-            document.getElementById("setupScreen").style.display = "block";
+            loginScreen.style.display = "block";
+
+            if (loginError) {
+                loginError.innerHTML =
+                    `<div class="error-msg">${esc(status?.error || "Erreur de connexion à Supabase.")}</div>`;
+            }
         }
     } catch (error) {
         loading.style.display = "none";
-        document.getElementById("loginScreen").style.display = "block";
-        document.getElementById("loginError").innerHTML =
-            `<div class="error-msg">Erreur de connexion : ${esc(error?.message || String(error))}</div>`;
+        loginScreen.style.display = "block";
+
+        if (loginError) {
+            loginError.innerHTML =
+                `<div class="error-msg">Erreur de connexion : ${esc(error?.message || String(error))}</div>`;
+        }
     }
 }
 
