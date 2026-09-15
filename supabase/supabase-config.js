@@ -1,47 +1,184 @@
 // ============================================================
 // BASKET ZONE — Connexion à Supabase
 // ============================================================
-// À REMPLIR UNE SEULE FOIS avec les identifiants de ton projet
-// Supabase (Project Settings > API dans ton dashboard Supabase).
-//
-// ⚠️ IMPORTANT sur la sécurité :
-// - SUPABASE_URL et SUPABASE_ANON_KEY ci-dessous ne sont PAS des
-//   secrets. Ils sont FAITS pour être visibles dans le code du
-//   site (n'importe qui peut les voir dans le navigateur, c'est
-//   normal et sans danger).
-// - La vraie clé secrète s'appelle "service_role". Elle ne doit
-//   JAMAIS apparaître dans un fichier du site. Elle vit
-//   uniquement dans la configuration des Edge Functions, côté
-//   serveur Supabase.
+// SUPABASE_URL et SUPABASE_ANON_KEY ne sont PAS des secrets.
+// Ils sont FAITS pour être visibles dans le code du site.
+// La vraie clé secrète (service_role) ne JAMAIS apparaître ici.
 // ============================================================
 
 const SUPABASE_URL = "https://cltirmjkjzsqykxbwnzi.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdGlybWpranpzcXlreGJ3bnppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NzkyMTksImV4cCI6MjEwNTA1NTIxOX0.VnSL2Prt4EKA8c3L-Sd4yCfUu1eU8ns2ys0rSh-WInc";
 
-// Petit outil pour appeler nos futures Edge Functions
-// (création/connexion admin, envoi de message, chatbot...)
+// ============================================================
+// API HELPER — Appelle les Edge Functions
+// ============================================================
+
 const BasketZoneAPI = {
-    async call(functionName, payload, sessionToken) {
+
+    async call(functionName, payload = {}, sessionToken = null) {
         const headers = {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
             "apikey": SUPABASE_ANON_KEY
         };
 
-        // Si l'admin est connecté, on ajoute son jeton de session
         if (sessionToken) {
             headers["X-Admin-Session"] = sessionToken;
         }
 
-        const response = await fetch(
-            `${SUPABASE_URL}/functions/v1/${functionName}`,
-            {
-                method: "POST",
-                headers: headers,
-                body: JSON.stringify(payload || {})
-            }
-        );
+        try {
+            const response = await fetch(
+                `${SUPABASE_URL}/functions/v1/${functionName}`,
+                {
+                    method: "POST",
+                    headers,
+                    body: JSON.stringify(payload || {})
+                }
+            );
 
-        return response.json();
+            const text = await response.text();
+
+            let data = {};
+            try {
+                data = text ? JSON.parse(text) : {};
+            } catch {
+                data = {
+                    error: text || `Réponse invalide du serveur (HTTP ${response.status}).`
+                };
+            }
+
+            if (!response.ok) {
+                return {
+                    ...data,
+                    error: data.error || data.message || `Erreur HTTP ${response.status}.`,
+                    status: response.status
+                };
+            }
+
+            return data;
+        } catch (error) {
+            return {
+                error: `Impossible de contacter Supabase : ${error?.message || String(error)}`
+            };
+        }
+    },
+
+    // ---- ADMIN AUTH ----
+
+    getAdminToken() {
+        return sessionStorage.getItem("bz_admin_token") || "";
+    },
+
+    setAdminToken(token) {
+        sessionStorage.setItem("bz_admin_token", token);
+    },
+
+    clearAdminToken() {
+        sessionStorage.removeItem("bz_admin_token");
+    },
+
+    async checkStatus() {
+        return this.call("admin-auth", { action: "status" });
+    },
+
+    async setupAdmin(username, password) {
+        const result = await this.call("admin-auth", {
+            action: "setup",
+            username,
+            password
+        });
+        if (result.token) this.setAdminToken(result.token);
+        return result;
+    },
+
+    async login(username, password) {
+        const result = await this.call("admin-auth", {
+            action: "login",
+            username,
+            password
+        });
+        if (result.token) this.setAdminToken(result.token);
+        return result;
+    },
+
+    async logout() {
+        await this.call("admin-auth", { action: "logout" }, this.getAdminToken());
+        this.clearAdminToken();
+    },
+
+    async verifySession() {
+        return this.call("admin-auth", { action: "verify" }, this.getAdminToken());
+    },
+
+    async listAdmins() {
+        return this.call("admin-auth", { action: "listAdmins" }, this.getAdminToken());
+    },
+
+    async addAdmin(username, password) {
+        return this.call("admin-auth", {
+            action: "addAdmin",
+            newUsername: username,
+            newPassword: password
+        }, this.getAdminToken());
+    },
+
+    async deleteAdmin(adminId) {
+        return this.call("admin-auth", {
+            action: "deleteAdmin",
+            adminId
+        }, this.getAdminToken());
+    },
+
+    // ---- MESSAGES ----
+
+    async submitMessage(name, email, subject, message) {
+        return this.call("contact", {
+            action: "submit",
+            name,
+            email,
+            subject,
+            message
+        });
+    },
+
+    async listMessages() {
+        return this.call("contact", { action: "list" }, this.getAdminToken());
+    },
+
+    async markMessageRead(messageId) {
+        return this.call("contact", {
+            action: "markRead",
+            messageId
+        }, this.getAdminToken());
+    },
+
+    async deleteMessage(messageId) {
+        return this.call("contact", {
+            action: "delete",
+            messageId
+        }, this.getAdminToken());
+    },
+
+    // ---- CHATBOT ----
+
+    async chat(message, history) {
+        return this.call("chat", {
+            action: "chat",
+            message,
+            history: history || []
+        });
+    },
+
+    async getChatConfig() {
+        return this.call("chat", { action: "getConfig" }, this.getAdminToken());
+    },
+
+    async updateChatConfig(provider, apiKey, systemPrompt) {
+        return this.call("chat", {
+            action: "updateConfig",
+            provider,
+            apiKey,
+            systemPrompt
+        }, this.getAdminToken());
     }
 };
