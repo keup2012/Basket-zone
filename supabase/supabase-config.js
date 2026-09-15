@@ -225,14 +225,17 @@ const BasketZoneAPI = {
         );
     },
 
-    async updateChatConfig(provider, apiKey, systemPrompt) {
+    async updateChatConfig(provider, model, apiKey, systemPrompt, maxTokens, temperature) {
         return this.call(
             "chat",
             {
                 action: "updateConfig",
                 provider,
+                model,
                 apiKey,
-                systemPrompt
+                systemPrompt,
+                maxTokens,
+                temperature
             },
             this.getAdminToken()
         );

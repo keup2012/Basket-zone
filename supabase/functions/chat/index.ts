@@ -43,6 +43,12 @@ async function verifyAdminSession(token: string): Promise<boolean> {
   return true;
 }
 
+function clampNumber(value: string, fallback: number, min: number, max: number): number {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, n));
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
@@ -69,6 +75,9 @@ Deno.serve(async (req: Request) => {
       const apiKey = await getSetting("chat_api_key");
       const provider = await getSetting("chat_provider");
       const systemPrompt = await getSetting("chat_system_prompt");
+      const model = await getSetting("chat_model");
+      const maxTokens = clampNumber(await getSetting("chat_max_tokens"), 800, 100, 4000);
+      const temperature = clampNumber(await getSetting("chat_temperature"), 0.7, 0, 2);
 
       if (!apiKey || !provider) {
         return new Response(JSON.stringify({
@@ -79,11 +88,13 @@ Deno.serve(async (req: Request) => {
       let reply: string;
 
       if (provider === "openai") {
-        reply = await callOpenAI(apiKey, systemPrompt, userMessage, history);
+        reply = await callOpenAI(apiKey, systemPrompt, userMessage, history, model, maxTokens, temperature);
       } else if (provider === "anthropic") {
-        reply = await callAnthropic(apiKey, systemPrompt, userMessage, history);
+        reply = await callAnthropic(apiKey, systemPrompt, userMessage, history, model, maxTokens, temperature);
       } else if (provider === "openrouter") {
-        reply = await callOpenRouter(apiKey, systemPrompt, userMessage, history, body.model);
+        reply = await callOpenRouter(apiKey, systemPrompt, userMessage, history, model || body.model || "openrouter/free", maxTokens, temperature);
+      } else if (provider === "gemini") {
+        reply = await callGemini(apiKey, systemPrompt, userMessage, history, model || body.model || "gemini-3.6-flash", maxTokens, temperature);
       } else {
         return new Response(JSON.stringify({ error: `Fournisseur "${provider}" non supporté.` }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -101,15 +112,21 @@ Deno.serve(async (req: Request) => {
         return new Response(JSON.stringify({ error: "Non autorisé." }),
           { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
-      const [provider, apiKey, systemPrompt] = await Promise.all([
+      const [provider, apiKey, systemPrompt, model, maxTokens, temperature] = await Promise.all([
         getSetting("chat_provider"),
         getSetting("chat_api_key"),
         getSetting("chat_system_prompt"),
+        getSetting("chat_model"),
+        getSetting("chat_max_tokens"),
+        getSetting("chat_temperature"),
       ]);
       return new Response(JSON.stringify({
         provider,
         apiKey,
         systemPrompt,
+        model,
+        maxTokens,
+        temperature,
       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
@@ -127,8 +144,17 @@ Deno.serve(async (req: Request) => {
       if (body.apiKey !== undefined) {
         await updateSetting("chat_api_key", String(body.apiKey));
       }
+      if (body.model !== undefined) {
+        await updateSetting("chat_model", String(body.model || "openrouter/free"));
+      }
       if (body.systemPrompt !== undefined) {
         await updateSetting("chat_system_prompt", String(body.systemPrompt));
+      }
+      if (body.maxTokens !== undefined) {
+        await updateSetting("chat_max_tokens", String(body.maxTokens));
+      }
+      if (body.temperature !== undefined) {
+        await updateSetting("chat_temperature", String(body.temperature));
       }
       return new Response(JSON.stringify({ success: true }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -150,6 +176,9 @@ async function callOpenAI(
   systemPrompt: string,
   userMessage: string,
   history: { role: string; content: string }[],
+  model: string,
+  maxTokens: number,
+  temperature: number,
 ): Promise<string> {
   const messages = [
     { role: "system", content: systemPrompt },
@@ -163,10 +192,10 @@ async function callOpenAI(
       "Authorization": `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: "gpt-4o-mini",
+      model: model || "gpt-4o-mini",
       messages,
-      max_tokens: 800,
-      temperature: 0.7,
+      max_tokens: maxTokens,
+      temperature,
     }),
   });
   if (!resp.ok) {
@@ -182,6 +211,9 @@ async function callAnthropic(
   systemPrompt: string,
   userMessage: string,
   history: { role: string; content: string }[],
+  model: string,
+  maxTokens: number,
+  temperature: number,
 ): Promise<string> {
   const messages = [
     ...history.slice(-10).map((m) => ({
@@ -198,10 +230,10 @@ async function callAnthropic(
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: "claude-3-5-sonnet-20241022",
+      model: model || "claude-3-5-sonnet-20241022",
       system: systemPrompt,
       messages,
-      max_tokens: 800,
+      max_tokens: maxTokens,
     }),
   });
   if (!resp.ok) {
@@ -212,12 +244,71 @@ async function callAnthropic(
   return data.content?.[0]?.text || "Désolé, je n'ai pas pu générer de réponse.";
 }
 
+async function callGemini(
+  apiKey: string,
+  systemPrompt: string,
+  userMessage: string,
+  history: { role: string; content: string }[],
+  model: string,
+  maxTokens: number,
+  temperature: number,
+): Promise<string> {
+  const contents = [
+    ...history.slice(-10).map((m) => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [{ text: String(m.content || "") }],
+    })),
+    { role: "user", parts: [{ text: userMessage }] },
+  ];
+
+  const body: Record<string, unknown> = {
+    contents,
+    generationConfig: {
+      maxOutputTokens: maxTokens,
+      temperature,
+    },
+  };
+
+  if (systemPrompt) {
+    body.systemInstruction = {
+      parts: [{ text: systemPrompt }],
+    };
+  }
+
+  const resp = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model || "gemini-3.6-flash")}:generateContent`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey,
+      },
+      body: JSON.stringify(body),
+    },
+  );
+
+  if (!resp.ok) {
+    const errText = await resp.text();
+    throw new Error(`Erreur Gemini (${resp.status}): ${errText}`);
+  }
+
+  const data = await resp.json();
+  const reply = data.candidates?.[0]?.content?.parts
+    ?.map((part: { text?: string }) => part.text || "")
+    .join("")
+    .trim();
+
+  return reply || "Désolé, je n'ai pas pu générer de réponse.";
+}
+
 async function callOpenRouter(
   apiKey: string,
   systemPrompt: string,
   userMessage: string,
   history: { role: string; content: string }[],
-  model?: string,
+  model: string,
+  maxTokens: number,
+  temperature: number,
 ): Promise<string> {
   const messages = [
     { role: "system", content: systemPrompt },
@@ -229,11 +320,14 @@ async function callOpenRouter(
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${apiKey}`,
+      "HTTP-Referer": "https://basket-zone.fr",
+      "X-Title": "Basket Zone",
     },
     body: JSON.stringify({
-      model: model || "openai/gpt-4o-mini",
+      model: model || "openrouter/free",
       messages,
-      max_tokens: 800,
+      max_tokens: maxTokens,
+      temperature,
     }),
   });
   if (!resp.ok) {
