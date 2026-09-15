@@ -1,0 +1,8 @@
+[functions.admin-auth]
+verify_jwt = false
+
+[functions.contact]
+verify_jwt = false
+
+[functions.chat]
+verify_jwt = false
