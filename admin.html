@@ -191,21 +191,43 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 let currentTab = "messages";
 
 async function init() {
-    const token = BasketZoneAPI.getAdminToken();
-    if (token) {
-        const verify = await BasketZoneAPI.verifySession();
-        if (verify.valid) {
-            showDashboard(verify.username);
+    const loading = document.getElementById("loadingScreen");
+
+    try {
+        const token = BasketZoneAPI.getAdminToken();
+
+        if (token) {
+            const verify = await BasketZoneAPI.verifySession();
+
+            if (verify && verify.valid) {
+                showDashboard(verify.username);
+                return;
+            }
+
+            BasketZoneAPI.clearAdminToken();
+        }
+
+        const status = await BasketZoneAPI.checkStatus();
+
+        loading.style.display = "none";
+
+        if (status && status.error) {
+            document.getElementById("loginScreen").style.display = "block";
+            document.getElementById("loginError").innerHTML =
+                `<div class="error-msg">${esc(status.error)}</div>`;
             return;
         }
-        BasketZoneAPI.clearAdminToken();
-    }
-    const status = await BasketZoneAPI.checkStatus();
-    document.getElementById("loadingScreen").style.display = "none";
-    if (status.hasAdmins) {
+
+        if (status && status.hasAdmins) {
+            document.getElementById("loginScreen").style.display = "block";
+        } else {
+            document.getElementById("setupScreen").style.display = "block";
+        }
+    } catch (error) {
+        loading.style.display = "none";
         document.getElementById("loginScreen").style.display = "block";
-    } else {
-        document.getElementById("setupScreen").style.display = "block";
+        document.getElementById("loginError").innerHTML =
+            `<div class="error-msg">Erreur de connexion : ${esc(error?.message || String(error))}</div>`;
     }
 }
 
