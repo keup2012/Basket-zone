@@ -16,7 +16,7 @@ if (!supabaseUrl || !serviceRoleKey) {
 
 const supabase = createClient(supabaseUrl, serviceRoleKey);
 
-const SESSION_DURATION_MS = 1000 * 60 * 60 * 24; // 24 heures
+const SESSION_DURATION_MS = 24 * 60 * 60 * 1000;
 
 function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -28,17 +28,19 @@ function jsonResponse(data: unknown, status = 200): Response {
   });
 }
 
-function errorMessage(error: unknown): string {
-  if (error instanceof Error) return error.message;
-  return String(error);
+function getToken(req: Request, body: Record<string, unknown>): string {
+  return (
+    req.headers.get("x-admin-session") ||
+    String(body.token || "")
+  );
 }
 
 async function hashPassword(password: string): Promise<string> {
-  const enc = new TextEncoder();
+  const encoder = new TextEncoder();
 
-  const keyMaterial = await crypto.subtle.importKey(
+  const key = await crypto.subtle.importKey(
     "raw",
-    enc.encode(password),
+    encoder.encode(password),
     "PBKDF2",
     false,
     ["deriveBits"],
@@ -53,17 +55,15 @@ async function hashPassword(password: string): Promise<string> {
       iterations: 100000,
       hash: "SHA-256",
     },
-    keyMaterial,
+    key,
     256,
   );
-
-  const hashArray = new Uint8Array(bits);
 
   const saltHex = Array.from(salt)
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 
-  const hashHex = Array.from(hashArray)
+  const hashHex = Array.from(new Uint8Array(bits))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 
@@ -72,29 +72,29 @@ async function hashPassword(password: string): Promise<string> {
 
 async function verifyPassword(
   password: string,
-  stored: string,
+  storedHash: string,
 ): Promise<boolean> {
-  const parts = stored.split(":");
+  const [saltHex, expectedHash] = storedHash.split(":");
 
-  if (parts.length !== 2) return false;
+  if (!saltHex || !expectedHash) {
+    return false;
+  }
 
-  const [saltHex, hashHex] = parts;
+  const saltBytes = saltHex.match(/.{2}/g);
 
-  if (!saltHex || !hashHex) return false;
-
-  const saltParts = saltHex.match(/.{2}/g);
-
-  if (!saltParts) return false;
+  if (!saltBytes) {
+    return false;
+  }
 
   const salt = new Uint8Array(
-    saltParts.map((h) => Number.parseInt(h, 16)),
+    saltBytes.map((value) => parseInt(value, 16)),
   );
 
-  const enc = new TextEncoder();
+  const encoder = new TextEncoder();
 
-  const keyMaterial = await crypto.subtle.importKey(
+  const key = await crypto.subtle.importKey(
     "raw",
-    enc.encode(password),
+    encoder.encode(password),
     "PBKDF2",
     false,
     ["deriveBits"],
@@ -107,24 +107,23 @@ async function verifyPassword(
       iterations: 100000,
       hash: "SHA-256",
     },
-    keyMaterial,
+    key,
     256,
   );
 
-  const computed = Array.from(new Uint8Array(bits))
+  const computedHash = Array.from(new Uint8Array(bits))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 
-  return computed === hashHex;
+  return computedHash === expectedHash;
 }
 
 function generateToken(): string {
-  return `${crypto.randomUUID()}${crypto.randomUUID().replace(/-/g, "")}`;
+  return crypto.randomUUID() + crypto.randomUUID().replaceAll("-", "");
 }
 
 async function createSession(adminId: string): Promise<string> {
   const token = generateToken();
-
   const expiresAt = new Date(
     Date.now() + SESSION_DURATION_MS,
   ).toISOString();
@@ -138,15 +137,13 @@ async function createSession(adminId: string): Promise<string> {
     });
 
   if (error) {
-    throw new Error(`Session creation failed: ${error.message}`);
+    throw new Error(`Création de session impossible : ${error.message}`);
   }
 
   return token;
 }
 
-async function verifySession(
-  token: string,
-): Promise<{ admin_id: string; username: string } | null> {
+async function getSession(token: string) {
   if (!token) return null;
 
   const { data, error } = await supabase
@@ -155,9 +152,11 @@ async function verifySession(
     .eq("token", token)
     .maybeSingle();
 
-  if (error || !data) return null;
+  if (error || !data) {
+    return null;
+  }
 
-  if (new Date(data.expires_at).getTime() < Date.now()) {
+  if (new Date(data.expires_at).getTime() <= Date.now()) {
     await supabase
       .from("admin_sessions")
       .delete()
@@ -166,13 +165,11 @@ async function verifySession(
     return null;
   }
 
-  const adminData = data.admins as unknown as {
-    username: string;
-  };
+  const admin = data.admins as unknown as { username: string };
 
   return {
     admin_id: data.admin_id,
-    username: adminData.username,
+    username: admin.username,
   };
 }
 
@@ -205,11 +202,11 @@ Deno.serve(async (req: Request) => {
 
     const action = String(body.action || "");
 
-    // ---- STATUS ----
+    // STATUS
     if (action === "status") {
       const { count, error } = await supabase
         .from("admins")
-        .select("*", {
+        .select("id", {
           count: "exact",
           head: true,
         });
@@ -222,11 +219,28 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // ---- SETUP PREMIER ADMIN ----
+    // SETUP — premier administrateur uniquement
     if (action === "setup") {
+      const username = String(body.username || "").trim();
+      const password = String(body.password || "");
+
+      if (username.length < 3) {
+        return jsonResponse(
+          { error: "Le nom d'utilisateur doit faire au moins 3 caractères." },
+          400,
+        );
+      }
+
+      if (password.length < 6) {
+        return jsonResponse(
+          { error: "Le mot de passe doit faire au moins 6 caractères." },
+          400,
+        );
+      }
+
       const { count, error: countError } = await supabase
         .from("admins")
-        .select("*", {
+        .select("id", {
           count: "exact",
           head: true,
         });
@@ -235,34 +249,8 @@ Deno.serve(async (req: Request) => {
 
       if ((count ?? 0) > 0) {
         return jsonResponse(
-          {
-            error:
-              "Un administrateur existe déjà. La création publique est désactivée.",
-          },
+          { error: "Un administrateur existe déjà." },
           403,
-        );
-      }
-
-      const username = String(body.username || "").trim();
-      const password = String(body.password || "");
-
-      if (username.length < 3) {
-        return jsonResponse(
-          {
-            error:
-              "Le nom d'utilisateur doit faire au moins 3 caractères.",
-          },
-          400,
-        );
-      }
-
-      if (password.length < 6) {
-        return jsonResponse(
-          {
-            error:
-              "Le mot de passe doit faire au moins 6 caractères.",
-          },
-          400,
         );
       }
 
@@ -280,14 +268,10 @@ Deno.serve(async (req: Request) => {
       if (error) {
         if (error.code === "23505") {
           return jsonResponse(
-            {
-              error:
-                "Ce nom d'utilisateur existe déjà.",
-            },
+            { error: "Ce nom d'utilisateur existe déjà." },
             409,
           );
         }
-
         throw error;
       }
 
@@ -300,17 +284,14 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // ---- LOGIN ----
+    // LOGIN
     if (action === "login") {
       const username = String(body.username || "").trim();
       const password = String(body.password || "");
 
       if (!username || !password) {
         return jsonResponse(
-          {
-            error:
-              "Nom d'utilisateur et mot de passe requis.",
-          },
+          { error: "Nom d'utilisateur et mot de passe requis." },
           400,
         );
       }
@@ -351,11 +332,9 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // ---- LOGOUT ----
+    // LOGOUT
     if (action === "logout") {
-      const token =
-        req.headers.get("x-admin-session") ||
-        String(body.token || "");
+      const token = getToken(req, body);
 
       if (token) {
         await supabase
@@ -367,13 +346,10 @@ Deno.serve(async (req: Request) => {
       return jsonResponse({ success: true });
     }
 
-    // ---- VERIFY SESSION ----
+    // VERIFY
     if (action === "verify") {
-      const token =
-        req.headers.get("x-admin-session") ||
-        String(body.token || "");
-
-      const session = await verifySession(token);
+      const token = getToken(req, body);
+      const session = await getSession(token);
 
       if (!session) {
         return jsonResponse(
@@ -388,13 +364,10 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    // ---- ADD ADMIN ----
-    if (action === "addAdmin") {
-      const token =
-        req.headers.get("x-admin-session") ||
-        String(body.token || "");
-
-      const session = await verifySession(token);
+    // LIST ADMINS
+    if (action === "listAdmins") {
+      const token = getToken(req, body);
+      const session = await getSession(token);
 
       if (!session) {
         return jsonResponse(
@@ -403,30 +376,43 @@ Deno.serve(async (req: Request) => {
         );
       }
 
-      const username = String(
-        body.newUsername || "",
-      ).trim();
+      const { data, error } = await supabase
+        .from("admins")
+        .select("id, username, created_at")
+        .order("created_at", { ascending: true });
 
-      const password = String(
-        body.newPassword || "",
-      );
+      if (error) throw error;
+
+      return jsonResponse({
+        admins: data || [],
+      });
+    }
+
+    // ADD ADMIN
+    if (action === "addAdmin") {
+      const token = getToken(req, body);
+      const session = await getSession(token);
+
+      if (!session) {
+        return jsonResponse(
+          { error: "Non autorisé." },
+          401,
+        );
+      }
+
+      const username = String(body.newUsername || "").trim();
+      const password = String(body.newPassword || "");
 
       if (username.length < 3) {
         return jsonResponse(
-          {
-            error:
-              "Le nom d'utilisateur doit faire au moins 3 caractères.",
-          },
+          { error: "Le nom d'utilisateur doit faire au moins 3 caractères." },
           400,
         );
       }
 
       if (password.length < 6) {
         return jsonResponse(
-          {
-            error:
-              "Le mot de passe doit faire au moins 6 caractères.",
-          },
+          { error: "Le mot de passe doit faire au moins 6 caractères." },
           400,
         );
       }
@@ -443,58 +429,20 @@ Deno.serve(async (req: Request) => {
       if (error) {
         if (error.code === "23505") {
           return jsonResponse(
-            {
-              error:
-                "Ce nom d'utilisateur existe déjà.",
-            },
+            { error: "Ce nom d'utilisateur existe déjà." },
             409,
           );
         }
-
         throw error;
       }
 
-      return jsonResponse({
-        success: true,
-      });
+      return jsonResponse({ success: true });
     }
 
-    // ---- LIST ADMINS ----
-    if (action === "listAdmins") {
-      const token =
-        req.headers.get("x-admin-session") ||
-        String(body.token || "");
-
-      const session = await verifySession(token);
-
-      if (!session) {
-        return jsonResponse(
-          { error: "Non autorisé." },
-          401,
-        );
-      }
-
-      const { data, error } = await supabase
-        .from("admins")
-        .select("id, username, created_at")
-        .order("created_at", {
-          ascending: true,
-        });
-
-      if (error) throw error;
-
-      return jsonResponse({
-        admins: data || [],
-      });
-    }
-
-    // ---- DELETE ADMIN ----
+    // DELETE ADMIN
     if (action === "deleteAdmin") {
-      const token =
-        req.headers.get("x-admin-session") ||
-        String(body.token || "");
-
-      const session = await verifySession(token);
+      const token = getToken(req, body);
+      const session = await getSession(token);
 
       if (!session) {
         return jsonResponse(
@@ -503,33 +451,25 @@ Deno.serve(async (req: Request) => {
         );
       }
 
-      const targetId = String(
-        body.adminId || "",
-      );
+      const adminId = String(body.adminId || "");
 
-      if (!targetId) {
+      if (!adminId) {
         return jsonResponse(
-          {
-            error:
-              "ID administrateur manquant.",
-          },
+          { error: "ID administrateur manquant." },
           400,
         );
       }
 
-      if (targetId === session.admin_id) {
+      if (adminId === session.admin_id) {
         return jsonResponse(
-          {
-            error:
-              "Vous ne pouvez pas supprimer votre propre compte.",
-          },
+          { error: "Vous ne pouvez pas supprimer votre propre compte." },
           400,
         );
       }
 
       const { count, error: countError } = await supabase
         .from("admins")
-        .select("*", {
+        .select("id", {
           count: "exact",
           head: true,
         });
@@ -538,10 +478,7 @@ Deno.serve(async (req: Request) => {
 
       if ((count ?? 0) <= 1) {
         return jsonResponse(
-          {
-            error:
-              "Impossible de supprimer le dernier administrateur.",
-          },
+          { error: "Impossible de supprimer le dernier administrateur." },
           400,
         );
       }
@@ -549,13 +486,11 @@ Deno.serve(async (req: Request) => {
       const { error } = await supabase
         .from("admins")
         .delete()
-        .eq("id", targetId);
+        .eq("id", adminId);
 
       if (error) throw error;
 
-      return jsonResponse({
-        success: true,
-      });
+      return jsonResponse({ success: true });
     }
 
     return jsonResponse(
@@ -563,13 +498,14 @@ Deno.serve(async (req: Request) => {
       400,
     );
   } catch (error) {
-    console.error("admin-auth error:", error);
+    console.error("admin-auth:", error);
 
     return jsonResponse(
       {
         error:
-          errorMessage(error) ||
-          "Erreur interne du serveur.",
+          error instanceof Error
+            ? error.message
+            : String(error),
       },
       500,
     );

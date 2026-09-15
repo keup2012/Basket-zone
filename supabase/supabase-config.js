@@ -1,21 +1,19 @@
 // ============================================================
 // BASKET ZONE — Connexion à Supabase
 // ============================================================
-// SUPABASE_URL et SUPABASE_ANON_KEY ne sont PAS des secrets.
-// Ils sont FAITS pour être visibles dans le code du site.
-// La vraie clé secrète (service_role) ne JAMAIS apparaître ici.
-// ============================================================
 
 const SUPABASE_URL = "https://cltirmjkjzsqykxbwnzi.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdGlybWpranpzcXlreGJ3bnppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NzkyMTksImV4cCI6MjEwNTA1NTIxOX0.VnSL2Prt4EKA8c3L-Sd4yCfUu1eU8ns2ys0rSh-WInc";
+
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdGlybWpranpzcXlreGJ3bnppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NzkyMTksImV4cCI6MjEwNTA1NTIxOX0.VnSL2Prt4EKA8c3L-Sd4yCfUu1eU8ns2ys0rSh-WInc";
 
 // ============================================================
-// API HELPER — Appelle les Edge Functions
+// API HELPER
+// Tout le backend passe par les Edge Functions Supabase.
 // ============================================================
 
 const BasketZoneAPI = {
-
-    async call(functionName, payload = {}, sessionToken = null) {
+    async call(functionName, payload = {}, sessionToken = "") {
         const headers = {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
@@ -58,27 +56,34 @@ const BasketZoneAPI = {
             return data;
         } catch (error) {
             return {
-                error: `Impossible de contacter Supabase : ${error?.message || String(error)}`
+                error: `Impossible de contacter Supabase : ${error?.message || String(error)}`,
+                status: 0
             };
         }
     },
 
-    // ---- ADMIN AUTH ----
+    // ---- SESSION ADMIN ----
 
     getAdminToken() {
         return sessionStorage.getItem("bz_admin_token") || "";
     },
 
     setAdminToken(token) {
-        sessionStorage.setItem("bz_admin_token", token);
+        if (token) {
+            sessionStorage.setItem("bz_admin_token", token);
+        }
     },
 
     clearAdminToken() {
         sessionStorage.removeItem("bz_admin_token");
     },
 
+    // ---- ADMIN AUTH ----
+
     async checkStatus() {
-        return this.call("admin-auth", { action: "status" });
+        return this.call("admin-auth", {
+            action: "status"
+        });
     },
 
     async setupAdmin(username, password) {
@@ -87,7 +92,11 @@ const BasketZoneAPI = {
             username,
             password
         });
-        if (result.token) this.setAdminToken(result.token);
+
+        if (result.token) {
+            this.setAdminToken(result.token);
+        }
+
         return result;
     },
 
@@ -97,36 +106,63 @@ const BasketZoneAPI = {
             username,
             password
         });
-        if (result.token) this.setAdminToken(result.token);
+
+        if (result.token) {
+            this.setAdminToken(result.token);
+        }
+
         return result;
     },
 
     async logout() {
-        await this.call("admin-auth", { action: "logout" }, this.getAdminToken());
+        const token = this.getAdminToken();
+
+        await this.call(
+            "admin-auth",
+            { action: "logout" },
+            token
+        );
+
         this.clearAdminToken();
     },
 
     async verifySession() {
-        return this.call("admin-auth", { action: "verify" }, this.getAdminToken());
+        return this.call(
+            "admin-auth",
+            { action: "verify" },
+            this.getAdminToken()
+        );
     },
 
     async listAdmins() {
-        return this.call("admin-auth", { action: "listAdmins" }, this.getAdminToken());
+        return this.call(
+            "admin-auth",
+            { action: "listAdmins" },
+            this.getAdminToken()
+        );
     },
 
     async addAdmin(username, password) {
-        return this.call("admin-auth", {
-            action: "addAdmin",
-            newUsername: username,
-            newPassword: password
-        }, this.getAdminToken());
+        return this.call(
+            "admin-auth",
+            {
+                action: "addAdmin",
+                newUsername: username,
+                newPassword: password
+            },
+            this.getAdminToken()
+        );
     },
 
     async deleteAdmin(adminId) {
-        return this.call("admin-auth", {
-            action: "deleteAdmin",
-            adminId
-        }, this.getAdminToken());
+        return this.call(
+            "admin-auth",
+            {
+                action: "deleteAdmin",
+                adminId
+            },
+            this.getAdminToken()
+        );
     },
 
     // ---- MESSAGES ----
@@ -142,21 +178,33 @@ const BasketZoneAPI = {
     },
 
     async listMessages() {
-        return this.call("contact", { action: "list" }, this.getAdminToken());
+        return this.call(
+            "contact",
+            { action: "list" },
+            this.getAdminToken()
+        );
     },
 
     async markMessageRead(messageId) {
-        return this.call("contact", {
-            action: "markRead",
-            messageId
-        }, this.getAdminToken());
+        return this.call(
+            "contact",
+            {
+                action: "markRead",
+                messageId
+            },
+            this.getAdminToken()
+        );
     },
 
     async deleteMessage(messageId) {
-        return this.call("contact", {
-            action: "delete",
-            messageId
-        }, this.getAdminToken());
+        return this.call(
+            "contact",
+            {
+                action: "delete",
+                messageId
+            },
+            this.getAdminToken()
+        );
     },
 
     // ---- CHATBOT ----
@@ -170,15 +218,23 @@ const BasketZoneAPI = {
     },
 
     async getChatConfig() {
-        return this.call("chat", { action: "getConfig" }, this.getAdminToken());
+        return this.call(
+            "chat",
+            { action: "getConfig" },
+            this.getAdminToken()
+        );
     },
 
     async updateChatConfig(provider, apiKey, systemPrompt) {
-        return this.call("chat", {
-            action: "updateConfig",
-            provider,
-            apiKey,
-            systemPrompt
-        }, this.getAdminToken());
+        return this.call(
+            "chat",
+            {
+                action: "updateConfig",
+                provider,
+                apiKey,
+                systemPrompt
+            },
+            this.getAdminToken()
+        );
     }
 };
