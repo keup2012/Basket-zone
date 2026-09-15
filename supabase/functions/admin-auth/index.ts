@@ -2,41 +2,43 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers":
-    "Content-Type, Authorization, X-Client-Info, Apikey, X-Admin-Session",
+    "Content-Type, Authorization, Apikey, X-Client-Info, X-Admin-Session",
 };
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL");
 const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
 if (!supabaseUrl || !serviceRoleKey) {
-  throw new Error("Configuration Supabase manquante.");
+  throw new Error("Variables Supabase manquantes.");
 }
 
 const supabase = createClient(supabaseUrl, serviceRoleKey);
 
-const SESSION_DURATION_MS = 1000 * 60 * 60 * 24;
+const SESSION_DURATION_MS = 1000 * 60 * 60 * 24; // 24 heures
 
-function jsonResponse(
-  data: Record<string, unknown>,
-  status = 200,
-): Response {
+function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       ...corsHeaders,
-      "Content-Type": "application/json",
+      "Content-Type": "application/json; charset=utf-8",
     },
   });
 }
 
+function errorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  return String(error);
+}
+
 async function hashPassword(password: string): Promise<string> {
-  const encoder = new TextEncoder();
+  const enc = new TextEncoder();
 
   const keyMaterial = await crypto.subtle.importKey(
     "raw",
-    encoder.encode(password),
+    enc.encode(password),
     "PBKDF2",
     false,
     ["deriveBits"],
@@ -55,14 +57,14 @@ async function hashPassword(password: string): Promise<string> {
     256,
   );
 
-  const hash = new Uint8Array(bits);
+  const hashArray = new Uint8Array(bits);
 
   const saltHex = Array.from(salt)
-    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 
-  const hashHex = Array.from(hash)
-    .map((byte) => byte.toString(16).padStart(2, "0"))
+  const hashHex = Array.from(hashArray)
+    .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 
   return `${saltHex}:${hashHex}`;
@@ -74,31 +76,25 @@ async function verifyPassword(
 ): Promise<boolean> {
   const parts = stored.split(":");
 
-  if (parts.length !== 2) {
-    return false;
-  }
+  if (parts.length !== 2) return false;
 
-  const [saltHex, expectedHash] = parts;
+  const [saltHex, hashHex] = parts;
 
-  if (!saltHex || !expectedHash) {
-    return false;
-  }
+  if (!saltHex || !hashHex) return false;
 
-  const saltBytes = saltHex.match(/.{2}/g);
+  const saltParts = saltHex.match(/.{2}/g);
 
-  if (!saltBytes) {
-    return false;
-  }
+  if (!saltParts) return false;
 
   const salt = new Uint8Array(
-    saltBytes.map((hex) => parseInt(hex, 16)),
+    saltParts.map((h) => Number.parseInt(h, 16)),
   );
 
-  const encoder = new TextEncoder();
+  const enc = new TextEncoder();
 
   const keyMaterial = await crypto.subtle.importKey(
     "raw",
-    encoder.encode(password),
+    enc.encode(password),
     "PBKDF2",
     false,
     ["deriveBits"],
@@ -115,11 +111,11 @@ async function verifyPassword(
     256,
   );
 
-  const computedHash = Array.from(new Uint8Array(bits))
-    .map((byte) => byte.toString(16).padStart(2, "0"))
+  const computed = Array.from(new Uint8Array(bits))
+    .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 
-  return computedHash === expectedHash;
+  return computed === hashHex;
 }
 
 function generateToken(): string {
@@ -142,7 +138,7 @@ async function createSession(adminId: string): Promise<string> {
     });
 
   if (error) {
-    throw new Error(`Création de session impossible : ${error.message}`);
+    throw new Error(`Session creation failed: ${error.message}`);
   }
 
   return token;
@@ -151,9 +147,7 @@ async function createSession(adminId: string): Promise<string> {
 async function verifySession(
   token: string,
 ): Promise<{ admin_id: string; username: string } | null> {
-  if (!token) {
-    return null;
-  }
+  if (!token) return null;
 
   const { data, error } = await supabase
     .from("admin_sessions")
@@ -161,9 +155,7 @@ async function verifySession(
     .eq("token", token)
     .maybeSingle();
 
-  if (error || !data) {
-    return null;
-  }
+  if (error || !data) return null;
 
   if (new Date(data.expires_at).getTime() < Date.now()) {
     await supabase
@@ -184,13 +176,6 @@ async function verifySession(
   };
 }
 
-function getSessionToken(req: Request, body: Record<string, unknown>): string {
-  return (
-    req.headers.get("x-admin-session") ||
-    String(body.token || "")
-  );
-}
-
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, {
@@ -207,9 +192,20 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const body = await req.json();
+    let body: Record<string, unknown>;
+
+    try {
+      body = await req.json();
+    } catch {
+      return jsonResponse(
+        { error: "JSON invalide." },
+        400,
+      );
+    }
+
     const action = String(body.action || "");
 
+    // ---- STATUS ----
     if (action === "status") {
       const { count, error } = await supabase
         .from("admins")
@@ -218,9 +214,7 @@ Deno.serve(async (req: Request) => {
           head: true,
         });
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       return jsonResponse({
         hasAdmins: (count ?? 0) > 0,
@@ -228,17 +222,16 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    // ---- SETUP PREMIER ADMIN ----
     if (action === "setup") {
-      const { count, error } = await supabase
+      const { count, error: countError } = await supabase
         .from("admins")
         .select("*", {
           count: "exact",
           head: true,
         });
 
-      if (error) {
-        throw error;
-      }
+      if (countError) throw countError;
 
       if ((count ?? 0) > 0) {
         return jsonResponse(
@@ -275,7 +268,7 @@ Deno.serve(async (req: Request) => {
 
       const passwordHash = await hashPassword(password);
 
-      const { data, error: insertError } = await supabase
+      const { data, error } = await supabase
         .from("admins")
         .insert({
           username,
@@ -284,8 +277,8 @@ Deno.serve(async (req: Request) => {
         .select("id, username")
         .single();
 
-      if (insertError) {
-        if (insertError.code === "23505") {
+      if (error) {
+        if (error.code === "23505") {
           return jsonResponse(
             {
               error:
@@ -295,7 +288,7 @@ Deno.serve(async (req: Request) => {
           );
         }
 
-        throw insertError;
+        throw error;
       }
 
       const token = await createSession(data.id);
@@ -307,6 +300,7 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    // ---- LOGIN ----
     if (action === "login") {
       const username = String(body.username || "").trim();
       const password = String(body.password || "");
@@ -327,15 +321,11 @@ Deno.serve(async (req: Request) => {
         .eq("username", username)
         .maybeSingle();
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       if (!data) {
         return jsonResponse(
-          {
-            error: "Identifiants incorrects.",
-          },
+          { error: "Identifiants incorrects." },
           401,
         );
       }
@@ -347,9 +337,7 @@ Deno.serve(async (req: Request) => {
 
       if (!valid) {
         return jsonResponse(
-          {
-            error: "Identifiants incorrects.",
-          },
+          { error: "Identifiants incorrects." },
           401,
         );
       }
@@ -363,8 +351,11 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    // ---- LOGOUT ----
     if (action === "logout") {
-      const token = getSessionToken(req, body);
+      const token =
+        req.headers.get("x-admin-session") ||
+        String(body.token || "");
 
       if (token) {
         await supabase
@@ -373,21 +364,20 @@ Deno.serve(async (req: Request) => {
           .eq("token", token);
       }
 
-      return jsonResponse({
-        success: true,
-      });
+      return jsonResponse({ success: true });
     }
 
+    // ---- VERIFY SESSION ----
     if (action === "verify") {
-      const token = getSessionToken(req, body);
+      const token =
+        req.headers.get("x-admin-session") ||
+        String(body.token || "");
 
       const session = await verifySession(token);
 
       if (!session) {
         return jsonResponse(
-          {
-            valid: false,
-          },
+          { valid: false },
           401,
         );
       }
@@ -398,21 +388,28 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    // ---- ADD ADMIN ----
     if (action === "addAdmin") {
-      const token = getSessionToken(req, body);
+      const token =
+        req.headers.get("x-admin-session") ||
+        String(body.token || "");
+
       const session = await verifySession(token);
 
       if (!session) {
         return jsonResponse(
-          {
-            error: "Non autorisé.",
-          },
+          { error: "Non autorisé." },
           401,
         );
       }
 
-      const username = String(body.newUsername || "").trim();
-      const password = String(body.newPassword || "");
+      const username = String(
+        body.newUsername || "",
+      ).trim();
+
+      const password = String(
+        body.newPassword || "",
+      );
 
       if (username.length < 3) {
         return jsonResponse(
@@ -462,15 +459,17 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    // ---- LIST ADMINS ----
     if (action === "listAdmins") {
-      const token = getSessionToken(req, body);
+      const token =
+        req.headers.get("x-admin-session") ||
+        String(body.token || "");
+
       const session = await verifySession(token);
 
       if (!session) {
         return jsonResponse(
-          {
-            error: "Non autorisé.",
-          },
+          { error: "Non autorisé." },
           401,
         );
       }
@@ -482,34 +481,37 @@ Deno.serve(async (req: Request) => {
           ascending: true,
         });
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       return jsonResponse({
-        admins: data ?? [],
+        admins: data || [],
       });
     }
 
+    // ---- DELETE ADMIN ----
     if (action === "deleteAdmin") {
-      const token = getSessionToken(req, body);
+      const token =
+        req.headers.get("x-admin-session") ||
+        String(body.token || "");
+
       const session = await verifySession(token);
 
       if (!session) {
         return jsonResponse(
-          {
-            error: "Non autorisé.",
-          },
+          { error: "Non autorisé." },
           401,
         );
       }
 
-      const targetId = String(body.adminId || "");
+      const targetId = String(
+        body.adminId || "",
+      );
 
       if (!targetId) {
         return jsonResponse(
           {
-            error: "ID administrateur manquant.",
+            error:
+              "ID administrateur manquant.",
           },
           400,
         );
@@ -532,9 +534,7 @@ Deno.serve(async (req: Request) => {
           head: true,
         });
 
-      if (countError) {
-        throw countError;
-      }
+      if (countError) throw countError;
 
       if ((count ?? 0) <= 1) {
         return jsonResponse(
@@ -551,9 +551,7 @@ Deno.serve(async (req: Request) => {
         .delete()
         .eq("id", targetId);
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       return jsonResponse({
         success: true,
@@ -561,22 +559,17 @@ Deno.serve(async (req: Request) => {
     }
 
     return jsonResponse(
-      {
-        error: "Action inconnue.",
-      },
+      { error: "Action inconnue." },
       400,
     );
   } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Erreur serveur inconnue.";
-
     console.error("admin-auth error:", error);
 
     return jsonResponse(
       {
-        error: message,
+        error:
+          errorMessage(error) ||
+          "Erreur interne du serveur.",
       },
       500,
     );
