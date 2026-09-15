@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administration — Basket Zone</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#f4f5f7;color:#171717;line-height:1.6}
+header{background:#111;color:white;position:sticky;top:0;z-index:1000;border-bottom:4px solid #ff6a00}
+.header-container{max-width:1250px;margin:auto;padding:18px 25px;display:flex;align-items:center;justify-content:space-between;gap:25px}
+.logo{font-size:28px;font-weight:900;white-space:nowrap;color:white;text-decoration:none}
+.logo span{color:#ff6a00}
+.admin-badge{background:#ff6a00;color:white;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:800}
+.container{max-width:1100px;margin:40px auto;padding:0 20px}
+.card{background:white;border-radius:14px;padding:30px;box-shadow:0 5px 22px rgba(0,0,0,.08);margin-bottom:25px}
+.card h2{font-size:24px;margin-bottom:15px}
+.card h2::after{content:"";display:block;width:45px;height:4px;background:#ff6a00;margin-top:8px;border-radius:5px}
+label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
+input,select,textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:13px 14px;font-family:inherit;font-size:15px;outline:none;background:#fafafa;transition:.2s}
+input:focus,select:focus,textarea:focus{border-color:#ff6a00;background:white;box-shadow:0 0 0 3px rgba(255,106,0,.1)}
+textarea{min-height:120px;resize:vertical}
+button{border:none;border-radius:8px;padding:14px 20px;background:#ff6a00;color:white;font-weight:800;font-size:15px;cursor:pointer;transition:.2s}
+button:hover{background:#e85e00;transform:translateY(-1px)}
+button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-dark{background:#111}
+.btn-dark:hover{background:#222}
+.btn-danger{background:#c0392b}
+.btn-danger:hover{background:#a93226}
+.btn-sm{padding:8px 14px;font-size:13px;border-radius:6px}
+.form-group{margin-bottom:16px}
+.error-msg{color:#c0392b;font-weight:700;font-size:14px;margin-top:12px;padding:12px;background:#fdf0ef;border-radius:8px;border-left:4px solid #c0392b}
+.success-msg{color:#27ae60;font-weight:700;font-size:14px;margin-top:12px;padding:12px;background:#f0faf4;border-radius:8px;border-left:4px solid #27ae60}
+.loading{text-align:center;padding:30px;color:#777}
+.tabs{display:flex;gap:5px;margin-bottom:25px;flex-wrap:wrap}
+.tab{padding:12px 20px;border-radius:8px 8px 0 0;background:#ddd;cursor:pointer;font-weight:700;font-size:14px;border:none;color:#333}
+.tab.active{background:#ff6a00;color:white}
+.tab:hover:not(.active){background:#ccc}
+.message-item{border:1px solid #eee;border-radius:12px;padding:20px;margin-bottom:15px;transition:.2s}
+.message-item:hover{box-shadow:0 3px 12px rgba(0,0,0,.06)}
+.message-item.unread{border-left:4px solid #ff6a00}
+.message-header{display:flex;justify-content:space-between;align-items:start;gap:15px;flex-wrap:wrap;margin-bottom:10px}
+.message-header strong{font-size:16px}
+.message-meta{font-size:13px;color:#777}
+.message-subject{color:#ff6a00;font-weight:700;font-size:14px;margin-bottom:5px}
+.message-content{color:#555;font-size:14px;margin:8px 0}
+.message-actions{display:flex;gap:8px;margin-top:12px}
+.admin-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
+.admin-row:last-child{border-bottom:none}
+.admin-row strong{font-size:15px}
+.admin-row .admin-date{font-size:13px;color:#777}
+.empty{text-align:center;padding:40px;color:#999;font-size:15px}
+.setting-row{margin-bottom:20px}
+.setting-row label{margin-bottom:6px}
+.setting-row .hint{font-size:12px;color:#999;margin-top:4px}
+@media(max-width:800px){.header-container{flex-direction:column}.tabs{flex-direction:column}.tab{border-radius:8px}}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <a href="index.html" class="logo">Basket <span>Zone</span></a>
+        <span class="admin-badge">PANNEAU ADMIN</span>
+    </div>
+</header>
+
+<div class="container" id="app">
+
+    <!-- LOADING -->
+    <div class="loading" id="loadingScreen">Vérification de l'état du système...</div>
+
+    <!-- SETUP: create first admin -->
+    <div id="setupScreen" style="display:none">
+        <div class="card" style="max-width:500px;margin:60px auto">
+            <h2>Créer le compte administrateur</h2>
+            <p style="color:#555;margin-bottom:20px">Aucun administrateur n'existe encore. Créez le premier compte pour accéder au panneau.</p>
+            <div class="form-group">
+                <label for="setupUsername">Nom d'utilisateur</label>
+                <input type="text" id="setupUsername" placeholder="Minimum 3 caractères">
+            </div>
+            <div class="form-group">
+                <label for="setupPassword">Mot de passe</label>
+                <input type="password" id="setupPassword" placeholder="Minimum 6 caractères">
+            </div>
+            <button onclick="doSetup()" id="setupBtn">Créer le compte</button>
+            <div id="setupError"></div>
+        </div>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginScreen" style="display:none">
+        <div class="card" style="max-width:500px;margin:60px auto">
+            <h2>Connexion administrateur</h2>
+            <div class="form-group">
+                <label for="loginUsername">Nom d'utilisateur</label>
+                <input type="text" id="loginUsername" placeholder="Votre nom d'utilisateur">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Mot de passe</label>
+                <input type="password" id="loginPassword" placeholder="Votre mot de passe">
+            </div>
+            <button onclick="doLogin()" id="loginBtn">Se connecter</button>
+            <div id="loginError"></div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+            <h1 style="font-size:28px">Tableau de bord</h1>
+            <div style="display:flex;gap:10px;align-items:center">
+                <span style="color:#555;font-size:14px">Connecté : <strong id="adminName">—</strong></span>
+                <button class="btn-dark btn-sm" onclick="doLogout()">Déconnexion</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('messages',this)">Messages</button>
+            <button class="tab" onclick="switchTab('chatbot',this)">Chatbot IA</button>
+            <button class="tab" onclick="switchTab('admins',this)">Administrateurs</button>
+        </div>
+
+        <!-- MESSAGES TAB -->
+        <div id="tab-messages">
+            <div class="card">
+                <h2>Messages reçus</h2>
+                <p style="color:#555;margin-bottom:15px">Messages envoyés depuis le formulaire de contact.</p>
+                <button class="btn-sm" onclick="loadMessages()" style="margin-bottom:15px">Actualiser</button>
+                <div id="messagesList"><div class="loading">Chargement...</div></div>
+            </div>
+        </div>
+
+        <!-- CHATBOT TAB -->
+        <div id="tab-chatbot" style="display:none">
+            <div class="card">
+                <h2>Configuration du chatbot</h2>
+                <p style="color:#555;margin-bottom:20px">La clé API est stockée côté serveur. Elle n'apparaît jamais dans le code du site.</p>
+                <div class="setting-row">
+                    <label for="chatProvider">Fournisseur IA</label>
+                    <select id="chatProvider">
+                        <option value="">— Choisir —</option>
+                        <option value="openai">OpenAI (GPT)</option>
+                        <option value="anthropic">Anthropic (Claude)</option>
+                        <option value="openrouter">OpenRouter (multi-modèles)</option>
+                    </select>
+                </div>
+                <div class="setting-row">
+                    <label for="chatApiKey">Clé API</label>
+                    <input type="password" id="chatApiKey" placeholder="sk-...">
+                    <div class="hint">La clé reste sur le serveur. Elle n'est jamais envoyée au navigateur des visiteurs.</div>
+                </div>
+                <div class="setting-row">
+                    <label for="chatSystemPrompt">Prompt système</label>
+                    <textarea id="chatSystemPrompt" placeholder="Instructions données à l'IA..."></textarea>
+                </div>
+                <button onclick="saveChatConfig()" id="saveConfigBtn">Enregistrer la configuration</button>
+                <div id="configMsg"></div>
+            </div>
+        </div>
+
+        <!-- ADMINS TAB -->
+        <div id="tab-admins" style="display:none">
+            <div class="card">
+                <h2>Ajouter un administrateur</h2>
+                <div class="form-group">
+                    <label for="newAdminUsername">Nom d'utilisateur</label>
+                    <input type="text" id="newAdminUsername" placeholder="Minimum 3 caractères">
+                </div>
+                <div class="form-group">
+                    <label for="newAdminPassword">Mot de passe</label>
+                    <input type="password" id="newAdminPassword" placeholder="Minimum 6 caractères">
+                </div>
+                <button onclick="doAddAdmin()" id="addAdminBtn">Ajouter</button>
+                <div id="addAdminMsg"></div>
+            </div>
+            <div class="card">
+                <h2>Administrateurs existants</h2>
+                <div id="adminsList"><div class="loading">Chargement...</div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer style="background:#111;color:#aaa;text-align:center;padding:30px 20px;margin-top:60px">
+    <strong style="color:white">Basket Zone</strong> — Panneau d'administration
+</footer>
+
+<script src="supabase/supabase-config.js"></script>
+<script>
+let currentTab = "messages";
+
+async function init() {
+    const token = BasketZoneAPI.getAdminToken();
+    if (token) {
+        const verify = await BasketZoneAPI.verifySession();
+        if (verify.valid) {
+            showDashboard(verify.username);
+            return;
+        }
+        BasketZoneAPI.clearAdminToken();
+    }
+    const status = await BasketZoneAPI.checkStatus();
+    document.getElementById("loadingScreen").style.display = "none";
+    if (status.hasAdmins) {
+        document.getElementById("loginScreen").style.display = "block";
+    } else {
+        document.getElementById("setupScreen").style.display = "block";
+    }
+}
+
+async function doSetup() {
+    const u = document.getElementById("setupUsername").value.trim();
+    const p = document.getElementById("setupPassword").value;
+    const errEl = document.getElementById("setupError");
+    errEl.innerHTML = "";
+    document.getElementById("setupBtn").disabled = true;
+    const result = await BasketZoneAPI.setupAdmin(u, p);
+    document.getElementById("setupBtn").disabled = false;
+    if (result.error) {
+        errEl.innerHTML = `<div class="error-msg">${esc(result.error)}</div>`;
+        return;
+    }
+    showDashboard(result.username);
+}
+
+async function doLogin() {
+    const u = document.getElementById("loginUsername").value.trim();
+    const p = document.getElementById("loginPassword").value;
+    const errEl = document.getElementById("loginError");
+    errEl.innerHTML = "";
+    document.getElementById("loginBtn").disabled = true;
+    const result = await BasketZoneAPI.login(u, p);
+    document.getElementById("loginBtn").disabled = false;
+    if (result.error) {
+        errEl.innerHTML = `<div class="error-msg">${esc(result.error)}</div>`;
+        return;
+    }
+    showDashboard(result.username);
+}
+
+async function doLogout() {
+    await BasketZoneAPI.logout();
+    location.reload();
+}
+
+function showDashboard(username) {
+    document.getElementById("loadingScreen").style.display = "none";
+    document.getElementById("setupScreen").style.display = "none";
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    document.getElementById("adminName").textContent = username;
+    loadMessages();
+    loadChatConfig();
+    loadAdmins();
+}
+
+function switchTab(tab, btn) {
+    currentTab = tab;
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    btn.classList.add("active");
+    ["messages", "chatbot", "admins"].forEach(t => {
+        document.getElementById("tab-" + t).style.display = t === tab ? "block" : "none";
+    });
+}
+
+// ---- MESSAGES ----
+
+async function loadMessages() {
+    const el = document.getElementById("messagesList");
+    el.innerHTML = '<div class="loading">Chargement...</div>';
+    const result = await BasketZoneAPI.listMessages();
+    if (result.error) {
+        el.innerHTML = `<div class="error-msg">${esc(result.error)}</div>`;
+        return;
+    }
+    const msgs = result.messages || [];
+    if (msgs.length === 0) {
+        el.innerHTML = '<div class="empty">Aucun message pour le moment.</div>';
+        return;
+    }
+    el.innerHTML = msgs.map(m => `
+        <div class="message-item ${m.is_read ? "" : "unread"}">
+            <div class="message-header">
+                <div>
+                    <strong>${esc(m.name)}</strong>
+                    <span style="color:#777;font-size:13px"> — ${esc(m.email)}</span>
+                </div>
+                <span class="message-meta">${formatDate(m.created_at)}</span>
+            </div>
+            <div class="message-subject">${esc(m.subject)}</div>
+            <div class="message-content">${esc(m.content)}</div>
+            <div class="message-actions">
+                ${m.is_read ? "" : `<button class="btn-sm btn-dark" onclick="markRead('${m.id}')">Marquer comme lu</button>`}
+                <button class="btn-sm btn-danger" onclick="deleteMsg('${m.id}')">Supprimer</button>
+            </div>
+        </div>
+    `).join("");
+}
+
+async function markRead(id) {
+    await BasketZoneAPI.markMessageRead(id);
+    loadMessages();
+}
+
+async function deleteMsg(id) {
+    if (!confirm("Supprimer ce message ?")) return;
+    await BasketZoneAPI.deleteMessage(id);
+    loadMessages();
+}
+
+// ---- CHATBOT CONFIG ----
+
+async function loadChatConfig() {
+    const result = await BasketZoneAPI.getChatConfig();
+    if (result.error) return;
+    document.getElementById("chatProvider").value = result.provider || "";
+    document.getElementById("chatApiKey").value = result.apiKey || "";
+    document.getElementById("chatSystemPrompt").value = result.systemPrompt || "";
+}
+
+async function saveChatConfig() {
+    const msgEl = document.getElementById("configMsg");
+    msgEl.innerHTML = "";
+    document.getElementById("saveConfigBtn").disabled = true;
+    const result = await BasketZoneAPI.updateChatConfig(
+        document.getElementById("chatProvider").value,
+        document.getElementById("chatApiKey").value,
+        document.getElementById("chatSystemPrompt").value
+    );
+    document.getElementById("saveConfigBtn").disabled = false;
+    if (result.error) {
+        msgEl.innerHTML = `<div class="error-msg">${esc(result.error)}</div>`;
+    } else {
+        msgEl.innerHTML = `<div class="success-msg">Configuration enregistrée.</div>`;
+    }
+}
+
+// ---- ADMINS ----
+
+async function loadAdmins() {
+    const el = document.getElementById("adminsList");
+    el.innerHTML = '<div class="loading">Chargement...</div>';
+    const result = await BasketZoneAPI.listAdmins();
+    if (result.error) {
+        el.innerHTML = `<div class="error-msg">${esc(result.error)}</div>`;
+        return;
+    }
+    const admins = result.admins || [];
+    if (admins.length === 0) {
+        el.innerHTML = '<div class="empty">Aucun administrateur.</div>';
+        return;
+    }
+    el.innerHTML = admins.map(a => `
+        <div class="admin-row">
+            <div>
+                <strong>${esc(a.username)}</strong>
+                <div class="admin-date">Créé le ${formatDate(a.created_at)}</div>
+            </div>
+            <button class="btn-sm btn-danger" onclick="deleteAdmin('${a.id}','${esc(a.username)}')">Supprimer</button>
+        </div>
+    `).join("");
+}
+
+async function doAddAdmin() {
+    const u = document.getElementById("newAdminUsername").value.trim();
+    const p = document.getElementById("newAdminPassword").value;
+    const msgEl = document.getElementById("addAdminMsg");
+    msgEl.innerHTML = "";
+    document.getElementById("addAdminBtn").disabled = true;
+    const result = await BasketZoneAPI.addAdmin(u, p);
+    document.getElementById("addAdminBtn").disabled = false;
+    if (result.error) {
+        msgEl.innerHTML = `<div class="error-msg">${esc(result.error)}</div>`;
+        return;
+    }
+    msgEl.innerHTML = `<div class="success-msg">Administrateur ajouté.</div>`;
+    document.getElementById("newAdminUsername").value = "";
+    document.getElementById("newAdminPassword").value = "";
+    loadAdmins();
+}
+
+async function deleteAdmin(id, name) {
+    if (!confirm(`Supprimer l'administrateur "${name}" ?`)) return;
+    const result = await BasketZoneAPI.deleteAdmin(id);
+    if (result.error) {
+        alert(result.error);
+        return;
+    }
+    loadAdmins();
+}
+
+// ---- UTILS ----
+
+function esc(text) {
+    const d = document.createElement("div");
+    d.textContent = String(text || "");
+    return d.innerHTML;
+}
+
+function formatDate(date) {
+    if (!date) return "";
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return String(date);
+    return d.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+}
+
+init();
+</script>
+</body>
+</html>
