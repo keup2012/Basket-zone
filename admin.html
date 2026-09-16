@@ -149,7 +149,7 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
                 <div class="setting-row">
                     <label for="chatModel">Modèle</label>
                     <input type="text" id="chatModel" value="openrouter/free" placeholder="openrouter/free">
-                    <div class="hint">Avec OpenRouter, <strong>openrouter/free</strong> choisit automatiquement un modèle gratuit disponible. Pour Gemini, utilise par exemple <strong>gemini-3.6-flash</strong>.</div>
+                    <div class="hint">Avec OpenRouter, <strong>openrouter/free</strong> choisit automatiquement un modèle gratuit disponible. Pour Gemini, utilise par exemple <strong>gemini-2.5-flash</strong>.</div>
                 </div>
                 <div class="setting-row">
                     <label for="chatApiKey">Clé API</label>
@@ -160,12 +160,7 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
                     <label for="chatMaxTokens">Taille maximale de réponse</label>
                     <input type="number" id="chatMaxTokens" min="100" max="4000" value="800">
                 </div>
-                <div class="setting-row">
-                    <label for="chatTemperature">Température</label>
-                    <input type="number" id="chatTemperature" min="0" max="2" step="0.1" value="0.7">
-                    <div class="hint">0 = très précis, 0,7 = naturel, 2 = plus créatif.</div>
-                </div>
-                <div class="setting-row">
+<div class="setting-row">
                     <label for="chatSystemPrompt">Critères du chatbot</label>
                     <textarea id="chatSystemPrompt" placeholder="Règles données à l'IA..."></textarea>
                 </div>
@@ -361,7 +356,6 @@ async function loadChatConfig() {
     document.getElementById("chatModel").value = result.model || "openrouter/free";
     document.getElementById("chatApiKey").value = result.apiKey || "";
     document.getElementById("chatMaxTokens").value = result.maxTokens || "800";
-    document.getElementById("chatTemperature").value = result.temperature ?? "0.7";
     document.getElementById("chatSystemPrompt").value = result.systemPrompt || "";
 }
 
@@ -374,8 +368,7 @@ async function saveChatConfig() {
         document.getElementById("chatModel").value.trim(),
         document.getElementById("chatApiKey").value.trim(),
         document.getElementById("chatSystemPrompt").value.trim(),
-        document.getElementById("chatMaxTokens").value,
-        document.getElementById("chatTemperature").value
+        document.getElementById("chatMaxTokens").value
     );
     document.getElementById("saveConfigBtn").disabled = false;
     if (result.error) {

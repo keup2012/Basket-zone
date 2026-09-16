@@ -77,8 +77,7 @@ Deno.serve(async (req: Request) => {
       const systemPrompt = await getSetting("chat_system_prompt");
       const model = await getSetting("chat_model");
       const maxTokens = clampNumber(await getSetting("chat_max_tokens"), 800, 100, 4000);
-      const temperature = clampNumber(await getSetting("chat_temperature"), 0.7, 0, 2);
-
+    
       if (!apiKey || !provider) {
         return new Response(JSON.stringify({
           error: "Le chatbot n'est pas encore configuré. Un administrateur doit configurer la clé API dans le panneau d'administration.",
@@ -88,13 +87,13 @@ Deno.serve(async (req: Request) => {
       let reply: string;
 
       if (provider === "openai") {
-        reply = await callOpenAI(apiKey, systemPrompt, userMessage, history, model, maxTokens, temperature);
+        reply = await callOpenAI(apiKey, systemPrompt, userMessage, history, model, maxTokens);
       } else if (provider === "anthropic") {
-        reply = await callAnthropic(apiKey, systemPrompt, userMessage, history, model, maxTokens, temperature);
+        reply = await callAnthropic(apiKey, systemPrompt, userMessage, history, model, maxTokens);
       } else if (provider === "openrouter") {
-        reply = await callOpenRouter(apiKey, systemPrompt, userMessage, history, model || body.model || "openrouter/free", maxTokens, temperature);
+        reply = await callOpenRouter(apiKey, systemPrompt, userMessage, history, model || body.model || "openrouter/free", maxTokens);
       } else if (provider === "gemini") {
-        reply = await callGemini(apiKey, systemPrompt, userMessage, history, model || body.model || "gemini-3.6-flash", maxTokens, temperature);
+        reply = await callGemini(apiKey, systemPrompt, userMessage, history, model || body.model || "gemini-2.5-flash", maxTokens);
       } else {
         return new Response(JSON.stringify({ error: `Fournisseur "${provider}" non supporté.` }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -112,13 +111,12 @@ Deno.serve(async (req: Request) => {
         return new Response(JSON.stringify({ error: "Non autorisé." }),
           { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
-      const [provider, apiKey, systemPrompt, model, maxTokens, temperature] = await Promise.all([
+      const [provider, apiKey, systemPrompt, model, maxTokens] = await Promise.all([
         getSetting("chat_provider"),
         getSetting("chat_api_key"),
         getSetting("chat_system_prompt"),
         getSetting("chat_model"),
         getSetting("chat_max_tokens"),
-        getSetting("chat_temperature"),
       ]);
       return new Response(JSON.stringify({
         provider,
@@ -126,7 +124,6 @@ Deno.serve(async (req: Request) => {
         systemPrompt,
         model,
         maxTokens,
-        temperature,
       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
@@ -153,9 +150,6 @@ Deno.serve(async (req: Request) => {
       if (body.maxTokens !== undefined) {
         await updateSetting("chat_max_tokens", String(body.maxTokens));
       }
-      if (body.temperature !== undefined) {
-        await updateSetting("chat_temperature", String(body.temperature));
-      }
       return new Response(JSON.stringify({ success: true }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
@@ -178,7 +172,6 @@ async function callOpenAI(
   history: { role: string; content: string }[],
   model: string,
   maxTokens: number,
-  temperature: number,
 ): Promise<string> {
   const messages = [
     { role: "system", content: systemPrompt },
@@ -195,7 +188,6 @@ async function callOpenAI(
       model: model || "gpt-4o-mini",
       messages,
       max_tokens: maxTokens,
-      temperature,
     }),
   });
   if (!resp.ok) {
@@ -213,7 +205,6 @@ async function callAnthropic(
   history: { role: string; content: string }[],
   model: string,
   maxTokens: number,
-  temperature: number,
 ): Promise<string> {
   const messages = [
     ...history.slice(-10).map((m) => ({
@@ -251,7 +242,6 @@ async function callGemini(
   history: { role: string; content: string }[],
   model: string,
   maxTokens: number,
-  temperature: number,
 ): Promise<string> {
   const contents = [
     ...history.slice(-10).map((m) => ({
@@ -265,7 +255,6 @@ async function callGemini(
     contents,
     generationConfig: {
       maxOutputTokens: maxTokens,
-      temperature,
     },
   };
 
@@ -276,7 +265,7 @@ async function callGemini(
   }
 
   const resp = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model || "gemini-3.6-flash")}:generateContent`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model || "gemini-2.5-flash")}:generateContent`,
     {
       method: "POST",
       headers: {
@@ -308,7 +297,6 @@ async function callOpenRouter(
   history: { role: string; content: string }[],
   model: string,
   maxTokens: number,
-  temperature: number,
 ): Promise<string> {
   const messages = [
     { role: "system", content: systemPrompt },
@@ -327,7 +315,6 @@ async function callOpenRouter(
       model: model || "openrouter/free",
       messages,
       max_tokens: maxTokens,
-      temperature,
     }),
   });
   if (!resp.ok) {
