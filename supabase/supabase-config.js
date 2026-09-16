@@ -63,19 +63,25 @@ const BasketZoneAPI = {
     },
 
     // ---- SESSION ADMIN ----
+    // Le jeton n'est gardé qu'en mémoire (pas dans sessionStorage) :
+    // à chaque chargement/rechargement de la page /admin, il repart
+    // à zéro et le mot de passe est redemandé. Il ne sert que pendant
+    // la durée où le panneau reste ouvert dans l'onglet.
+
+    _adminToken: "",
 
     getAdminToken() {
-        return sessionStorage.getItem("bz_admin_token") || "";
+        return this._adminToken;
     },
 
     setAdminToken(token) {
         if (token) {
-            sessionStorage.setItem("bz_admin_token", token);
+            this._adminToken = token;
         }
     },
 
     clearAdminToken() {
-        sessionStorage.removeItem("bz_admin_token");
+        this._adminToken = "";
     },
 
     // ---- ADMIN AUTH ----
@@ -154,12 +160,77 @@ const BasketZoneAPI = {
         );
     },
 
-    async deleteAdmin(adminId) {
+    async changeUsername(newUsername, password) {
         return this.call(
             "admin-auth",
             {
-                action: "deleteAdmin",
-                adminId
+                action: "changeUsername",
+                newUsername,
+                password
+            },
+            this.getAdminToken()
+        );
+    },
+
+    async requestDeleteAdmin(targetId, password) {
+        return this.call(
+            "admin-auth",
+            {
+                action: "requestDeleteAdmin",
+                targetId,
+                password
+            },
+            this.getAdminToken()
+        );
+    },
+
+    async listDeletionRequests() {
+        return this.call(
+            "admin-auth",
+            { action: "listDeletionRequests" },
+            this.getAdminToken()
+        );
+    },
+
+    async cancelDeletionRequest(requestId) {
+        return this.call(
+            "admin-auth",
+            {
+                action: "cancelDeletionRequest",
+                requestId
+            },
+            this.getAdminToken()
+        );
+    },
+
+    async respondDeletionRequest(requestId, accept, password) {
+        return this.call(
+            "admin-auth",
+            {
+                action: "respondDeletionRequest",
+                requestId,
+                accept,
+                password
+            },
+            this.getAdminToken()
+        );
+    },
+
+    async getStats() {
+        return this.call(
+            "admin-auth",
+            { action: "stats" },
+            this.getAdminToken()
+        );
+    },
+
+    async changeMyPassword(currentPassword, newPassword) {
+        return this.call(
+            "admin-auth",
+            {
+                action: "changePassword",
+                currentPassword,
+                newPassword
             },
             this.getAdminToken()
         );

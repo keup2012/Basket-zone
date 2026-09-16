@@ -116,13 +116,25 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('messages',this)">Messages</button>
+            <button class="tab active" onclick="switchTab('stats',this)">Statistiques</button>
+            <button class="tab" onclick="switchTab('messages',this)">Messages</button>
             <button class="tab" onclick="switchTab('chatbot',this)">Chatbot IA</button>
             <button class="tab" onclick="switchTab('admins',this)">Administrateurs</button>
+            <button class="tab" onclick="switchTab('security',this)">Sécurité</button>
+        </div>
+
+        <!-- STATS TAB -->
+        <div id="tab-stats">
+            <div class="card">
+                <h2>Vue d'ensemble</h2>
+                <div id="statsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-top:10px">
+                    <div class="loading">Chargement...</div>
+                </div>
+            </div>
         </div>
 
         <!-- MESSAGES TAB -->
-        <div id="tab-messages">
+        <div id="tab-messages" style="display:none">
             <div class="card">
                 <h2>Messages reçus</h2>
                 <p style="color:#555;margin-bottom:15px">Messages envoyés depuis le formulaire de contact.</p>
@@ -188,6 +200,53 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
                 <h2>Administrateurs existants</h2>
                 <div id="adminsList"><div class="loading">Chargement...</div></div>
             </div>
+
+            <div class="card" style="border:2px solid #d33;">
+                <h2 style="color:#d33">⚠ Zone de danger — Suppression d'un administrateur</h2>
+                <p style="color:#555;font-size:14px;margin-bottom:14px">
+                    Un administrateur ne peut plus être supprimé unilatéralement.
+                    Il faut envoyer une demande à l'intéressé, qui doit lui-même
+                    l'accepter en saisissant son propre mot de passe.
+                </p>
+
+                <h3 style="font-size:15px;margin-bottom:8px">Demandes que j'ai envoyées</h3>
+                <div id="sentRequestsList"><div class="loading">Chargement...</div></div>
+
+                <h3 style="font-size:15px;margin:18px 0 8px">Demandes reçues (me concernant)</h3>
+                <div id="receivedRequestsList"><div class="loading">Chargement...</div></div>
+            </div>
+        </div>
+
+        <!-- SECURITY TAB -->
+        <div id="tab-security" style="display:none">
+            <div class="card" style="max-width:500px">
+                <h2>Changer mon nom d'utilisateur</h2>
+                <p style="color:#555;font-size:13px;margin-bottom:10px">Actuellement : <strong id="currentUsernameLabel"></strong></p>
+                <div class="form-group">
+                    <label for="newUsernameInput">Nouveau nom d'utilisateur</label>
+                    <input type="text" id="newUsernameInput" placeholder="Minimum 3 caractères">
+                </div>
+                <div class="form-group">
+                    <label for="usernamePasswordConfirm">Mot de passe (confirmation)</label>
+                    <input type="password" id="usernamePasswordConfirm" placeholder="Ton mot de passe actuel">
+                </div>
+                <button onclick="doChangeUsername()" id="changeUsernameBtn">Mettre à jour</button>
+                <div id="changeUsernameMsg"></div>
+            </div>
+
+            <div class="card" style="max-width:500px">
+                <h2>Changer mon mot de passe</h2>
+                <div class="form-group">
+                    <label for="currentPassword">Mot de passe actuel</label>
+                    <input type="password" id="currentPassword" placeholder="Mot de passe actuel">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Nouveau mot de passe</label>
+                    <input type="password" id="newPassword" placeholder="Minimum 6 caractères">
+                </div>
+                <button onclick="doChangePassword()" id="changePasswordBtn">Mettre à jour</button>
+                <div id="changePasswordMsg"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -198,7 +257,8 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 <script src="supabase/supabase-config.js"></script>
 <script>
-let currentTab = "messages";
+let currentTab = "stats";
+let currentUsername = "";
 
 async function init() {
     const loading = document.getElementById("loadingScreen");
@@ -207,19 +267,10 @@ async function init() {
     const setupScreen = document.getElementById("setupScreen");
 
     try {
-        const token = BasketZoneAPI.getAdminToken();
-
-        if (token) {
-            const verify = await BasketZoneAPI.verifySession();
-
-            if (verify && verify.valid) {
-                showDashboard(verify.username);
-                return;
-            }
-
-            BasketZoneAPI.clearAdminToken();
-        }
-
+        // Aucune tentative de reprise automatique de session ici :
+        // à chaque chargement de la page, le mot de passe est
+        // redemandé (le jeton précédent, s'il existait, a disparu
+        // avec le rechargement puisqu'il n'est gardé qu'en mémoire).
         const status = await BasketZoneAPI.checkStatus();
 
         loading.style.display = "none";
@@ -283,23 +334,70 @@ async function doLogout() {
 }
 
 function showDashboard(username) {
+    currentUsername = username;
     document.getElementById("loadingScreen").style.display = "none";
     document.getElementById("setupScreen").style.display = "none";
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
     document.getElementById("adminName").textContent = username;
+    document.getElementById("currentUsernameLabel").textContent = username;
+    loadStats();
     loadMessages();
     loadChatConfig();
     loadAdmins();
+    loadDeletionRequests();
 }
 
 function switchTab(tab, btn) {
     currentTab = tab;
     document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
     btn.classList.add("active");
-    ["messages", "chatbot", "admins"].forEach(t => {
+    ["stats", "messages", "chatbot", "admins", "security"].forEach(t => {
         document.getElementById("tab-" + t).style.display = t === tab ? "block" : "none";
     });
+    if (tab === "stats") loadStats();
+    if (tab === "admins") { loadAdmins(); loadDeletionRequests(); }
+}
+
+// ---- STATS ----
+
+async function loadStats() {
+    const el = document.getElementById("statsGrid");
+    const result = await BasketZoneAPI.getStats();
+    if (result.error) {
+        el.innerHTML = `<div class="error-msg">${esc(result.error)}</div>`;
+        return;
+    }
+    const cards = [
+        { label: "Messages reçus", value: result.totalMessages ?? 0 },
+        { label: "Messages non lus", value: result.unreadMessages ?? 0 },
+        { label: "Administrateurs", value: result.adminCount ?? 0 },
+    ];
+    el.innerHTML = cards.map(c => `
+        <div class="card" style="text-align:center;padding:22px;margin-bottom:0">
+            <div style="font-size:34px;font-weight:900;color:#ff6a00">${c.value}</div>
+            <div style="font-size:13px;color:#555;margin-top:6px">${esc(c.label)}</div>
+        </div>
+    `).join("");
+}
+
+// ---- SECURITY ----
+
+async function doChangePassword() {
+    const current = document.getElementById("currentPassword").value;
+    const next = document.getElementById("newPassword").value;
+    const msgEl = document.getElementById("changePasswordMsg");
+    msgEl.innerHTML = "";
+    document.getElementById("changePasswordBtn").disabled = true;
+    const result = await BasketZoneAPI.changeMyPassword(current, next);
+    document.getElementById("changePasswordBtn").disabled = false;
+    if (result.error) {
+        msgEl.innerHTML = `<div class="error-msg">${esc(result.error)}</div>`;
+        return;
+    }
+    msgEl.innerHTML = `<div class="success-msg">Mot de passe mis à jour.</div>`;
+    document.getElementById("currentPassword").value = "";
+    document.getElementById("newPassword").value = "";
 }
 
 // ---- MESSAGES ----
@@ -396,10 +494,13 @@ async function loadAdmins() {
     el.innerHTML = admins.map(a => `
         <div class="admin-row">
             <div>
-                <strong>${esc(a.username)}</strong>
+                <strong>${esc(a.username)}</strong> ${a.username === currentUsername ? "(moi)" : ""}
                 <div class="admin-date">Créé le ${formatDate(a.created_at)}</div>
             </div>
-            <button class="btn-sm btn-danger" onclick="deleteAdmin('${a.id}','${esc(a.username)}')">Supprimer</button>
+            ${a.username === currentUsername
+                ? ""
+                : `<button class="btn-sm btn-danger" onclick="requestDeleteAdmin('${a.id}','${esc(a.username)}')">Demander la suppression</button>`
+            }
         </div>
     `).join("");
 }
@@ -422,13 +523,121 @@ async function doAddAdmin() {
     loadAdmins();
 }
 
-async function deleteAdmin(id, name) {
-    if (!confirm(`Supprimer l'administrateur "${name}" ?`)) return;
-    const result = await BasketZoneAPI.deleteAdmin(id);
+// ---- ZONE DE DANGER : DEMANDES DE SUPPRESSION ----
+
+async function requestDeleteAdmin(id, name) {
+    const password = prompt(
+        `Pour demander la suppression de "${name}", saisis ton propre mot de passe (celui qui envoie la demande) :`
+    );
+    if (password === null) return;
+    if (!password) {
+        alert("Mot de passe requis.");
+        return;
+    }
+    const result = await BasketZoneAPI.requestDeleteAdmin(id, password);
     if (result.error) {
         alert(result.error);
         return;
     }
+    alert(`Demande envoyée à "${name}". Elle devra l'accepter avec son propre mot de passe pour que la suppression ait lieu.`);
+    loadDeletionRequests();
+}
+
+async function loadDeletionRequests() {
+    const sentEl = document.getElementById("sentRequestsList");
+    const receivedEl = document.getElementById("receivedRequestsList");
+    const result = await BasketZoneAPI.listDeletionRequests();
+
+    if (result.error) {
+        sentEl.innerHTML = `<div class="error-msg">${esc(result.error)}</div>`;
+        receivedEl.innerHTML = "";
+        return;
+    }
+
+    const sent = result.sent || [];
+    sentEl.innerHTML = sent.length === 0
+        ? '<div class="empty">Aucune demande en attente.</div>'
+        : sent.map(r => `
+            <div class="admin-row">
+                <div>Suppression demandée pour <strong>${esc(r.targetUsername)}</strong></div>
+                <button class="btn-sm" onclick="cancelDeletionRequest('${r.id}')">Annuler</button>
+            </div>
+        `).join("");
+
+    const received = result.received || [];
+    receivedEl.innerHTML = received.length === 0
+        ? '<div class="empty">Aucune demande reçue.</div>'
+        : received.map(r => `
+            <div class="admin-row">
+                <div><strong>${esc(r.requesterUsername)}</strong> demande la suppression de ton compte</div>
+                <div>
+                    <button class="btn-sm btn-danger" onclick="respondDeletionRequest('${r.id}', true)">Accepter</button>
+                    <button class="btn-sm" onclick="respondDeletionRequest('${r.id}', false)">Refuser</button>
+                </div>
+            </div>
+        `).join("");
+}
+
+async function cancelDeletionRequest(requestId) {
+    if (!confirm("Annuler cette demande de suppression ?")) return;
+    const result = await BasketZoneAPI.cancelDeletionRequest(requestId);
+    if (result.error) {
+        alert(result.error);
+        return;
+    }
+    loadDeletionRequests();
+}
+
+async function respondDeletionRequest(requestId, accept) {
+    if (!accept) {
+        if (!confirm("Refuser cette demande de suppression ?")) return;
+        const result = await BasketZoneAPI.respondDeletionRequest(requestId, false, "");
+        if (result.error) {
+            alert(result.error);
+            return;
+        }
+        loadDeletionRequests();
+        return;
+    }
+
+    const password = prompt(
+        "Tu es sur le point d'accepter la suppression de TON PROPRE compte administrateur. " +
+        "Saisis ton mot de passe pour confirmer :"
+    );
+    if (password === null) return;
+    if (!password) {
+        alert("Mot de passe requis pour confirmer.");
+        return;
+    }
+    const result = await BasketZoneAPI.respondDeletionRequest(requestId, true, password);
+    if (result.error) {
+        alert(result.error);
+        return;
+    }
+    alert("Ton compte a été supprimé. Tu vas être déconnecté.");
+    location.reload();
+}
+
+// ---- CHANGER MON NOM D'UTILISATEUR ----
+
+async function doChangeUsername() {
+    const newUsername = document.getElementById("newUsernameInput").value.trim();
+    const password = document.getElementById("usernamePasswordConfirm").value;
+    const msgEl = document.getElementById("changeUsernameMsg");
+    msgEl.innerHTML = "";
+    document.getElementById("changeUsernameBtn").disabled = true;
+    const result = await BasketZoneAPI.changeUsername(newUsername, password);
+    document.getElementById("changeUsernameBtn").disabled = false;
+    if (result.error) {
+        msgEl.innerHTML = `<div class="error-msg">${esc(result.error)}</div>`;
+        return;
+    }
+    currentUsername = result.username;
+    document.getElementById("adminName").textContent = result.username;
+    document.getElementById("currentUsernameLabel").textContent = result.username;
+    msgEl.innerHTML = `<div class="success-msg">Nom d'utilisateur mis à jour.</div>`;
+    document.getElementById("newUsernameInput").value = "";
+    document.getElementById("usernamePasswordConfirm").value = "";
     loadAdmins();
 }
 

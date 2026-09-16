@@ -388,6 +388,426 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    // STATS — compteurs pour le tableau de bord
+    if (action === "stats") {
+      const token = getToken(req, body);
+      const session = await getSession(token);
+
+      if (!session) {
+        return jsonResponse(
+          { error: "Non autorisé." },
+          401,
+        );
+      }
+
+      const [adminsCount, messagesCount, unreadCount] = await Promise.all([
+        supabase.from("admins").select("id", { count: "exact", head: true }),
+        supabase.from("messages").select("id", { count: "exact", head: true }),
+        supabase
+          .from("messages")
+          .select("id", { count: "exact", head: true })
+          .eq("is_read", false),
+      ]);
+
+      if (adminsCount.error) throw adminsCount.error;
+      if (messagesCount.error) throw messagesCount.error;
+      if (unreadCount.error) throw unreadCount.error;
+
+      return jsonResponse({
+        adminCount: adminsCount.count ?? 0,
+        totalMessages: messagesCount.count ?? 0,
+        unreadMessages: unreadCount.count ?? 0,
+      });
+    }
+
+    // CHANGE PASSWORD — l'admin connecté change son propre mot de passe
+    if (action === "changePassword") {
+      const token = getToken(req, body);
+      const session = await getSession(token);
+
+      if (!session) {
+        return jsonResponse(
+          { error: "Non autorisé." },
+          401,
+        );
+      }
+
+      const currentPassword = String(body.currentPassword || "");
+      const newPassword = String(body.newPassword || "");
+
+      if (newPassword.length < 6) {
+        return jsonResponse(
+          { error: "Le nouveau mot de passe doit faire au moins 6 caractères." },
+          400,
+        );
+      }
+
+      const { data: admin, error: fetchError } = await supabase
+        .from("admins")
+        .select("password_hash")
+        .eq("id", session.admin_id)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      const valid = await verifyPassword(currentPassword, admin.password_hash);
+
+      if (!valid) {
+        return jsonResponse(
+          { error: "Mot de passe actuel incorrect." },
+          401,
+        );
+      }
+
+      const newHash = await hashPassword(newPassword);
+
+      const { error: updateError } = await supabase
+        .from("admins")
+        .update({ password_hash: newHash })
+        .eq("id", session.admin_id);
+
+      if (updateError) throw updateError;
+
+      return jsonResponse({ success: true });
+    }
+
+    // CHANGE USERNAME — l'admin connecté change son propre nom d'utilisateur
+    if (action === "changeUsername") {
+      const token = getToken(req, body);
+      const session = await getSession(token);
+
+      if (!session) {
+        return jsonResponse(
+          { error: "Non autorisé." },
+          401,
+        );
+      }
+
+      const newUsername = String(body.newUsername || "").trim();
+      const password = String(body.password || "");
+
+      if (newUsername.length < 3) {
+        return jsonResponse(
+          { error: "Le nom d'utilisateur doit faire au moins 3 caractères." },
+          400,
+        );
+      }
+
+      const { data: me, error: meError } = await supabase
+        .from("admins")
+        .select("password_hash")
+        .eq("id", session.admin_id)
+        .single();
+
+      if (meError) throw meError;
+
+      const valid = await verifyPassword(password, me.password_hash);
+
+      if (!valid) {
+        return jsonResponse(
+          { error: "Mot de passe incorrect." },
+          401,
+        );
+      }
+
+      const { error: updateError } = await supabase
+        .from("admins")
+        .update({ username: newUsername })
+        .eq("id", session.admin_id);
+
+      if (updateError) {
+        if (updateError.code === "23505") {
+          return jsonResponse(
+            { error: "Ce nom d'utilisateur est déjà pris." },
+            409,
+          );
+        }
+        throw updateError;
+      }
+
+      return jsonResponse({ success: true, username: newUsername });
+    }
+
+    // REQUEST DELETE ADMIN — demande de suppression envoyée à un autre admin
+    // (aucune suppression n'a lieu ici : ça crée juste la demande)
+    if (action === "requestDeleteAdmin") {
+      const token = getToken(req, body);
+      const session = await getSession(token);
+
+      if (!session) {
+        return jsonResponse(
+          { error: "Non autorisé." },
+          401,
+        );
+      }
+
+      const targetId = String(body.targetId || "");
+      const password = String(body.password || "");
+
+      if (!targetId) {
+        return jsonResponse(
+          { error: "Administrateur cible manquant." },
+          400,
+        );
+      }
+
+      if (targetId === session.admin_id) {
+        return jsonResponse(
+          { error: "Impossible de demander sa propre suppression ici." },
+          400,
+        );
+      }
+
+      // Le demandeur doit confirmer son identité avec son propre mot de passe
+      const { data: requester, error: requesterError } = await supabase
+        .from("admins")
+        .select("password_hash")
+        .eq("id", session.admin_id)
+        .single();
+
+      if (requesterError) throw requesterError;
+
+      const valid = await verifyPassword(password, requester.password_hash);
+
+      if (!valid) {
+        return jsonResponse(
+          { error: "Mot de passe incorrect." },
+          401,
+        );
+      }
+
+      const { data: target, error: targetError } = await supabase
+        .from("admins")
+        .select("id")
+        .eq("id", targetId)
+        .maybeSingle();
+
+      if (targetError) throw targetError;
+
+      if (!target) {
+        return jsonResponse(
+          { error: "Administrateur introuvable." },
+          404,
+        );
+      }
+
+      const { data: existing, error: existingError } = await supabase
+        .from("admin_deletion_requests")
+        .select("id")
+        .eq("requester_id", session.admin_id)
+        .eq("target_id", targetId)
+        .eq("status", "pending")
+        .maybeSingle();
+
+      if (existingError) throw existingError;
+
+      if (existing) {
+        return jsonResponse(
+          { error: "Une demande est déjà en attente pour cet administrateur." },
+          409,
+        );
+      }
+
+      const { error: insertError } = await supabase
+        .from("admin_deletion_requests")
+        .insert({
+          requester_id: session.admin_id,
+          target_id: targetId,
+        });
+
+      if (insertError) throw insertError;
+
+      return jsonResponse({ success: true });
+    }
+
+    // LIST DELETION REQUESTS — celles que j'ai envoyées + celles que j'ai reçues
+    if (action === "listDeletionRequests") {
+      const token = getToken(req, body);
+      const session = await getSession(token);
+
+      if (!session) {
+        return jsonResponse(
+          { error: "Non autorisé." },
+          401,
+        );
+      }
+
+      const { data: requests, error: requestsError } = await supabase
+        .from("admin_deletion_requests")
+        .select("id, created_at, requester_id, target_id")
+        .eq("status", "pending")
+        .or(`requester_id.eq.${session.admin_id},target_id.eq.${session.admin_id}`)
+        .order("created_at", { ascending: true });
+
+      if (requestsError) throw requestsError;
+
+      const { data: allAdmins, error: adminsError } = await supabase
+        .from("admins")
+        .select("id, username");
+
+      if (adminsError) throw adminsError;
+
+      const nameById: Record<string, string> = {};
+      for (const a of allAdmins || []) {
+        nameById[a.id] = a.username;
+      }
+
+      const sent = [];
+      const received = [];
+
+      for (const r of requests || []) {
+        const row = {
+          id: r.id,
+          createdAt: r.created_at,
+          requesterUsername: nameById[r.requester_id] || "?",
+          targetUsername: nameById[r.target_id] || "?",
+        };
+
+        if (r.requester_id === session.admin_id) {
+          sent.push(row);
+        } else {
+          received.push(row);
+        }
+      }
+
+      return jsonResponse({ sent, received });
+    }
+
+    // CANCEL DELETION REQUEST — le demandeur retire sa propre demande
+    if (action === "cancelDeletionRequest") {
+      const token = getToken(req, body);
+      const session = await getSession(token);
+
+      if (!session) {
+        return jsonResponse(
+          { error: "Non autorisé." },
+          401,
+        );
+      }
+
+      const requestId = String(body.requestId || "");
+
+      const { data: reqRow, error: reqError } = await supabase
+        .from("admin_deletion_requests")
+        .select("id, requester_id, status")
+        .eq("id", requestId)
+        .maybeSingle();
+
+      if (reqError) throw reqError;
+
+      if (!reqRow || reqRow.requester_id !== session.admin_id || reqRow.status !== "pending") {
+        return jsonResponse(
+          { error: "Demande introuvable." },
+          404,
+        );
+      }
+
+      const { error: deleteReqError } = await supabase
+        .from("admin_deletion_requests")
+        .delete()
+        .eq("id", requestId);
+
+      if (deleteReqError) throw deleteReqError;
+
+      return jsonResponse({ success: true });
+    }
+
+    // RESPOND TO DELETION REQUEST — seule la cible peut répondre.
+    // Accepter = elle consent à sa PROPRE suppression et doit taper
+    // son propre mot de passe pour le confirmer.
+    if (action === "respondDeletionRequest") {
+      const token = getToken(req, body);
+      const session = await getSession(token);
+
+      if (!session) {
+        return jsonResponse(
+          { error: "Non autorisé." },
+          401,
+        );
+      }
+
+      const requestId = String(body.requestId || "");
+      const accept = Boolean(body.accept);
+      const password = String(body.password || "");
+
+      const { data: reqRow, error: reqError } = await supabase
+        .from("admin_deletion_requests")
+        .select("id, requester_id, target_id, status")
+        .eq("id", requestId)
+        .maybeSingle();
+
+      if (reqError) throw reqError;
+
+      if (!reqRow || reqRow.status !== "pending") {
+        return jsonResponse(
+          { error: "Cette demande n'existe plus." },
+          404,
+        );
+      }
+
+      if (reqRow.target_id !== session.admin_id) {
+        return jsonResponse(
+          { error: "Seul l'administrateur visé peut répondre à cette demande." },
+          403,
+        );
+      }
+
+      if (!accept) {
+        const { error: rejectError } = await supabase
+          .from("admin_deletion_requests")
+          .update({ status: "rejected" })
+          .eq("id", requestId);
+
+        if (rejectError) throw rejectError;
+
+        return jsonResponse({ success: true, deleted: false });
+      }
+
+      // Acceptation : la cible confirme sa propre suppression avec son mot de passe
+      const { data: me, error: meError } = await supabase
+        .from("admins")
+        .select("password_hash")
+        .eq("id", session.admin_id)
+        .single();
+
+      if (meError) throw meError;
+
+      const valid = await verifyPassword(password, me.password_hash);
+
+      if (!valid) {
+        return jsonResponse(
+          { error: "Mot de passe incorrect." },
+          401,
+        );
+      }
+
+      const { count, error: countError } = await supabase
+        .from("admins")
+        .select("id", { count: "exact", head: true });
+
+      if (countError) throw countError;
+
+      if ((count ?? 0) <= 1) {
+        return jsonResponse(
+          { error: "Impossible de supprimer le dernier administrateur." },
+          400,
+        );
+      }
+
+      // La suppression de l'admin entraîne, en cascade (défini dans le
+      // schéma SQL), la suppression de ses sessions et de toutes les
+      // demandes de suppression le concernant — aucun nettoyage manuel
+      // supplémentaire n'est nécessaire ici.
+      const { error: deleteError } = await supabase
+        .from("admins")
+        .delete()
+        .eq("id", session.admin_id);
+
+      if (deleteError) throw deleteError;
+
+      return jsonResponse({ success: true, deleted: true });
+    }
+
     // ADD ADMIN
     if (action === "addAdmin") {
       const token = getToken(req, body);
@@ -435,60 +855,6 @@ Deno.serve(async (req: Request) => {
         }
         throw error;
       }
-
-      return jsonResponse({ success: true });
-    }
-
-    // DELETE ADMIN
-    if (action === "deleteAdmin") {
-      const token = getToken(req, body);
-      const session = await getSession(token);
-
-      if (!session) {
-        return jsonResponse(
-          { error: "Non autorisé." },
-          401,
-        );
-      }
-
-      const adminId = String(body.adminId || "");
-
-      if (!adminId) {
-        return jsonResponse(
-          { error: "ID administrateur manquant." },
-          400,
-        );
-      }
-
-      if (adminId === session.admin_id) {
-        return jsonResponse(
-          { error: "Vous ne pouvez pas supprimer votre propre compte." },
-          400,
-        );
-      }
-
-      const { count, error: countError } = await supabase
-        .from("admins")
-        .select("id", {
-          count: "exact",
-          head: true,
-        });
-
-      if (countError) throw countError;
-
-      if ((count ?? 0) <= 1) {
-        return jsonResponse(
-          { error: "Impossible de supprimer le dernier administrateur." },
-          400,
-        );
-      }
-
-      const { error } = await supabase
-        .from("admins")
-        .delete()
-        .eq("id", adminId);
-
-      if (error) throw error;
 
       return jsonResponse({ success: true });
     }
