@@ -1,5 +1,5 @@
 {
-    "updated": "2026-10-27T10:37:11.932509+00:00",
+    "updated": "2026-10-27T16:02:03.329313+00:00",
     "articles": [
         {
             "title": "2026-27 NBA key dates",
@@ -13,6 +13,14 @@
             "title": "Top Stories",
             "description": "Read the latest news and articles for Top Stories",
             "link": "https://www.nba.com/news/category/top-stories",
+            "date": "",
+            "source": "NBA.com",
+            "image": "https://cdn.nba.com/logos/nba/fallback/NBA.Com-National-Basketball-Association.png"
+        },
+        {
+            "title": "NBA.com Writers Archive",
+            "description": "See all archived NBA.com content from the NBA's top Writers",
+            "link": "https://www.nba.com/news/writers-archive",
             "date": "",
             "source": "NBA.com",
             "image": "https://cdn.nba.com/logos/nba/fallback/NBA.Com-National-Basketball-Association.png"
@@ -42,9 +50,9 @@
             "image": "https://cdn.nba.com/logos/nba/fallback/NBA.Com-National-Basketball-Association.png"
         },
         {
-            "title": "Trending Topics",
-            "description": "Read the latest news and articles for Trending Topics",
-            "link": "https://www.nba.com/news/category/trending-topics",
+            "title": "Kia Race To The Mvp Ladder",
+            "description": "Read the latest news and articles for Kia Race To The Mvp Ladder",
+            "link": "https://www.nba.com/news/category/kia-race-to-the-mvp-ladder",
             "date": "",
             "source": "NBA.com",
             "image": "https://cdn.nba.com/logos/nba/fallback/NBA.Com-National-Basketball-Association.png"
@@ -58,17 +66,17 @@
             "image": "https://cdn.nba.com/logos/nba/fallback/NBA.Com-National-Basketball-Association.png"
         },
         {
-            "title": "Kia Race To The Mvp Ladder",
-            "description": "Read the latest news and articles for Kia Race To The Mvp Ladder",
-            "link": "https://www.nba.com/news/category/kia-race-to-the-mvp-ladder",
+            "title": "Trending Topics",
+            "description": "Read the latest news and articles for Trending Topics",
+            "link": "https://www.nba.com/news/category/trending-topics",
             "date": "",
             "source": "NBA.com",
             "image": "https://cdn.nba.com/logos/nba/fallback/NBA.Com-National-Basketball-Association.png"
         },
         {
-            "title": "NBA.com Writers Archive",
-            "description": "See all archived NBA.com content from the NBA's top Writers",
-            "link": "https://www.nba.com/news/writers-archive",
+            "title": "Nba Mailbag",
+            "description": "Read the latest news and articles for Nba Mailbag",
+            "link": "https://www.nba.com/news/category/nba-mailbag",
             "date": "",
             "source": "NBA.com",
             "image": "https://cdn.nba.com/logos/nba/fallback/NBA.Com-National-Basketball-Association.png"
@@ -88,14 +96,6 @@
             "date": "",
             "source": "NBA.com",
             "image": "https://cdn.nba.com/manage/2026/02/harden-iso-020326-scaled.jpg"
-        },
-        {
-            "title": "Power Rankings, Week 2: Pistons, Timberwolves climb into Top 3",
-            "description": "OKC, Detroit and Minnesota rise to the top after the 1st week of the 2026-27 season.",
-            "link": "https://www.nba.com/news/power-rankings-2026-27-week-2",
-            "date": "",
-            "source": "NBA.com",
-            "image": "https://cdn.nba.com/manage/2026/10/GettyImages-2300831158-1-scaled-e1792688144332.jpg"
         }
     ]
 }
