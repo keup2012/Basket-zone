@@ -1,6 +1,14 @@
 {
-    "updated": "2026-11-03T06:51:07.254948+00:00",
+    "updated": "2026-11-03T15:11:00.554375+00:00",
     "articles": [
+        {
+            "title": "ESPN releases 'Inside the NBA' schedule for 2026-27 season",
+            "description": "ESPN announced its 2026-27 regular season schedule for Inside the NBA presented by Eli Lilly.",
+            "link": "https://www.nba.com/news/espn-unveils-inside-the-nba-schedule-2026-27",
+            "date": "",
+            "source": "NBA.com",
+            "image": "https://cdn.nba.com/manage/2026/10/Inside-the-NBA.jpg"
+        },
         {
             "title": "2026-27 NBA key dates",
             "description": "This article is a list of key dates to know for the 2026-27 NBA season.",
@@ -88,14 +96,6 @@
             "date": "",
             "source": "NBA.com",
             "image": "https://cdn.nba.com/logos/nba/fallback/NBA.Com-National-Basketball-Association.png"
-        },
-        {
-            "title": "2025-26 NBA Trade Tracker: Every official deal",
-            "description": "Keep track of every official trade from the 2025-26 season.",
-            "link": "https://www.nba.com/news/2025-26-nba-trade-tracker",
-            "date": "",
-            "source": "NBA.com",
-            "image": "https://cdn.nba.com/manage/2026/02/harden-iso-020326-scaled.jpg"
         }
     ]
 }
