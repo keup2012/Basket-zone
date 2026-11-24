@@ -1,6 +1,14 @@
 {
-    "updated": "2026-11-24T06:26:38.918795+00:00",
+    "updated": "2026-11-24T18:21:11.356889+00:00",
     "articles": [
+        {
+            "title": "How to Watch: Local viewing options for the 2026-27 Season",
+            "description": "The complete NBA fan guide for watching your local team via over-the-air (OTA), regional sports network (RSN), cable and streaming options.",
+            "link": "https://www.nba.com/news/local-viewing-options",
+            "date": "",
+            "source": "NBA.com",
+            "image": "https://cdn.nba.com/manage/2026/03/NBA-Logo-1-scaled.jpg"
+        },
         {
             "title": "ESPN releases 'Inside the NBA' schedule for 2026-27 season",
             "description": "ESPN announced its 2026-27 regular season schedule for Inside the NBA presented by Eli Lilly.",
@@ -88,14 +96,6 @@
             "date": "",
             "source": "NBA.com",
             "image": "https://cdn.nba.com/logos/nba/fallback/NBA.Com-National-Basketball-Association.png"
-        },
-        {
-            "title": "Power Rankings, Week 6: Heat, Knicks and Hawks surge as East standings tighten",
-            "description": "The Spurs and Lakers lead the way -- and the East is on the rise -- before 3 nights of Emirates NBA Cup action this week.",
-            "link": "https://www.nba.com/news/power-rankings-2026-27-week-6",
-            "date": "",
-            "source": "NBA.com",
-            "image": "https://cdn.nba.com/manage/2026/11/GettyImages-2305252882-2-scaled-e1795443587973.jpg"
         }
     ]
 }
